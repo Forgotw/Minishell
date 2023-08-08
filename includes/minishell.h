@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/06 16:00:53 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:16:26 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <string.h>
+# include "libft.h"
 
 /*STRUCTRES*/
 typedef enum e_operators
 {
 	EMPTY = -2,
 	WORD,
+	SPACE,
 	SEMIC,
 	PIPE,
 	QUOTE,
@@ -46,10 +48,10 @@ typedef enum e_operators
 
 typedef struct s_word
 {
-	int	q_state;
-	int	d_q_state;
-	int	w_size;
-	int	tok_size;
+	int		q_state;
+	int		d_q_state;
+	int		w_size;
+	int		tok_size;
 }				t_word;
 
 typedef struct s_token
@@ -62,7 +64,7 @@ typedef struct s_token
 
 typedef struct s_meta
 {
-	struct s_cmd	cmd;
+	struct s_cmd	*cmd;
 	struct s_meta	*next;
 }				t_meta;
 
@@ -77,5 +79,8 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }				t_cmd;
+
+/* FUNCTIONS */
+t_token	*init_tokens(char *str);
 
 #endif

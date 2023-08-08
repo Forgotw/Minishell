@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/08 15:27:17 by lsohler          ###   ########.fr       */
+/*   Created: 2023/08/08 12:31:46 by lsohler           #+#    #+#             */
+/*   Updated: 2023/08/08 13:06:25 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	print_tokens(t_token *tokens)
+char	*ft_strndup(char const *s, int len)
 {
-	t_token *tmp;
+	char	*dst;
+	int		i;
 
-	tmp = tokens;
-	while (tmp)
+	i = 0;
+	dst = malloc(sizeof(char) * (len + 1));
+	if (!dst)
+		return (NULL);
+	while (s[i] != '\0' && i < len)
 	{
-		printf("Token_type: %i | Word: %s\n", tmp->type, tmp->str);
-		tmp = tmp->next;
+		dst[i] = s[i];
+		i++;
 	}
-}
-
-int	main(int ac, char **av)
-{
-	(void)ac;
-	t_token *tokens;
-
-	tokens = init_tokens(av[1]);
-	print_tokens(tokens);
+	dst[i] = '\0';
+	return (dst);
 }
