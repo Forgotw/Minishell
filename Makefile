@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+         #
+#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/08 21:28:17 by lsohler@stu      ###   ########.fr        #
+#    Updated: 2023/08/09 13:04:04 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 SRCS_F = lexer.c main.c parser.c
 SRCS_DIR = srcs/ 
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
-SRCS = srcs/lexer.c srcs/main.c srcs/parser.c
+SRCS = srcs/lexer.c srcs/main.c srcs/parser.c srcs/operator.c
 OBJS = $(SRCS:.c=.o)
 
 # LIBFT #
@@ -61,6 +61,7 @@ norm:
 
 clean:
 				@$(RM) $(OBJS)
+				@make clean -s -C $(LIBFT_DIR)
 				@echo "$(YELLOW)object files cleaned!$(DEFAULT)"
 
 fclean: clean
@@ -69,7 +70,6 @@ fclean: clean
 
 $(LIBFT):	
 			@make -s -C $(LIBFT_DIR)
-			@make clean -s -C $(LIBFT_DIR)
 			@echo "$(GREEN)Libft OK !$(DEFAULT)"
 
 re: fclean all

@@ -3,70 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/08 23:55:39 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/09 14:44:03 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-const char	*g_sep[] = {
-	" ", ";", "|", "'", "\"", "{", "}", "(", ")", "<",
-	">", "*", "&", "$", "?", "<<", ">>", "&&", "||", "$?", NULL
-};
-
 t_word	*word_init(void)
 {
 	t_word	*word;
 
-	word = malloc(sizeof (word));
+	word = malloc(sizeof (t_word));
 	if (!word)
 		return (NULL);
 	word->d_q_state = 0;
 	word->q_state = 0;
 	word->tok_size = 0;
-	word->w_size = 0;
-	
+	word->sep = init_sep();
+	int	i = 0;
+	while (word->sep[i])
+	{
+		printf("sep: 0%s0\n", word->sep[i]);
+		i++;
+	}
+	printf("finish printing sep\n");
 	return (word);
-}
-
-void	recognize_quoted(t_token *new, char *str, t_word *word)
-{
-	int	i;
-	int	x;
-
-	x =
-	if (new->type == QUOTE)
-		while (str[x])
 }
 
 void	recognize_word(t_token *new, char *str, t_word *word)
 {
-	int	i;
 	int	x;
+	int	i;
 
-	i = 0;
 	x = 0;
-	if (new->type == QUOTE || new->type == DQUOTE)
-		recognize_quoted(new, &str[1], word);
-	else
+	i = 0;
+	while (ft_strncmp(word->sep[i], &str[x],
+			ft_strlen(word->sep[i])) && str[x])
 	{
-		while (ft_strncmp(g_sep[i], &str[x], ft_strlen(g_sep[i])) && str[x])
+		if (word->sep[i + 1] == NULL)
 		{
-			if (g_sep[i + 1] == NULL)
-			{
-				x++;
-				i = -1;
-			}
-			i++;
+			x++;
+			i = -1;
 		}
-		new->str = ft_strndup(str, x);
-		new->type = WORD;
-		word->tok_size = ft_strlen(new->str);
+		i++;
 	}
+	new->str = ft_strndup(str, x);
+	new->type = WORD;
+	word->tok_size = ft_strlen(new->str);
 }
+
 
 t_token	*new_token(char *str, t_word *word)
 {
@@ -80,15 +68,13 @@ t_token	*new_token(char *str, t_word *word)
 	new->next = NULL;
 	new->prev = NULL;
 	i = 0;
-	while (g_sep[i])
+	while (word->sep[i])
 	{
-		if (!ft_strncmp(g_sep[i], str, ft_strlen(g_sep[i])))
+		if (!ft_strncmp(word->sep[i], str, ft_strlen(word->sep[i])))
 		{
 			new->type = i;
-			if (new->type == QUOTE || new->type == DQUOTE)
-				break;
-			new->str = ft_strdup(g_sep[i]);
-			word->tok_size = ft_strlen(g_sep[i]);
+			new->str = ft_strdup(word->sep[i]);
+			word->tok_size = ft_strlen(word->sep[i]);
 			return (new);
 		}
 		i++;
@@ -114,6 +100,7 @@ t_token	*init_tokens(char *str)
 	while (str[i])
 	{
 		token->next = new_token(&str[i], word);
+		token->next->prev = token;
 		i += word->tok_size;
 		token = token->next;
 	}
