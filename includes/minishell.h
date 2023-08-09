@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/08 17:16:26 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/08 22:21:50 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ typedef enum e_operators
 	WILDC,
 	AMPER,
 	DOL,
+	Q_MARK,
 	D_L_REDIR,
 	D_R_REDIR,
 	AND,
-	OR
+	OR,
+	O_STATUS
 }				t_operators;
 
 typedef struct s_word

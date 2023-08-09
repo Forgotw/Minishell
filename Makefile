@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
+#    By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/08 14:25:41 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/08 21:28:17 by lsohler@stu      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,10 @@ HEADER_SRCS = minishell.h
 HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 
 # SOURCES #
-SRCS_F = lexer.c main.c
+SRCS_F = lexer.c main.c parser.c
 SRCS_DIR = srcs/ 
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
-SRCS = srcs/lexer.c srcs/main.c
+SRCS = srcs/lexer.c srcs/main.c srcs/parser.c
 OBJS = $(SRCS:.c=.o)
 
 # LIBFT #
