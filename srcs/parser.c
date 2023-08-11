@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 21:31:31 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/11 21:36:46 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ t_token	*join_word(t_token *token)
 			del_token(&token);
 		}
 	}
+	return (token);
 }
 
 /* Apres des quotes, join les words, si DQUOTE expand les var */
@@ -147,7 +148,7 @@ void	token_refiner(t_token *token, t_word *word)
 	{
 		if (token->type == QUOTE || token->type == DQUOTE)
 			token = join_quoted_token(token, word);
-		else if (token->type > SPACE)
+		else if (token->type > SPACE && token->next)
 			token = try_join_token(token, word);
 		//else if (token->type == DOL)*/
 		//else if (token->type == SPACE)
