@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 20:13:34 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/11 21:31:31 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,36 @@ void	del_token(t_token **token)
 	*token = (*token)->next;
 }
 
-/* */
+/* Si strjoin avec le next token est dans le dictionnaire join del token et next */
+t_token	*try_join_token(t_token *token, t_word *word)
+{
+	char	*new;
+	int		i;
+
+	if (!token->next)
+		return (token);
+	i = 0;
+	new = ft_strjoin(ft_strdup(token->str), token->next->str);
+	printf("This is new now: %s\n", new);
+	while (word->sep[i])
+	{
+		printf("test\n");
+		if (!ft_strncmp(word->sep[i], new, ft_strlen(new)))
+		{
+			printf("test match found\n");
+			del_token(&token);
+			token->str = new;
+			token->type = i;
+			return (token);
+		}
+		i++;
+	}
+	free(new);
+	token = token->next;
+	return (token);
+}
+
+/*
 t_token	*expand_token(t_token *token, t_word *word)
 {
 	char	*new;
@@ -54,7 +83,7 @@ t_token	*expand_token(t_token *token, t_word *word)
 		else
 			exit (printf("%s %s\n", PARSE_ERROR, token->str));
 	}
-}
+}*/
 
 /* Del le token quote, tant que token != quote si il y'a des tokens les joins */
 /* Tant que c'est un word je join new et str dans buff, free new , new devient buff */
@@ -71,8 +100,8 @@ t_token	*join_quoted_token(t_token *token, t_word *word)
 			word->q_state = 0;
 		else
 		{
-			if (token->type == DOL && word->q_state == DQUOTE)
-				token = expand_token(token, word);
+			//if (token->type == DOL && word->q_state == DQUOTE)
+			//	token = expand_token(token, word);
 			new = ft_strjoin(new, token->str);
 			del_token(&token);
 		}
@@ -86,6 +115,24 @@ t_token	*join_quoted_token(t_token *token, t_word *word)
 	return (token);
 }
 
+/* Join les words qui se suivent */
+t_token	*join_word(t_token *token)
+{
+	char	*new;
+
+
+	if (!token->next)
+		return (token);
+	while (token->next && token->type == WORD)
+	{
+		if (token->next->type == WORD)
+		{
+			new = ft_strjoin(new, token->next->str);
+			del_token(&token);
+		}
+	}
+}
+
 /* Apres des quotes, join les words, si DQUOTE expand les var */
 /* Expand les vars non quoted */
 /* Supprime les tokens espaces */
@@ -95,22 +142,28 @@ void	token_refiner(t_token *token, t_word *word)
 {
 	t_token *tmp;
 
-	(void)word;
 	tmp = token;
 	while (token)
 	{
 		if (token->type == QUOTE || token->type == DQUOTE)
 			token = join_quoted_token(token, word);
-		//else if (token->type == DQUOTE)
+		else if (token->type > SPACE)
+			token = try_join_token(token, word);
 		//else if (token->type == DOL)*/
 		//else if (token->type == SPACE)
 		//	del_token(&token);
 		//else if (token->type != SPACE)
 		else if (token)
-		{
-			//printf("yes there is a token\n");
-			//printf("Refiner: Token_type: %i | Word: %s$\n", token->type, token->str);
 			token = token->next;
-		}
 	}
+	/*token = tmp;
+	while (token)
+	{
+		if (token->type == WORD)
+			join_word(token);
+		else if (token)
+			token = token->next;
+	}
+	token = tmp;
+*/
 }

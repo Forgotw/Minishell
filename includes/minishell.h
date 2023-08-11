@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 19:08:22 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/11 21:11:59 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef enum e_operators
 	OR,
 	R_STATUS,
 	TIDLE,
-	DOL_Q_MARK
+	DOL_Q_MARK,
+	DOL_DOL
 }				t_operators;
 
 typedef struct s_word
