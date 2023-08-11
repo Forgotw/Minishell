@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/09 17:29:54 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/11 19:08:22 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 # include <string.h>
 # include "libft.h"
 
-# define QUOTE_ERROR "Minishell doesn't support opened quote\n"
-# define PARSE_ERRRO "Minishell parse error near "
+# define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
+# define PARSE_ERROR "Minishell parse error near "
 
 /*STRUCTRES*/
 typedef enum e_operators
 {
-	PARSE_ERROR = -2,
+	ERROR = -2,
 	WORD,
 	SPACE,
 	SEMIC,
@@ -49,12 +49,8 @@ typedef enum e_operators
 	AND,
 	OR,
 	R_STATUS,
-	L_REDIR_STDERR,
-	R_REDIR_STRERR,
-	D_L_REDIR_STRERR,
-	D_R_REDIR_STRERR,
 	TIDLE,
-	D_DOL
+	DOL_Q_MARK
 }				t_operators;
 
 typedef struct s_word
@@ -94,5 +90,10 @@ typedef struct s_cmd
 /* FUNCTIONS */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
+void		token_refiner(t_token *token, t_word *word);
+void	del_token(t_token **token);
+void	free_array(char **array);
+/* TEST */
+void	print_tokens(t_token *tokens);
 
 #endif
