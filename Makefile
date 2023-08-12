@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/11 18:40:57 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/12 15:35:33 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,7 @@ clean:
 
 fclean: clean
 				@$(RM) $(NAME)
+				@$(RM) $(addprefix $(LIBFT_DIR), $(LIBFT))
 				@echo "$(RED)$(NAME) cleaned!$(DEFAULT)"
 
 $(LIBFT):	

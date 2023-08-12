@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 18:38:49 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/12 17:22:43 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ t_word	*word_init(void)
 	return (word);
 }
 
-void	recognize_word(t_token *new, char *str, t_word *word)
+void	recognize_word(t_token *new, char *arg, t_word *word)
 {
 	int	x;
 	int	i;
 
 	x = 0;
 	i = 0;
-	while (ft_strncmp(word->sep[i], &str[x],
-			ft_strlen(word->sep[i])) && str[x])
+	while (ft_strncmp(word->sep[i], &arg[x],
+			ft_strlen(word->sep[i])) && arg[x])
 	{
 		if (word->sep[i + 1] == NULL)
 		{
@@ -42,28 +42,30 @@ void	recognize_word(t_token *new, char *str, t_word *word)
 		}
 		i++;
 	}
-	new->str = ft_strndup(str, x);
+	new->str = ft_strndup(arg, x);
 	new->type = WORD;
 	word->tok_size = ft_strlen(new->str);
 }
 
 
-t_token	*new_token(char *str, t_word *word)
+t_token	*new_token(char *arg, t_word *word)
 {
 	t_token	*new;
 	int		i;
 
-	new = malloc(sizeof (t_token));
+	new = malloc(sizeof (t_token) + 1);
 	if (!new)
 		return (NULL);
 	new->type = -2;
+	new->str = NULL;
 	new->next = NULL;
 	new->prev = NULL;
 	i = 0;
 	while (word->sep[i])
 	{
-		if (!ft_strncmp(word->sep[i], str, ft_strlen(word->sep[i])))
+		if (!ft_strncmp(word->sep[i], arg, ft_strlen(word->sep[i])))
 		{
+			printf("this is the match: $%s$\n", word->sep[i]);
 			new->type = i;
 			new->str = ft_strdup(word->sep[i]);
 			word->tok_size = ft_strlen(word->sep[i]);
@@ -71,27 +73,27 @@ t_token	*new_token(char *str, t_word *word)
 		}
 		i++;
 	}
-	recognize_word(new, str, word);
+	recognize_word(new, arg, word);
 	return (new);
 }
 
-t_token	*init_tokens(char *str)
+t_token	*init_tokens(char *arg)
 {
 	t_token	*token;
 	t_token	*token_start;
 	t_word	*word;
 	int		i;
 
-	if (!str)
-		return (NULL);
+	//if (!str)
+	//	return (NULL);
 	word = word_init();
 	i = 0;
-	token = new_token(&str[i], word);
+	token = new_token(&arg[i], word);
 	token_start = token;
 	i += word->tok_size;
-	while (str[i])
+	while (arg[i])
 	{
-		token->next = new_token(&str[i], word);
+		token->next = new_token(&arg[i], word);
 		token->next->prev = token;
 		i += word->tok_size;
 		token = token->next;

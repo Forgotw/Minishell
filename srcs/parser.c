@@ -6,32 +6,28 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 21:36:46 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/12 20:28:33 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	del_token(t_token **token)
+void	del_token(t_token **remove)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
-	tmp = *token;
-	if (*token)
+	tmp = (*remove)->next;
+	if (*remove)
 	{
-		if ((*token)->prev)
-			(*token)->prev->next = (*token)->next;
-		if ((*token)->next)
-			(*token)->next->prev = (*token)->prev;
-		if (tmp)
-		{
-			if (tmp->str)
-				free(tmp->str);
-			free(tmp);
-		}
+		//token = &(*remove)->next;
+		if ((*remove)->next)
+			(*remove)->next->prev = (*remove)->prev;
+		if ((*remove)->prev)
+			(*remove)->prev->next = (*remove)->next;
+		*remove = tmp;
 	}
-	*token = (*token)->next;
 }
+
 
 /* Si strjoin avec le next token est dans le dictionnaire join del token et next */
 t_token	*try_join_token(t_token *token, t_word *word)
@@ -43,13 +39,10 @@ t_token	*try_join_token(t_token *token, t_word *word)
 		return (token);
 	i = 0;
 	new = ft_strjoin(ft_strdup(token->str), token->next->str);
-	printf("This is new now: %s\n", new);
 	while (word->sep[i])
 	{
-		printf("test\n");
 		if (!ft_strncmp(word->sep[i], new, ft_strlen(new)))
 		{
-			printf("test match found\n");
 			del_token(&token);
 			token->str = new;
 			token->type = i;
@@ -109,9 +102,13 @@ t_token	*join_quoted_token(t_token *token, t_word *word)
 	if (!token && word->q_state > 0)
 		exit(printf("%s", QUOTE_ERROR));
 	token->type = WORD;
+	// if (!new)
+	// 	token->str = NULL;
+	// else
+	free(token->str);
 	token->str = new;
-	if (token->next)
-		token = token->next;
+	printf("New token type: %i str: %s\n", token->type, token->str);
+	token = token->next;
 	return (token);
 }
 
@@ -139,12 +136,12 @@ t_token	*join_word(t_token *token)
 /* Supprime les tokens espaces */
 /* Try join tokens par rapport au dictionnaire */
 /* Checker la validité de la liste */
-void	token_refiner(t_token *token, t_word *word)
+void	token_refiner(t_token *tokens, t_word *word)
 {
-	t_token *tmp;
+	t_token *token;
 
-	tmp = token;
-	while (token)
+	token = tokens;
+	while (token && token->next != NULL)
 	{
 		if (token->type == QUOTE || token->type == DQUOTE)
 			token = join_quoted_token(token, word);
@@ -156,9 +153,22 @@ void	token_refiner(t_token *token, t_word *word)
 		//else if (token->type != SPACE)
 		else if (token)
 			token = token->next;
+		if (token)
+		{
+			printf("        WE did not LOST TOKEN !!!!!!\n");
+			printf("        IN REFINER: TOKEN ADRESS: %p\n", token);
+			printf("        IN REFINER: Token_type: %i | Word: %s$\n", token->type, token->str);
+		}
 	}
-	/*token = tmp;
-	while (token)
+	//while (tokens)
+	//{
+	//	printf("   IN REFINER: Token_type: %p | Word: %p$\n", &tokens->type, tokens->str);
+	//	tokens = tokens->next;
+//	}
+	//token = tmp;
+	//print_tokens(tmp);
+	//token = tmp;
+	/*while (token)
 	{
 		if (token->type == WORD)
 			join_word(token);

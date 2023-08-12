@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:03:40 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/11 21:12:12 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/12 16:23:45 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	free_array(char **array)
 		free(array[i]);
 		i++;
 	}
-	if (array)
-	{
-		free(array);
-	}
+	free(array);
 }
 
 void	init_sep_a(const char **sep)
@@ -50,15 +47,15 @@ void	init_sep_a(const char **sep)
 	*sep++ = ft_strdup("||");
 	*sep++ = ft_strdup("$?");
 	*sep++ = ft_strdup("$$");
+	*sep++ = NULL;
 }
 
 const char	**init_sep(void)
 {
 	const char	**sep;
 
-	sep = malloc(sizeof(const char *) * 30);
+	sep = malloc(sizeof(char *) * 30);
 	init_sep_a(sep);
-	//init_sep_b(sep);
 	return (sep);
 }
 
