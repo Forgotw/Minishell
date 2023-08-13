@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/13 14:13:07 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/13 19:54:13 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 SRCS_F = lexer.c main.c parser.c
 SRCS_DIR = srcs/ 
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
-SRCS = srcs/lexer.c srcs/main.c srcs/parser.c srcs/operator.c
+SRCS = srcs/lexer.c srcs/main.c srcs/parser.c srcs/operator.c srcs/expander.c
 OBJS = $(SRCS:.c=.o)
 
 # LIBFT #

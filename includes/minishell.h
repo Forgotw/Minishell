@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 13:19:39 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/13 19:34:29 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
-# define PARSE_ERROR "Minishell parse error near "
+# define BRACE_ERROR "Minishell doesn't support opened brace.\n"
+# define PARSE_ERROR "parse error near "
+# define BAD_SUB "bad substitution"
+u_int8_t ret_status;
 
 /*STRUCTRES*/
 typedef enum e_operators
 {
-	ERROR = -2,
+	ERROR = -3,
+	WILDCARD,
 	WORD,
 	SPACE,
 	SEMIC,
@@ -40,18 +44,15 @@ typedef enum e_operators
 	C_PAR,
 	L_REDIR,
 	R_REDIR,
-	WILDC,
 	AMPER,
-	DOL,
 	Q_MARK,
+	DOL,
+	DOL_Q_MARK,
+	DOL_DOL,
 	D_L_REDIR,
 	D_R_REDIR,
 	AND,
-	OR,
-	R_STATUS,
-	TIDLE,
-	DOL_Q_MARK,
-	DOL_DOL
+	OR
 }				t_operators;
 
 typedef struct s_word
@@ -94,6 +95,7 @@ const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
 void		del_token(t_token **head, t_token **token);
 void		free_array(char **array);
+t_token		*expand_var(t_token **head, t_token *token);
 /* TEST */
 void	print_tokens(t_token *tokens);
 

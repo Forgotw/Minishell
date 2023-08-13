@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 13:10:29 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/13 19:39:25 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,16 @@ void	recognize_word(t_token *new, char *arg, t_word *word)
 {
 	int	x;
 	int	i;
+	int	w_state;
 
 	x = 0;
 	i = 0;
+	w_state = 0;
 	while (ft_strncmp(word->sep[i], &arg[x],
 			ft_strlen(word->sep[i])) && arg[x])
 	{
+		if (!ft_strncmp("*", &arg[x], 1))
+			w_state = 1;
 		if (word->sep[i + 1] == NULL)
 		{
 			x++;
@@ -44,9 +48,10 @@ void	recognize_word(t_token *new, char *arg, t_word *word)
 	}
 	new->str = ft_strndup(arg, x);
 	new->type = WORD;
+	if (w_state)
+		new->type = WILDCARD;
 	word->tok_size = ft_strlen(new->str);
 }
-
 
 t_token	*new_token(char *arg, t_word *word)
 {
@@ -65,7 +70,6 @@ t_token	*new_token(char *arg, t_word *word)
 	{
 		if (!ft_strncmp(word->sep[i], arg, ft_strlen(word->sep[i])))
 		{
-			printf("this is the match: $%s$\n", word->sep[i]);
 			new->type = i;
 			new->str = ft_strdup(word->sep[i]);
 			word->tok_size = ft_strlen(word->sep[i]);
@@ -84,8 +88,6 @@ t_token	*init_tokens(char *arg)
 	t_word	*word;
 	int		i;
 
-	//if (!str)
-	//	return (NULL);
 	word = word_init();
 	i = 0;
 	token = new_token(&arg[i], word);

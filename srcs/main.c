@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 14:12:19 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/13 16:38:26 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_tokens(t_token *tmp)
 			printf("    TOKENS ERROR\n");
 		//printf("TOKEN ADRESS: %p\n", tmp);
 		printf("Token_type: %i | Word: $%s$\n", tmp->type, tmp->str);
-		printf("Str adress: %p\n", tmp->str);
+		//printf("Str adress: %p\n", tmp->str);
 		tmp = tmp->next;
 	}
 }
@@ -51,6 +51,7 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		//return (printf("argument error\n"));
 		return (1);
+	ret_status = 0;
 	tokens = init_tokens(av[1]);
 	printf("NEW       TOKEN      TYPE\n");
 	print_tokens(tokens);
