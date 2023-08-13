@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/12 20:03:11 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/13 13:19:39 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ typedef struct s_cmd
 /* FUNCTIONS */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
-void		token_refiner(t_token *token, t_word *word);
-void	del_token(t_token **token);
-void	free_array(char **array);
+void		token_refiner(t_token **token, t_word *word);
+void		del_token(t_token **head, t_token **token);
+void		free_array(char **array);
 /* TEST */
 void	print_tokens(t_token *tokens);
 

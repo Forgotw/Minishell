@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/12 20:23:14 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/13 14:12:19 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,24 @@ void	print_tokens(t_token *tmp)
 	{
 		if (!tmp)
 			printf("    TOKENS ERROR\n");
-		printf("TOKEN ADRESS: %p\n", tmp);
-		printf("Token_type: %i | Word: %p$\n", tmp->type, tmp->str);
+		//printf("TOKEN ADRESS: %p\n", tmp);
+		printf("Token_type: %i | Word: $%s$\n", tmp->type, tmp->str);
+		printf("Str adress: %p\n", tmp->str);
 		tmp = tmp->next;
 	}
 }
 
-void	free_token(t_token *tokens)
+void	free_token(t_token *token)
 {
 	t_token	*tmp;
 
-	while (tokens != NULL)
+	while (token)
 	{
-		tmp = tokens->next;
-		if (tokens->str)
-			free(tokens->str);
-		free(tmp);
-		tokens = tmp;
+		tmp = token->next;
+		if (token->str)
+			free(token->str);
+		free(token);
+		token = tmp;
 	}
 }
 
@@ -54,7 +55,7 @@ int	main(int ac, char **av)
 	printf("NEW       TOKEN      TYPE\n");
 	print_tokens(tokens);
 	free_token(tokens);
-	free(tokens);
+	//free(tokens);
 	//printf("NEW       TOKEN      TYPE\n");
 	//while (tokens)
 	//	del_token(&tokens);
