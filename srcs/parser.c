@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 20:13:26 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/15 17:39:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,22 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 t_token	*join_word(t_token **head, t_token *token)
 {
 	char	*new;
+	int		new_type;
 
-	if (!token->next)
-		return (token);
-	while (token->next && token->type == WORD)
+	new = NULL;
+	new_type = token->type;
+	while (token->next && token->next->type <= WORD)
 	{
-		if (token->next->type == WORD)
-		{
-			new = ft_strjoin(new, token->next->str);
-			del_token(head, &token);
-		}
+		new = ft_strjoin(new, token->str);
+		del_token(head, &token);
+		if (token->type == WILDCARD)
+			new_type = WILDCARD;
 	}
+	new = ft_strjoin(new, token->str);
+	token->type = new_type;
+	if (token->str)
+		free(token->str);
+	token->str = new;
 	return (token);
 }
 
@@ -131,10 +136,25 @@ void	token_refiner(t_token **head, t_word *word)
 			token = join_quoted_token(head, token, word);
 		else if (token->type > SPACE && token->next)
 			token = try_join_token(head, token, word);
-		else if (token->type <= WORD && token->next)
-			token = join_word(head, token);
 		else if (token)
 			token = token->next;
 	}
 	token = *head;
+	while (token)
+	{
+		if (token->type <= WORD && token->next && token->next->type <= WORD)
+			token = join_word(head, token);
+		else if (token->type == SPACE)
+			del_token(head, &token);
+		else
+			token = token->next;
+	}
+	token = *head;
+	/*while (token)
+	{
+		if (token->type == WILDCARD)
+			token = expand_wildcard(head, token);
+		else
+			token = token->next;
+	}*/
 }

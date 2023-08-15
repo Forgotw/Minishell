@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 19:34:29 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/15 21:59:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <dirent.h>
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
 # define BRACE_ERROR "Minishell doesn't support opened brace.\n"
 # define PARSE_ERROR "parse error near "
 # define BAD_SUB "bad substitution"
+# define NO_MATCHES "no matches found:"
+
 u_int8_t ret_status;
 
 /*STRUCTRES*/
@@ -76,6 +79,15 @@ typedef struct s_meta
 	struct s_cmd	*cmd;
 	struct s_meta	*next;
 }				t_meta;
+
+typedef struct s_wildcard
+{
+	char			**find_arr;
+	char			*currentdir[1024];
+	char			*find;
+	DIR				*dir;
+	struct dirent	*entry;
+}				t_wildcard;
 
 typedef struct s_cmd
 {

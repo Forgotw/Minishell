@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/13 16:38:26 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/15 20:07:29 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_token(t_token *token)
 		token = tmp;
 	}
 }
-
+/*
 int	main(int ac, char **av)
 {
 	t_token *tokens;
@@ -60,4 +60,60 @@ int	main(int ac, char **av)
 	//printf("NEW       TOKEN      TYPE\n");
 	//while (tokens)
 	//	del_token(&tokens);
+}*/
+
+char	*find_file(char *file, char *find, char **find_arr)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = file;
+	while (find_arr[i])
+	{
+		tmp = strstr(tmp, find_arr[i]);
+		if (!tmp)
+			return (NULL);
+		if (find[0] != '*' && strncmp(find_arr[i], tmp, strlen(find_arr[i])))
+			return (NULL);
+		tmp += strlen(find_arr[i]);
+		i++;
+	}
+	if ((find[strlen(find) - 1]) != '*'
+		&& strncmp(find_arr[i - 1],
+			&file[strlen(file) - strlen(find_arr[i - 1])],
+			strlen(find_arr[i - 1])))
+		return (NULL);
+	return (strdup(file));
+}
+
+int	main(int ac, char **av)
+{
+	char	*ret;
+	char	**find_arr;
+	char	currentdir[1024];
+	DIR		*dir;
+	struct dirent *entry;
+	
+	(void)ac;
+	find_arr = ft_split(av[1], '*');
+	printf("AV1: %s, AV2: %s\n", av[1], av[2]);
+	ret = find_file(av[2], av[1], find_arr);
+	printf("we found: %s\n", ret);
+	free(find_arr);
+	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
+		printf("Répertoire courant : %s\n", currentdir);
+	chdir("/Users/lsohler/MiniShell/test");
+	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
+		printf("Répertoire courant : %s\n", currentdir);
+	dir = opendir(currentdir);
+	while ((entry = readdir(dir)) != NULL)
+	{
+		if (entry->d_type == DT_REG)
+		{ 
+			printf("%s\n", entry->d_name);
+		}
+	}
+	closedir(dir);
+	return (0);
 }
