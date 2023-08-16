@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/15 17:39:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/16 17:15:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,13 @@ void	token_refiner(t_token **head, t_word *word)
 			token = token->next;
 	}
 	token = *head;
-	/*while (token)
+	while (token)
 	{
+		//printf("while expand_wildcard: str:%s type:%i\n", token->str, token->type);
 		if (token->type == WILDCARD)
 			token = expand_wildcard(head, token);
 		else
 			token = token->next;
-	}*/
+	}
+	printf("END OF REFINE\n");
 }

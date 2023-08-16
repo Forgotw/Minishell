@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/15 21:59:06 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/16 20:18:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ typedef struct s_token
 	struct s_token	*prev;
 }				t_token;
 
+typedef struct s_dtok
+{
+	struct s_token	*start;
+	struct s_token	*end;
+}				t_dtok;
+
 typedef struct s_meta
 {
 	struct s_cmd	*cmd;
@@ -83,8 +89,9 @@ typedef struct s_meta
 typedef struct s_wildcard
 {
 	char			**find_arr;
-	char			*currentdir[1024];
+	char			currentdir[1024];
 	char			*find;
+	char			*buff;
 	DIR				*dir;
 	struct dirent	*entry;
 }				t_wildcard;
@@ -108,6 +115,7 @@ void		token_refiner(t_token **token, t_word *word);
 void		del_token(t_token **head, t_token **token);
 void		free_array(char **array);
 t_token		*expand_var(t_token **head, t_token *token);
+t_token		*expand_wildcard(t_token **head, t_token *token);
 /* TEST */
 void	print_tokens(t_token *tokens);
 
