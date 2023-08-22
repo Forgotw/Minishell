@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 20:49:21 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/22 21:35:04 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_cmd	*new_cmd(int cmdtype)
 /* Creer une struct subshell et descend */
 t_cmd	*create_subshell(t_token **token, t_cmd *ast)
 {
+	//printf("THIS IS A SUBSHELL\n");
 	if (ast == NULL)
 		ast = new_cmd(SUBSHELL);
 	else if (ast->type == CMD)
@@ -80,7 +81,7 @@ t_cmd	*assign_redir(t_token **tokens, t_cmd *ast)
 		ast->infile = 128;
 	else if (token->type == D_R_REDIR)
 		ast->outfile = open(token->next->str, O_CREAT | O_RDWR | O_APPEND, 0777);
-	if (ast->infile < 0|| ast->outfile < 0)
+	if (ast->infile < 0 || ast->outfile < 0)
 	{
 		printf("Minishell: %s: No such file or directory\n", token->str);
 		exit (-1);
@@ -97,13 +98,15 @@ void	create_cmd_array(t_token **tokens, t_cmd *ast)
 	while (token)
 	{
 		if (token->type == WORD)
+		{
 			ast->cmd = array_add_str(ast->cmd, token->str);
+			token = token->next;
+		}
 		else if (token->type == L_REDIR || token->type == R_REDIR
 			|| token->type == D_L_REDIR || token->type == D_R_REDIR)
 			assign_redir(&token, ast);
 		else
 			break ;
-		token = token->next;
 	}
 	*tokens = token;
 }
@@ -135,11 +138,18 @@ t_cmd	*create_cmd(t_token **tokens, t_cmd *ast)
 
 t_cmd	*assign_link(t_token **token, t_cmd *ast)
 {
+	printf("Test in assign_link: ast add: %p\n", ast);
+	printf("Test in assign_link: 1 add: %i\n", (*token)->type);
 	ast->linktype = (*token)->type;
+	printf("Test in assign_link: 2\n");
 	ast->next = new_cmd(0);
+	printf("Test in assign_link: 3\n");
 	ast->next->upshell = ast->upshell;
+	printf("Test in assign_link: 4\n");
 	ast = ast->next;
+	printf("Test in assign_link: 5\n");
 	*token = (*token)->next;
+	printf("Test in assign_link: 6\n");
 	return (ast);
 }
 
@@ -152,18 +162,34 @@ t_cmd	*create_ast(t_token *token)
 	ast = NULL;
 	while (token)
 	{
-		if (token->type == O_BRACE)
+		//printf("Address: %p\n", ast);
+		if (token->type == O_PAR)
+		{
+			printf("THIS IS A SUBSHELL in create_ast\n");
 			ast = create_subshell(&token, ast);
-		else if (token->type == C_BRACE)
+		}
+		else if (token->type == C_PAR)
+		{
+			printf("THIS IS A CLOSE SUBSHELL in create_ast\n");
 			ast = close_subshell(&token, ast);
+		}
 		else if (token->type == WORD)
+		{
+			printf("THIS IS A CMD in create_ast\n");
 			ast = create_cmd(&token, ast);
+		}
 		else if (token->type == L_REDIR || token->type == R_REDIR
 			|| token->type == D_L_REDIR || token->type == D_R_REDIR)
+		{
+			printf("THIS IS A REDIR in create_ast\n");
 			ast = assign_redir(&token, ast);
+		}
 		else if (token->type == AND || token->type == OR
 			|| token->type == PIPE)
+		{
+			printf("THIS IS A LINK in create_ast\n");
 			ast = assign_link(&token, ast);
+		}
 		if (head == NULL && ast != NULL)
 			head = ast;
 	}
