@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/16 17:15:58 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/22 18:48:36 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 	token->type = WORD;
 	free(token->str);
 	token->str = new;
+	//if (!new)
+	//	token->str = ft_strdup("\0");
 	return (token);
 }
 

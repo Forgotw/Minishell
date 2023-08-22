@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/16 17:13:52 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/22 20:40:12 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	free_token(t_token *token)
 int	main(int ac, char **av)
 {
 	t_token *tokens;
+	t_cmd	*ast;
 
 	if (ac != 2)
 		//return (printf("argument error\n"));
@@ -55,6 +56,8 @@ int	main(int ac, char **av)
 	tokens = init_tokens(av[1]);
 	printf("NEW       TOKEN      TYPE\n");
 	print_tokens(tokens);
+	ast = create_ast(tokens);
+	executor(ast);
 	free_token(tokens);
 	//free(tokens);
 	//printf("NEW       TOKEN      TYPE\n");

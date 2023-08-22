@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/16 20:18:06 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/22 20:30:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ typedef enum e_operators
 	D_L_REDIR,
 	D_R_REDIR,
 	AND,
-	OR
+	OR,
+	SUBSHELL,
+	CMD
 }				t_operators;
 
 typedef struct s_word
@@ -98,6 +100,9 @@ typedef struct s_wildcard
 
 typedef struct s_cmd
 {
+	int				type;
+	int				linktype;
+	int				redirtype;
 	char			**cmd;
 	char			*path;
 	int				heredoc;
@@ -106,6 +111,8 @@ typedef struct s_cmd
 	pid_t			pid;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
+	struct s_cmd	*subshell;
+	struct s_cmd	*upshell;
 }				t_cmd;
 
 /* FUNCTIONS */
@@ -116,6 +123,8 @@ void		del_token(t_token **head, t_token **token);
 void		free_array(char **array);
 t_token		*expand_var(t_token **head, t_token *token);
 t_token		*expand_wildcard(t_token **head, t_token *token);
+t_cmd		*create_ast(t_token *token);
+int			executor(t_cmd *ast);
 /* TEST */
 void	print_tokens(t_token *tokens);
 
