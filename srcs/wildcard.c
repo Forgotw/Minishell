@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/16 20:20:21 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 21:53:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ char	*find_file(char *file, char *find, char **find_arr)
 	tmp = file;
 	while (find_arr[i])
 	{
-		tmp = strstr(tmp, find_arr[i]);
+		tmp = ft_strnstr(tmp, find_arr[i], ft_strlen((const char *)tmp));
 		if (!tmp)
 			return (NULL);
-		if (find[0] != '*' && strncmp(find_arr[i], tmp, strlen(find_arr[i])))
+		if (find[0] != '*' && ft_strncmp(find_arr[i], tmp, ft_strlen(find_arr[i])))
 			return (NULL);
-		tmp += strlen(find_arr[i]);
+		tmp += ft_strlen(find_arr[i]);
 		i++;
 	}
-	if ((find[strlen(find) - 1]) != '*'
-		&& strncmp(find_arr[i - 1],
-			&file[strlen(file) - strlen(find_arr[i - 1])],
-			strlen(find_arr[i - 1])))
+	if ((find[ft_strlen(find) - 1]) != '*'
+		&& ft_strncmp(find_arr[i - 1],
+			&file[ft_strlen(file) - ft_strlen(find_arr[i - 1])],
+			ft_strlen(find_arr[i - 1])))
 		return (NULL);
-	return (strdup(file));
+	return (ft_strdup(file));
 }
 
 t_wildcard	*init_wildcard(char *str)
@@ -49,7 +49,7 @@ t_wildcard	*init_wildcard(char *str)
 	if (!wildc->dir)
 		printf("Error opening dir %s\n", wildc->currentdir);
 	wildc->find_arr = ft_split(str, '*');
-	wildc->find = strdup(str);
+	wildc->find = ft_strdup(str);
 	return (wildc);
 }
 
@@ -60,7 +60,8 @@ t_token	*new_word(t_token *token, char *buff)
 	new = malloc(sizeof(t_token));
 	new->type = WORD;
 	new->str = strdup(buff);
-	free(buff);
+	if (buff)
+		free(buff);
 	new->prev = token;
 	new->next = NULL;
 	return (new);
@@ -74,7 +75,7 @@ void	search_dir(t_wildcard *wc, t_dtok *toks,
 		if (wc->entry->d_type == DT_REG || wc->entry->d_type == DT_DIR)
 		{
 			wc->buff = find_file(wc->entry->d_name, wc->find, wc->find_arr);
-			if (wc->buff)
+			if (wc->buff && wc->buff[0] != '.')
 			{
 				if (!toks->start)
 				{
@@ -104,7 +105,7 @@ t_dtok	*search_file(t_token *token, t_wildcard *wc)
 	toks->start = NULL;
 	toks->end = NULL;
 	tmp = NULL;
-	token->type = WORD;
+	token->type = WILDCARD;
 	wc->entry = readdir(wc->dir);
 	search_dir(wc, toks, token, &tmp);
 	closedir(wc->dir);

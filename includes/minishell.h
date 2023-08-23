@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 12:07:43 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 21:01:13 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
 # define BRACE_ERROR "Minishell doesn't support opened brace.\n"
+# define PAR_ERROR "Minishell doesn't support opened parenthesis.\n"
+# define EMPTY_PAR_ERROR "Minishell doesn't support empty parenthesis.\n"
 # define PARSE_ERROR "parse error near "
 # define BAD_SUB "bad substitution"
 # define NO_MATCHES "no matches found:"
@@ -33,8 +35,9 @@ u_int8_t ret_status;
 /*STRUCTRES*/
 typedef enum e_operators
 {
-	ERROR = -3,
+	ERROR = -4,
 	WILDCARD,
+	EXP_WORD,
 	WORD,
 	SPACE,
 	SEMIC,
@@ -109,6 +112,7 @@ typedef struct s_cmd
 	int				infile;
 	int				outfile;
 	pid_t			pid;
+	struct s_token	*tok;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 	struct s_cmd	*subshell;
@@ -121,9 +125,11 @@ const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
 void		del_token(t_token **head, t_token **token);
 void		free_array(char **array);
+t_token		*token_dol_type(t_token **head, t_token *token);
 t_token		*expand_var(t_token **head, t_token *token);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_cmd		*create_ast(t_token *token);
+t_token		*new_word(t_token *token, char *buff);
 int			executor(t_cmd *ast);
 /* TEST */
 void	print_tokens(t_token *tokens);

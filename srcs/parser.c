@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 18:48:36 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 20:27:33 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,7 @@ t_token	*try_join_token(t_token **head, t_token *token, t_word *word)
 		i++;
 	}
 	free(new);
-	if (token->type == DOL && (token->next->type == WORD
-			|| token->next->type == O_BRACE))
-		token = expand_var(head, token);
-	else
-		token = token->next;
+	token = token->next;
 	return (token);
 }
 
@@ -73,8 +69,10 @@ t_token	*try_join_token(t_token **head, t_token *token, t_word *word)
 t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 {
 	char	*new;
+	int		new_type;
 
 	new = NULL;
+	new_type = WORD;
 	word->q_state = token->type;
 	del_token(head, &token);
 	while (token && word->q_state > 0)
@@ -84,18 +82,17 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 		else
 		{
 			if (token->type == DOL && word->q_state == DQUOTE)
-				token = expand_var(head, token);
+				//token = expand_var(head, token);
+				new_type = EXP_WORD;
 			new = ft_strjoin(new, token->str);
 			del_token(head, &token);
 		}
 	}
 	if (!token && word->q_state > 0)
 		exit(printf("%s", QUOTE_ERROR));
-	token->type = WORD;
+	token->type = new_type;
 	free(token->str);
 	token->str = new;
-	//if (!new)
-	//	token->str = ft_strdup("\0");
 	return (token);
 }
 
@@ -109,10 +106,12 @@ t_token	*join_word(t_token **head, t_token *token)
 	new_type = token->type;
 	while (token->next && token->next->type <= WORD)
 	{
-		new = ft_strjoin(new, token->str);
-		del_token(head, &token);
 		if (token->type == WILDCARD)
 			new_type = WILDCARD;
+		else if (token->type == EXP_WORD)
+			new_type = EXP_WORD;
+		new = ft_strjoin(new, token->str);
+		del_token(head, &token);
 	}
 	new = ft_strjoin(new, token->str);
 	token->type = new_type;
@@ -136,6 +135,8 @@ void	token_refiner(t_token **head, t_word *word)
 	{
 		if (token->type == QUOTE || token->type == DQUOTE)
 			token = join_quoted_token(head, token, word);
+		else if (token->type == DOL)
+			token = token_dol_type(head, token);
 		else if (token->type > SPACE && token->next)
 			token = try_join_token(head, token, word);
 		else if (token)

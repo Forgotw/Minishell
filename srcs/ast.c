@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 12:43:40 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 21:44:25 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_cmd	*new_cmd(int cmdtype)
 	cmd->subshell = NULL;
 	cmd->upshell = NULL;
 	cmd->pid = 0;
+	cmd->tok = NULL;
 	// if (cmdtype == SUBSHELL)
 	// {
 	// 	cmd->cmd = malloc(sizeof (char *) * 3);
@@ -121,16 +122,39 @@ t_cmd	*assign_redir(t_token **tokens, t_cmd *ast)
 	return (ast);
 }
 
+t_token	*new_tok(t_token *token, char *str)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	new->type = WORD;
+	new->str = strdup(str);
+	new->prev = token;
+	new->next = NULL;
+	return (new);
+}
+
 void	create_cmd_array(t_token **tokens, t_cmd *ast)
 {
 	t_token	*token;
+	t_token	*tokhead;
 
 	token = *tokens;
 	while (token)
 	{
-		if (token->type == WORD)
+		if (token->type <= WORD)
 		{
 			ast->cmd = array_add_str(ast->cmd, token->str);
+			if (!ast->tok)
+			{
+				ast->tok = new_tok(NULL, token->str);
+				tokhead = ast->tok;
+			}
+			else
+			{
+				ast->tok->next = new_tok(ast->tok, token->str);
+				ast->tok = ast->tok->next;
+			}
 			token = token->next;
 		}
 		else if (token->type == L_REDIR || token->type == R_REDIR
@@ -139,6 +163,7 @@ void	create_cmd_array(t_token **tokens, t_cmd *ast)
 		else
 			break ;
 	}
+	ast->tok = tokhead;
 	printf("          CREATING CMD AT: %p\n", ast);
 	printf("          CREATING CMD: upshell add: %p\n", ast->upshell);
 	printf("          CREATING CMD: ");
@@ -213,7 +238,7 @@ t_cmd	*create_ast(t_token *token)
 			printf("THIS IS A CLOSE SUBSHELL in create_ast\n");
 			ast = close_subshell(&token, ast);
 		}
-		else if (token->type == WORD)
+		else if (token->type <= WORD)
 		{
 			printf("THIS IS A CMD in create_ast\n");
 			ast = create_cmd(&token, ast);

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:07:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 12:52:39 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 21:11:18 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ void	print_array(char **array)
 	}
 }
 
+void	print_token_exec(t_token *token)
+{
+	if (!token)
+	{
+		printf("--- No token ---\n");
+		return ;
+	}
+	while (token)
+	{
+		printf("\033[36;1m%s \033[0m", token->str);
+		token = token->next;
+	}
+	printf("\n");
+}
+
 void	print_cmd(t_cmd *ast, char *indent)
 {
 	int	i;
@@ -41,11 +56,14 @@ void	print_cmd(t_cmd *ast, char *indent)
 	i = 0;
 	printf("%s_______________________\n", indent);
 	printf("%s----%p----\n", indent, ast);
+	printf("%s-up-%p----\n", indent, ast->upshell);
 	printf("%sCmd type: %i\n", indent, ast->type);
 	printf("%sLink type: %i\n", indent, ast->linktype);
 	printf("%sRedir type: %i\n", indent, ast->redirtype);
 	printf("%scmd: ", indent);
 	print_array(ast->cmd);
+	printf("%stoken: ", indent);
+	print_token_exec(ast->tok);
 	printf("%sHeredoc: %i\n", indent, ast->heredoc);
 	printf("%sInfile: %i\n", indent, ast->infile);
 	printf("%sOutfile: %i\n", indent, ast->outfile);
