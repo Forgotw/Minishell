@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 20:30:44 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 12:07:43 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,7 @@ t_cmd		*create_ast(t_token *token);
 int			executor(t_cmd *ast);
 /* TEST */
 void	print_tokens(t_token *tokens);
+void	print_array(char **array);
+void	print_cmd(t_cmd *ast, char *indent);
 
 #endif

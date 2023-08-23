@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 21:35:04 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/23 12:43:40 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ t_cmd	*new_cmd(int cmdtype)
 	cmd->subshell = NULL;
 	cmd->upshell = NULL;
 	cmd->pid = 0;
+	// if (cmdtype == SUBSHELL)
+	// {
+	// 	cmd->cmd = malloc(sizeof (char *) * 3);
+	// 	cmd->cmd[0] = ft_strdup("This is a subshell");
+	// 	cmd->cmd[1] = NULL;
+	// }
 	return (cmd);
 }
 
@@ -42,27 +48,52 @@ t_cmd	*create_subshell(t_token **token, t_cmd *ast)
 {
 	//printf("THIS IS A SUBSHELL\n");
 	if (ast == NULL)
+	{
+		printf("          CREATING SUBSHELL ON null\n");
 		ast = new_cmd(SUBSHELL);
+	}
 	else if (ast->type == CMD)
 	{
+		printf("          CREATING SUBSHELL ON next\n");
 		ast->next = new_cmd(SUBSHELL);
 		ast->next->upshell = ast->upshell;
 		ast = ast->next;
 	}
 	else if (ast->type == SUBSHELL)
 	{
+		printf("          CREATING SUBSHELL ON subshell\n");
 		ast->subshell = new_cmd(SUBSHELL);
 		ast->subshell->upshell = ast;
 		ast = ast->subshell;
 	}
+	else if (ast->type == 0)
+		ast->type = SUBSHELL;
+	printf("          SUBSHELL ADD: %p\n", ast);
 	*token = (*token)->next;
 	return (ast);
 }
 
 t_cmd	*close_subshell(t_token **token, t_cmd *ast)
 {
+	if (ast->cmd)
+	{
+		printf("          WE ARE AT: ");
+		print_array(ast->cmd);
+	}
+	else
+		printf("          WE ARE AT: add: %p\n", ast->cmd);
 	ast = ast->upshell;
 	*token = (*token)->next;
+	if (ast && ast->cmd)
+	{
+		printf("                 BACK TO ADD: %p\n", ast);
+		printf("                 BACK TO: ");
+		print_array(ast->cmd);
+	}
+	else if (ast)
+		printf("                 BACK TO: add: %p\n", ast->cmd);
+	else if (!ast)
+		printf("                    THERE IS NO AST !!!\n");
 	return (ast);
 }
 
@@ -108,6 +139,10 @@ void	create_cmd_array(t_token **tokens, t_cmd *ast)
 		else
 			break ;
 	}
+	printf("          CREATING CMD AT: %p\n", ast);
+	printf("          CREATING CMD: upshell add: %p\n", ast->upshell);
+	printf("          CREATING CMD: ");
+	print_array(ast->cmd);
 	*tokens = token;
 }
 
@@ -120,18 +155,23 @@ t_cmd	*create_cmd(t_token **tokens, t_cmd *ast)
 		ast = new_cmd(CMD);
 	else if (ast->type == SUBSHELL)
 	{
+		printf("   CREATING CMD ON SUBSHELL\n");
 		ast->subshell = new_cmd(CMD);
 		ast->subshell->upshell = ast;
 		ast = ast->subshell;
 	}
 	else if (ast->type == CMD)
 	{
+		printf("   CREATING CMD ON NEXT\n");
 		ast->next = new_cmd(CMD);
 		ast->next->upshell = ast->upshell;
 		ast = ast->next;
 	}
 	else
+	{
+		printf("   CREATING CMD ON IN PLACE\n");
 		ast->type = CMD;
+	}
 	create_cmd_array(tokens, ast);
 	return (ast);
 }
@@ -139,17 +179,17 @@ t_cmd	*create_cmd(t_token **tokens, t_cmd *ast)
 t_cmd	*assign_link(t_token **token, t_cmd *ast)
 {
 	printf("Test in assign_link: ast add: %p\n", ast);
-	printf("Test in assign_link: 1 add: %i\n", (*token)->type);
+	printf("Test in assign_link type: %i\n", (*token)->type);
 	ast->linktype = (*token)->type;
-	printf("Test in assign_link: 2\n");
+	// printf("Test in assign_link: 2\n");
 	ast->next = new_cmd(0);
-	printf("Test in assign_link: 3\n");
+	// printf("Test in assign_link: 3\n");
 	ast->next->upshell = ast->upshell;
-	printf("Test in assign_link: 4\n");
+	// printf("Test in assign_link: 4\n");
 	ast = ast->next;
-	printf("Test in assign_link: 5\n");
+	// printf("Test in assign_link: 5\n");
 	*token = (*token)->next;
-	printf("Test in assign_link: 6\n");
+	// printf("Test in assign_link: 6\n");
 	return (ast);
 }
 
