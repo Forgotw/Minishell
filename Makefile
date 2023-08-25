@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+         #
+#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/24 10:31:36 by lsohler@stu      ###   ########.fr        #
+#    Updated: 2023/08/25 14:28:03 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,19 @@ HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 SRCS_F = lexer.c main.c parser.c
 SRCS_DIR = srcs/ 
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
-SRCS = srcs/lexer.c srcs/main.c srcs/parser.c srcs/operator.c srcs/expander.c srcs/wildcard.c srcs/ast.c srcs/executor.c srcs/checker.c
+SRCS = srcs/lexer.c\
+		srcs/main.c\
+		srcs/parser.c\
+		srcs/operator.c\
+		srcs/expander.c\
+		srcs/wildcard.c\
+		srcs/ast.c\
+		srcs/executor.c\
+		srcs/checker.c\
+		srcs/free.c\
+		\
+		srcs/mslib/token.c\
+
 OBJS = $(SRCS:.c=.o)
 
 # LIBFT #

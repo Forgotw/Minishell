@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 14:56:48 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/25 20:32:07 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ int	main(int ac, char **av)
 	tokens = init_tokens(av[1]);
 	printf("NEW       TOKEN      TYPE\n");
 	print_tokens(tokens);
+	syntax_checker(tokens);
 	ast = create_ast(tokens);
 	printf("AST DONE %p!\n", ast);
-	//executor(ast);
+	executor(ast);
 	free_token(tokens);
+	ast_free(ast);
 	//free(tokens);
 	//printf("NEW       TOKEN      TYPE\n");
 	//while (tokens)

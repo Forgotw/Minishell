@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 14:37:43 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/25 16:12:48 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	*find_file(char *file, char *find, char **find_arr)
 		tmp = ft_strnstr(tmp, find_arr[i], ft_strlen((const char *)tmp));
 		if (!tmp)
 			return (NULL);
-		if (find[0] != '*' && ft_strncmp(find_arr[i], tmp, ft_strlen(find_arr[i])))
+		if (find[0] != '*'
+			&& ft_strncmp(find_arr[i], tmp, ft_strlen(find_arr[i])))
 			return (NULL);
 		tmp += ft_strlen(find_arr[i]);
 		i++;
@@ -51,21 +52,6 @@ t_wildcard	*init_wildcard(char *str)
 	wildc->find_arr = ft_split(str, '*');
 	wildc->find = ft_strdup(str);
 	return (wildc);
-}
-
-t_token	*new_word(t_token *token, char *buff)
-{
-	t_token	*new;
-
-	new = malloc(sizeof(t_token));
-	new->type = WORD;
-	new->join = 0;
-	new->str = strdup(buff);
-	if (buff)
-		free(buff);
-	new->prev = token;
-	new->next = NULL;
-	return (new);
 }
 
 void	search_dir(t_wildcard *wc, t_dtok *toks,
@@ -137,9 +123,7 @@ t_token	*expand_wildcard(t_token **head, t_token *token)
 {
 	t_dtok		*toks;
 	t_wildcard	*wc;
-	//t_token		*tmp;
 
-	//tmp = token;
 	wc = init_wildcard(token->str);
 	toks = search_file(token, wc);
 	if (toks->start)

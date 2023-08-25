@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 14:58:31 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/25 16:09:20 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Delete le token re-assigne les liaisons et free les malloc */
-/* Si le token a remove est la head, on reassigne la head en consequence */
-void	del_token(t_token **head, t_token **remove)
-{
-	t_token	*tmp;
-
-	if (!(*remove)->next)
-	{
-		if ((*remove)->prev)
-			(*remove)->prev->next = NULL;
-		if ((*remove)->str)
-			free((*remove)->str);
-		free(*remove);
-		*remove = NULL;
-	}
-	if (*remove)
-	{
-		tmp = (*remove)->next;
-		if ((*remove)->next)
-			(*remove)->next->prev = (*remove)->prev;
-		if ((*remove)->prev)
-			(*remove)->prev->next = (*remove)->next;
-		if ((*remove)->str)
-			free((*remove)->str);
-		free(*remove);
-		*remove = tmp;
-		if (!tmp->prev)
-			*head = *remove;
-	}
-}
 
 /* Si la combinaison du token et du next token est dans le dictionnaire */
 /* On join les deux, on free et le token devient la combinaison */
@@ -89,7 +58,6 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 		else
 		{
 			if (token->type == DOL && word->q_state == DQUOTE)
-				//token = expand_var(head, token);
 				new_type = EXP_WORD;
 			new = ft_strjoin(new, token->str);
 			del_token(head, &token);
@@ -128,6 +96,22 @@ t_token	*join_word(t_token **head, t_token *token)
 	return (token);
 }
 
+void	token_join_space(t_token **head, t_token *token)
+{
+	while (token)
+	{
+		if (token->type <= WORD && token->next && token->next->type <= WORD)
+		{
+			token->join = 1;
+			token = token->next;
+		}
+		else if (token->type == SPACE)
+			del_token(head, &token);
+		else
+			token = token->next;
+	}
+}
+
 /* Apres des quotes, join les words, si DQUOTE expand les var */
 /* Expand les vars non quoted */
 /* Supprime les tokens espaces */
@@ -149,27 +133,6 @@ void	token_refiner(t_token **head, t_word *word)
 		else if (token)
 			token = token->next;
 	}
-	token = *head;
-	while (token)
-	{
-		if (token->type <= WORD && token->next && token->next->type <= WORD)
-		{
-			token->join = 1;
-			token = token->next;
-		}
-		//else if (token->type == SPACE)
-		//	del_token(head, &token);
-		else
-			token = token->next;
-	}
-	token = *head;
-	while (token)
-	{
-		//printf("while expand_wildcard: str:%s type:%i\n", token->str, token->type);
-		if (token->type == WILDCARD)
-			token = expand_wildcard(head, token);
-		else
-			token = token->next;
-	}
+	token_join_space(head, *head);
 	printf("END OF REFINE\n");
 }

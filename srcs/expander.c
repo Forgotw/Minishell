@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 20:15:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/25 16:00:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_token	*expand_var(t_token **head, t_token *token)
 	return (token);
 }
 */
+
 t_token	*token_join_brace(t_token **head, t_token *token)
 {
 	char	*new;
@@ -117,9 +118,11 @@ t_token	*token_join_brace(t_token **head, t_token *token)
 	token->str = new;
 	return (token);
 }
+
 t_token	*token_dol_join(t_token **head, t_token *token)
 {
 	char	*new;
+
 	new = ft_strjoin(ft_strdup(token->str), token->next->str);
 	del_token(head, &token);
 	free(token->str);
@@ -138,7 +141,6 @@ t_token	*token_dol_type(t_token **head, t_token *token)
 		token = token_dol_join(head, token);
 	else if (token->next->type == O_BRACE)
 		token = token_join_brace(head, token);
-	// printf("New token: str: %s type: %i\n", token->str, token->type);
 	token = token->next;
 	return (token);
 }

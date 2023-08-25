@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:07:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 10:21:55 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/25 20:54:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_array(char **array)
 	}
 }
 
-void	print_token_exec(t_token *token)
+void	print_token_exec(t_token *token, int redir)
 {
 	if (!token)
 	{
@@ -44,10 +44,14 @@ void	print_token_exec(t_token *token)
 	}
 	while (token)
 	{
-		printf("\033[36;1m%s \033[0m", token->str);
+		printf("\033[36;1m%s\033[33;1m(%i)\033[35;1m(%i)", token->str, token->type, token->join);
+		if (redir)
+			printf("\033[31;1m(%i) ", token->redir);
+		else
+			printf(" ");
 		token = token->next;
 	}
-	printf("\n");
+	printf("\033[0m\n");
 }
 
 void	print_cmd(t_cmd *ast, char *indent)
@@ -60,8 +64,10 @@ void	print_cmd(t_cmd *ast, char *indent)
 	printf("%sRedir type: %i\n", indent, ast->redirtype);
 	printf("%scmd: ", indent);
 	print_array(ast->cmd);
-	printf("%stoken: ", indent);
-	print_token_exec(ast->tok);
+	printf("%stok cmd: ", indent);
+	print_token_exec(ast->tok, 0);
+	printf("%stok redir: ", indent);
+	print_token_exec(ast->redir, 1);
 	printf("%sHeredoc: %i\n", indent, ast->heredoc);
 	printf("%sInfile: %i\n", indent, ast->infile);
 	printf("%sOutfile: %i\n", indent, ast->outfile);
@@ -124,7 +130,7 @@ int	executor(t_cmd *ast)
 		//print_cmd(ast);
 		if (ast->type == SUBSHELL)
 			ast = execute_subshell(ast);
-		else if (ast->type == CMD)
+		else if (ast->type == CMD || ast->type == 0)
 			ast = execute_cmd(ast);
 	}
 	printf("   OOOOO finish executor OOOOO\n");

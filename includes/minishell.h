@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 14:57:25 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/25 20:45:36 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
 # define BRACE_ERROR "Minishell doesn't support opened brace.\n"
 # define PAR_ERROR "Minishell doesn't support opened parenthesis.\n"
+# define LINK_ERROR "Minishell doesn't support opened link.\n"
 # define EMPTY_PAR_ERROR "Minishell doesn't support empty parenthesis.\n"
-# define PARSE_ERROR "parse error near "
+# define PARSE_ERROR "Minishell: syntax error near unexpected token: "
 # define BAD_SUB "bad substitution"
 # define NO_MATCHES "no matches found:"
 
@@ -75,6 +76,7 @@ typedef struct s_token
 {
 	int				type;
 	int				join;
+	int				redir;
 	char			*str;
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -114,24 +116,34 @@ typedef struct s_cmd
 	int				outfile;
 	pid_t			pid;
 	struct s_token	*tok;
+	struct s_token	*redir;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 	struct s_cmd	*subshell;
 	struct s_cmd	*upshell;
 }				t_cmd;
 
-/* FUNCTIONS */
+/*   FUNCTIONS   */
+/* TOKEN UTILS */
+void		del_token(t_token **head, t_token **token);
+void		token_add_back(t_token **redir, t_token *new);
+t_token		*new_tok(t_token *token, char *str, int type);
+t_token		*token_dup(t_token *token);
+t_token		*new_word(t_token *token, char *buff);
+/* FREE UTILS */
+void		free_token(t_token *token);
+void		free_array(char **array);
+int			ast_free(t_cmd *ast);
+/* PARSING */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
-void		del_token(t_token **head, t_token **token);
-void		free_array(char **array);
 t_token		*token_dol_type(t_token **head, t_token *token);
 t_token		*expand_var(t_token **head, t_token *token);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_cmd		*create_ast(t_token *token);
-t_token		*new_word(t_token *token, char *buff);
 int			executor(t_cmd *ast);
+void		syntax_checker(t_token *token);
 /* TEST */
 void	print_tokens(t_token *tokens);
 void	print_array(char **array);
