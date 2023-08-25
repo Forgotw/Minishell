@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 21:44:25 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 10:17:07 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,9 @@ void	create_cmd_array(t_token **tokens, t_cmd *ast)
 
 t_cmd	*create_cmd(t_token **tokens, t_cmd *ast)
 {
-	t_token *token;
+	//t_token *token;
 
-	token = *tokens;
+	//token = *tokens;
 	if (ast == NULL)
 		ast = new_cmd(CMD);
 	else if (ast->type == SUBSHELL)

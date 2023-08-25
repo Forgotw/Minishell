@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 21:53:16 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 14:37:43 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_token	*new_word(t_token *token, char *buff)
 
 	new = malloc(sizeof(t_token));
 	new->type = WORD;
+	new->join = 0;
 	new->str = strdup(buff);
 	if (buff)
 		free(buff);
@@ -136,9 +137,9 @@ t_token	*expand_wildcard(t_token **head, t_token *token)
 {
 	t_dtok		*toks;
 	t_wildcard	*wc;
-	t_token		*tmp;
+	//t_token		*tmp;
 
-	tmp = token;
+	//tmp = token;
 	wc = init_wildcard(token->str);
 	toks = search_file(token, wc);
 	if (toks->start)

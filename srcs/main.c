@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 21:52:33 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 14:56:48 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_tokens(t_token *tmp)
 			printf("    TOKENS ERROR\n");
 		//printf("TOKEN ADRESS: %p\n", tmp);
 		printf("Token_type: %i | Word: $%s$\n", tmp->type, tmp->str);
+		printf("token join: %i\n", tmp->join);
 		//printf("Str adress: %p\n", tmp->str);
 		tmp = tmp->next;
 	}
@@ -57,7 +58,8 @@ int	main(int ac, char **av)
 	printf("NEW       TOKEN      TYPE\n");
 	print_tokens(tokens);
 	ast = create_ast(tokens);
-	executor(ast);
+	printf("AST DONE %p!\n", ast);
+	//executor(ast);
 	free_token(tokens);
 	//free(tokens);
 	//printf("NEW       TOKEN      TYPE\n");

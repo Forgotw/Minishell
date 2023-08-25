@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/15 11:34:55 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 14:36:27 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_token	*new_token(char *arg, t_word *word)
 	if (!new)
 		return (NULL);
 	new->type = -2;
+	new->join = 0;
 	new->str = NULL;
 	new->next = NULL;
 	new->prev = NULL;

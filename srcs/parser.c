@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 20:27:33 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 14:58:31 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ void	del_token(t_token **head, t_token **remove)
 	t_token	*tmp;
 
 	if (!(*remove)->next)
-		*remove = (*remove)->next;
+	{
+		if ((*remove)->prev)
+			(*remove)->prev->next = NULL;
+		if ((*remove)->str)
+			free((*remove)->str);
+		free(*remove);
+		*remove = NULL;
+	}
 	if (*remove)
 	{
 		tmp = (*remove)->next;
@@ -146,9 +153,12 @@ void	token_refiner(t_token **head, t_word *word)
 	while (token)
 	{
 		if (token->type <= WORD && token->next && token->next->type <= WORD)
-			token = join_word(head, token);
-		else if (token->type == SPACE)
-			del_token(head, &token);
+		{
+			token->join = 1;
+			token = token->next;
+		}
+		//else if (token->type == SPACE)
+		//	del_token(head, &token);
 		else
 			token = token->next;
 	}

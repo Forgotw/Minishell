@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:07:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/23 21:11:18 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/24 10:21:55 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /* Si on est sur un subshell, dive tout les sub shell j'usq'a cmd */
 /* Exec les cmd tant qu'on est pas a next = null, si sur le chemin on rencontre un subshell dive again */
 /* Une fois qu'on a exec et que next = null, remonter au upshell, aller sur next et recommencer */
@@ -51,9 +52,6 @@ void	print_token_exec(t_token *token)
 
 void	print_cmd(t_cmd *ast, char *indent)
 {
-	int	i;
-
-	i = 0;
 	printf("%s_______________________\n", indent);
 	printf("%s----%p----\n", indent, ast);
 	printf("%s-up-%p----\n", indent, ast->upshell);
