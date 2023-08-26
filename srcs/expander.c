@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 16:00:16 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/26 13:05:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_token	*token_join_brace(t_token **head, t_token *token)
 
 	new = NULL;
 	brace_state = 1;
+	del_token(head, &token);
 	del_token(head, &token);
 	while (token && brace_state)
 	{

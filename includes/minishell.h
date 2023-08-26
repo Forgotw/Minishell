@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:45:36 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/26 15:47:12 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,18 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
+# include <stdarg.h>
 # include <fcntl.h>
+# include <stdio.h>
 # include <sys/wait.h>
-# include <string.h>
+# include <curses.h>
+# include <term.h>
+# include <signal.h>
 # include <dirent.h>
+# include <sys/stat.h>
+# include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
@@ -132,7 +139,6 @@ t_token		*token_dup(t_token *token);
 t_token		*new_word(t_token *token, char *buff);
 /* FREE UTILS */
 void		free_token(t_token *token);
-void		free_array(char **array);
 int			ast_free(t_cmd *ast);
 /* PARSING */
 t_token		*init_tokens(char *str);

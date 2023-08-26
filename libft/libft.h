@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 16:55:49 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 18:42:37 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/26 16:08:05 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	*ft_realloc(void *ptr, size_t newsize);
 char	**array_add_str(char **arr, char *line);
 size_t	ft_arrlen(char **arr);
+char	**ft_arrdup(char **src);
+void	free_array(char **array);
+
 
 #endif

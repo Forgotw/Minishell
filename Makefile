@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/25 14:28:03 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/26 16:08:17 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,15 @@ SRCS = srcs/lexer.c\
 		srcs/free.c\
 		\
 		srcs/mslib/token.c\
+		\
+		srcs/builtin/echo.c\
+		srcs/builtin/cd.c\
+		srcs/builtin/pwd.c\
+		srcs/builtin/export.c\
+		srcs/builtin/unset.c\
+		srcs/builtin/env.c\
+		srcs/builtin/exit.c\
+		srcs/builtin/builtin.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -49,6 +58,11 @@ SANITIZE = -fsanitize=address -g3
 SANITIZETHREAD = -fsanitize=thread -g3
 RM = rm -rf
 
+# -------  GARDER POUR ECOLE ------- 
+LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
+# -------  GARDER POUR ECOLE -------
+#LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
+
 # COLORS #
 RED = \033[1;31m
 GREEN = \033[1;32m
@@ -62,7 +76,7 @@ BLUE = \033[0;34m
 
 $(NAME): $(LIBFT) $(OBJS)
 				@
-				@$(CC) $(FLAGS) -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME)
+				@$(CC) $(FLAGS) ${LDLIBS} -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME)
 				@echo "$(GREEN)$(NAME) compiled!$(DEFAULT)"
 
 

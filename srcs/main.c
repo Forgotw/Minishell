@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:32:07 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/26 15:15:03 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ void	free_token(t_token *token)
 	}
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	t_token *tokens;
 	t_cmd	*ast;
 
+	(void)envp;
 	if (ac != 2)
 		//return (printf("argument error\n"));
 		return (1);
