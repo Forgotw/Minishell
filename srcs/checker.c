@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:44:46 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:23:24 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/27 16:50:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 int	syntax_redir_parsing(t_token *token)
 {
 	if ((token->type == L_REDIR
-		|| token->type == R_REDIR
-		|| token->type == D_L_REDIR
-		|| token->type == D_R_REDIR)
-		&&	(!token->next || token->next->type > WORD))
+			|| token->type == R_REDIR
+			|| token->type == D_L_REDIR
+			|| token->type == D_R_REDIR)
+		&& (!token->next || token->next->type > WORD))
 		return (1);
 	return (0);
 }
@@ -30,7 +30,7 @@ int	syntax_redir_parsing(t_token *token)
 int	syntax_par_parsing(t_token *token)
 {
 	if ((token->type == AND || token->type == OR
-		|| token->type == PIPE) && !token->next)
+			|| token->type == PIPE) && !token->next)
 		return (1);
 	else if (token->type == O_PAR && token->next
 		&& token->next->type == C_PAR)
@@ -41,9 +41,9 @@ int	syntax_par_parsing(t_token *token)
 int	syntax_link_parsing(t_token *token)
 {
 	if ((token->type == AND || token->type == OR || token->type == PIPE)
-		&& token->next &&
-		(token->next->type == AND || token->next->type == OR
-		|| token->next->type == PIPE))
+		&& token->next
+		&& (token->next->type == AND || token->next->type == OR
+			|| token->next->type == PIPE))
 		return (1);
 	return (0);
 }
@@ -77,7 +77,7 @@ int	syntax_parsing(t_token *token)
 void	syntax_checker(t_token *token)
 {
 	if (token->type == AND || token->type == OR
-				|| token->type == PIPE)
+		|| token->type == PIPE)
 		exit (printf("%s%s\n", PARSE_ERROR, token->str));
 	if (syntax_parsing(token))
 	{

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 15:15:03 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:42:30 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,31 @@ void	free_token(t_token *token)
 
 int	main(int ac, char **av, char **envp)
 {
+	int		ret;
+	t_shell	*shell;
+
+	shell = malloc(sizeof(t_shell));
+	shell->env = ft_arrdup(envp);
+	ret = 0;
+	if (ac < 2)
+		return (printf("ARGUMENTS COUNT ERROR\n"));
+	if (!ft_strcmp(av[1], "export"))
+	{
+		ret = export(&av[1], shell);
+		print_export(shell->env);
+		return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
+	}
+	else if (!ft_strcmp(av[1], "unset"))
+	{
+		ret = unset(&av[1], shell);
+		print_export(shell->env);
+		return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
+	}
+	return (0);
+}
+/*/
+int	main(int ac, char **av, char **envp)
+{
 	t_token *tokens;
 	t_cmd	*ast;
 
@@ -64,11 +89,7 @@ int	main(int ac, char **av, char **envp)
 	executor(ast);
 	free_token(tokens);
 	ast_free(ast);
-	//free(tokens);
-	//printf("NEW       TOKEN      TYPE\n");
-	//while (tokens)
-	//	del_token(&tokens);
-}
+}*/
 /*
 char	*find_file(char *file, char *find, char **find_arr)
 {

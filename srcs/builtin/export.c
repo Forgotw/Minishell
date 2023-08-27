@@ -3,34 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:32:58 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 12:07:20 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/08/27 17:42:51 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env(char **env)
+void	add_or_replace_var(char *str, t_shell *shell)
 {
-	int	i;
+	int		i;
+	int		len;
+	char	*tmp;
 
 	i = 0;
-	while (env[i])
+	len = 0;
+	while (str[len] && str[len + 1] != '=')
+		len++;
+	while (shell->env[i])
 	{
-		ft_putchar_fd("declare -x ", STDOUT);
-		ft_putendl_fd(env[i], STDOUT);
+		if (!ft_strncmp(str, shell->env[i], len)
+			&& (shell->env[i][len + 1] == '\0'
+			|| shell->env[i][len + 1] == '='))
+		{
+			tmp = shell->env[i];
+			shell->env[i] = ft_strdup(str);
+			free(tmp);
+			return ;
+		}
+		i++;
 	}
+	shell->env = array_add_str(shell->env, ft_strdup(str));
 }
 
-int	export(char **cmd, char **env)
+int	export_vars(char **cmd, t_shell *shell)
+{
+	int		i;
+	int		ret;
+
+	i = 0;
+	ret = 0;
+	while (cmd[i])
+	{
+		if (var_identifier_error(cmd[i], "export:"))
+			ret = 1;
+		else
+			add_or_replace_var(cmd[i], shell);
+		i++;
+	}
+	return (ret);
+}
+
+int	print_export(char **env)
+{
+	int		i;
+	char	**sorted;
+
+	i = 0;
+	if (!env)
+		return (1);
+	sorted = ft_arrdup(env);
+	ft_arrsort(sorted);
+	while (sorted[i])
+	{
+		ft_putstr_fd("declare -x ", STDOUT);
+		ft_putendl_fd(sorted[i], STDOUT);
+		i++;
+	}
+	free_array(sorted);
+	return (0);
+}
+
+int	export(char **cmd, t_shell *shell)
 {
 	if (!cmd)
 		return (-1);
 	else if (!cmd[1])
-		print_env(env);
+		return (print_export(shell->env));
 	else
-		export_var(&cmd[i]);
+		return (export_vars(&cmd[1], shell));
 	return (0);
 }

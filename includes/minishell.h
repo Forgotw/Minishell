@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 15:47:12 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:46:07 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,13 @@
 # define LINK_ERROR "Minishell doesn't support opened link.\n"
 # define EMPTY_PAR_ERROR "Minishell doesn't support empty parenthesis.\n"
 # define PARSE_ERROR "Minishell: syntax error near unexpected token: "
+# define CMD_ENV_ERROR "Minishell doesn't support env parameters"
 # define BAD_SUB "bad substitution"
 # define NO_MATCHES "no matches found:"
+# define BAD_IDENTIFIER ": not a valid identifier\n"
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 u_int8_t ret_status;
 
@@ -130,6 +135,13 @@ typedef struct s_cmd
 	struct s_cmd	*upshell;
 }				t_cmd;
 
+typedef struct s_shell
+{
+	char	**env;
+	char	path[1024];
+}				t_shell;
+
+
 /*   FUNCTIONS   */
 /* TOKEN UTILS */
 void		del_token(t_token **head, t_token **token);
@@ -151,8 +163,13 @@ t_cmd		*create_ast(t_token *token);
 int			executor(t_cmd *ast);
 void		syntax_checker(t_token *token);
 /* TEST */
-void	print_tokens(t_token *tokens);
-void	print_array(char **array);
-void	print_cmd(t_cmd *ast, char *indent);
+void		print_tokens(t_token *tokens);
+void		print_array(char **array);
+void		print_cmd(t_cmd *ast, char *indent);
+int			print_export(char **env);
+/* BUILTIN */
+int			export(char **cmd, t_shell *shell);
+int			unset(char	**cmd, t_shell *shell);
+int			var_identifier_error(char *str, char *cmd);
 
 #endif

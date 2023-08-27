@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:49:49 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 12:45:57 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/27 13:33:15 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ft_arrdup(char **src)
 		return (NULL);
 	while (src[i])
 	{
-		array[i] = strdup(src[i]);
+		array[i] = ft_strdup(src[i]);
 		i++;
 	}
 	array[i] = NULL;
