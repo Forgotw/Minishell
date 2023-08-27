@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   envtest.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/26 15:32:58 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 12:07:20 by lsohler@stu      ###   ########.fr       */
+/*   Created: 2023/08/27 11:46:47 by lsohler@stu       #+#    #+#             */
+/*   Updated: 2023/08/27 11:48:36 by lsohler@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <string.h>
+#include <dirent.h>
 
-void	print_env(char **env)
+int main(int ac, char **av, char **env)
 {
-	int	i;
+	int	i = 0;
+	(void)ac;
+	(void)av;
 
-	i = 0;
 	while (env[i])
 	{
-		ft_putchar_fd("declare -x ", STDOUT);
-		ft_putendl_fd(env[i], STDOUT);
+		printf("%s\n", env[i]);
+		i++;
 	}
-}
-
-int	export(char **cmd, char **env)
-{
-	if (!cmd)
-		return (-1);
-	else if (!cmd[1])
-		print_env(env);
-	else
-		export_var(&cmd[i]);
-	return (0);
 }
