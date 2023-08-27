@@ -1,28 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrdup.c                                        :+:      :+:    :+:   */
+/*   ft_arrsort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/26 12:49:49 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 14:56:35 by lsohler          ###   ########.fr       */
+/*   Created: 2023/08/27 12:23:37 by lsohler           #+#    #+#             */
+/*   Updated: 2023/08/27 12:45:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**ft_arrdup(char **src)
+void	ft_arrsort(char **array)
 {
-	char	**array;
+	int		len;
+	int		i;
+	int		swapped;
+	char	*tmp;
 
-	if (!src)
-		return (NULL);
-	array = malloc(sizeof(ft_arrlen(src)) + 1);
-	if (!array)
-		return (NULL);
-	while (array)
-		*array++ = ft_strdup(*src++);
-	*array++ = NULL;
-	return (array);
+	i = 0;
+	swapped = 1;
+	len = ft_arrlen(array);
+	while (swapped)
+	{
+		swapped = 0;
+		i = 0;
+		while (i < len - 1)
+		{
+			if (strcmp(array[i], array[i + 1]) > 0)
+			{
+				tmp = array[i];
+				array[i] = array[i + 1];
+				array[i + 1] = tmp;
+				swapped = 1;
+			}
+			i++;
+		}
+	}
 }
+

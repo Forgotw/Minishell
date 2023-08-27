@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 16:55:49 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 16:08:05 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/27 12:47:11 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ char	**array_add_str(char **arr, char *line);
 size_t	ft_arrlen(char **arr);
 char	**ft_arrdup(char **src);
 void	free_array(char **array);
-
+void	ft_arrsort(char **array);
 
 #endif
