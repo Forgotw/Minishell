@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/26 16:08:17 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/29 17:22:29 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS = srcs/lexer.c\
 		srcs/expander.c\
 		srcs/wildcard.c\
 		srcs/ast.c\
-		srcs/executor.c\
+		srcs/executor_print.c\
 		srcs/checker.c\
 		srcs/free.c\
 		\

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 17:42:30 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/29 17:22:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_token(t_token *token)
 		token = tmp;
 	}
 }
-
+/*
 int	main(int ac, char **av, char **envp)
 {
 	int		ret;
@@ -68,8 +68,8 @@ int	main(int ac, char **av, char **envp)
 		return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
 	}
 	return (0);
-}
-/*/
+}*/
+
 int	main(int ac, char **av, char **envp)
 {
 	t_token *tokens;
@@ -86,10 +86,10 @@ int	main(int ac, char **av, char **envp)
 	syntax_checker(tokens);
 	ast = create_ast(tokens);
 	printf("AST DONE %p!\n", ast);
-	executor(ast);
+	executor_print(ast);
 	free_token(tokens);
 	ast_free(ast);
-}*/
+}
 /*
 char	*find_file(char *file, char *find, char **find_arr)
 {

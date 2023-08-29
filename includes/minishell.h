@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 17:46:07 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/29 19:04:59 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,16 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 	struct s_cmd	*subshell;
 	struct s_cmd	*upshell;
+	struct s_cmd	*shell;
 }				t_cmd;
 
 typedef struct s_shell
 {
-	char	**env;
-	char	path[1024];
+	char		**env;
+	char		path[1024];
+	char		oldpath[1024];
+	char		homepath[1024];
+	t_cmd		*ast;
 }				t_shell;
 
 
@@ -160,7 +164,7 @@ t_token		*token_dol_type(t_token **head, t_token *token);
 t_token		*expand_var(t_token **head, t_token *token);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_cmd		*create_ast(t_token *token);
-int			executor(t_cmd *ast);
+int			executor_print(t_cmd *ast);
 void		syntax_checker(t_token *token);
 /* TEST */
 void		print_tokens(t_token *tokens);
@@ -171,5 +175,6 @@ int			print_export(char **env);
 int			export(char **cmd, t_shell *shell);
 int			unset(char	**cmd, t_shell *shell);
 int			var_identifier_error(char *str, char *cmd);
+int			my_execve(char **cmd, t_shell *shell);
 
 #endif
