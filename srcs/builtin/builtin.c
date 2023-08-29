@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:48:11 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 17:32:39 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/29 20:40:12 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_builtin_dic(char **dict)
 	*dict++ = NULL;
 }
 
-char	**builtin_dic()
+char	**builtin_dic(void)
 {
 	char	**dict;
 
@@ -36,7 +36,7 @@ char	**builtin_dic()
 int	is_builtin(char	*cmd)
 {
 	char	**builtin;
-	int			i;
+	int		i;
 
 	i = 0;
 	builtin = malloc (sizeof(char *) * 8);
@@ -54,15 +54,6 @@ int	exec_builtin(char **cmd, t_shell *shell)
 {
 	(void)cmd;
 	(void)shell;
-	
-	return (0);
-}
 
-int	my_execve(char **cmd, t_shell *shell)
-{
-	if (is_builtin(cmd[0]))
-		return (exec_builtin(cmd, shell));
-	else
-		return (execve(get_path(cmd[0]), cmd, shell->env));
-	return (-1);
+	return (0);
 }

@@ -6,50 +6,76 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 17:18:48 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/29 21:12:40 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*execute_subshell(t_cmd *ast)
+int	my_execve(t_cmd *node)
 {
-	while (ast->subshell)
-	{
-		ast = ast->subshell;
-	}
-	return (ast);
+	if (is_builtin(cmd[0]))
+		return (exec_builtin(node->cmd, node->shell));
+	else
+		return (execve(node->path, node->cmd, node->shell->env));
+	return (-1);
+}
+/* Redir pipe */
+/* Redir file from subshell */
+/* Redir file */
+/* Expand and join */
+/* fork */
+
+int	execute_cmd(t_cmd *node, int *status)
+{
+	if (redir(node, status))
+		return (*status);
+	if (expand_and_join(node, status))
+		return (*status);
+	node->pid = fork();
+	
 }
 
-t_cmd	*execute_cmd(t_cmd *ast)
+t_cmd	*nav_subshell(t_cmd *node, int *status)
 {
-	if (ast->next)
+	while (node->subshell)
 	{
-		ast = ast->next;
+		node = node->subshell;
 	}
+	return (node);
+}
+
+t_cmd	*nav_cmd(t_cmd *node, int *status)
+{
+	execute_cmd(node, status);
+	if (node->next)
+		node = node->next;
 	else
 	{
 		while (ast)
 		{
-			ast = ast->upshell;
-			if (ast && ast->next)
+			node = node->upshell;
+			if (node && node->next)
 			{
-				ast = ast->next;
+				node = node->next;
 				break ;
 			}
 		}
 	}
-	return (ast);
+	return (node);
 }
 
-int	executor(t_cmd *ast)
+int	executor(t_cmd *node)
 {
-	while (ast)
+	int	status;
+
+	status = 0;
+	while (node)
 	{
-		if (ast->type == SUBSHELL)
-			ast = execute_subshell(ast);
-		else if (ast->type == CMD || ast->type == 0)
-			ast = execute_cmd(ast);
+		if (node->type == SUBSHELL)
+			node = nav_subshell(node, &status);
+		else if (node->type == CMD || node->type == 0)
+			node = nav_cmd(node, &status);
 	}
 	return (0);
 }
