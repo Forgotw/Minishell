@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 13:05:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 17:40:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,47 @@ t_token	*expand_var(t_token **head, t_token *token)
 	return (token);
 }
 */
+char	**create_cmd_array(t_token *token)
+{
+	char	**cmd_array;
+	int		i;
+
+	i = 0;
+	cmd_array = malloc(sizeof (char *) + 1);
+	while (token)
+	{
+		while (token->join && token->next)
+		{
+			if (!cmd_array[i])
+				cmd_array = ft_strdup(token->str);
+			else
+				cmd_array[i] = ft_strjoin(cmd_array[i], token->str);
+			token = token->next;
+		}
+	}
+}
+
+char	**expand_token(t_token *token, t_shell *shell)
+{
+	t_token	*head;
+
+	if (!token)
+		return (NULL);
+	head = token;
+	while (token)
+	{
+		if (token->type == EXP_WORD)
+			token = expand_var(&head, token);
+		else if (token->type == WILDCARD)
+			token = expand_wildcard(&head, token);
+		else if (!ft_strcmp(token->str, "$?"))
+			token = expand_returnvalue(token, shell);
+		else if (!ft_strcmp(token->str, "$$"))
+			token = expand_pid();
+		token = token->next;
+	}
+	return (token);
+}
 
 t_token	*token_join_brace(t_token **head, t_token *token)
 {

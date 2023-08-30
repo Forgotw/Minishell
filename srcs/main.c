@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 17:22:06 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 14:23:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,54 @@ int	main(int ac, char **av, char **envp)
 {
 	int		ret;
 	t_shell	*shell;
+	int		i;
+	pid_t	pid;
+	
 
+	(void)ac;
 	shell = malloc(sizeof(t_shell));
 	shell->env = ft_arrdup(envp);
 	ret = 0;
-	if (ac < 2)
-		return (printf("ARGUMENTS COUNT ERROR\n"));
-	if (!ft_strcmp(av[1], "export"))
+	i = 1;
+	int	count = 0;
+	while (av[i])
 	{
-		ret = export(&av[1], shell);
-		print_export(shell->env);
-		return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
+		pid = fork();
+		if (pid == 0)
+		{
+			shell->env = array_add_str(shell->env, av[i]);
+			printf("CHILD count: %i i:%i\n", count, i);
+			//printf("\n\nADDING TO ENV\n\n");
+			//print_export(shell->env);
+			count++;
+			exit (0);
+		}
+		else
+			printf("PARENT count: %i i: %i\n", count, i);
+		i++;
+		//waitpid(pid, NULL, 0);
 	}
-	else if (!ft_strcmp(av[1], "unset"))
-	{
-		ret = unset(&av[1], shell);
-		print_export(shell->env);
-		return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
-	}
+	//print_export(shell->env);
+	//ft_putstr_fd("\nTEST 2\n", 1);
+	//array_add_str(shell->env, ft_strdup(av[1]));
+	//printf("\n\n\nCOUCOU\n\n\n");
+	waitpid(pid, NULL, 0);
+	printf("\n\n\n AFTER FORK\n\n\n");
+	print_export(shell->env);
+	// if (ac < 2)
+	// 	return (printf("ARGUMENTS COUNT ERROR\n"));
+	// if (!ft_strcmp(av[1], "export"))
+	// {
+	// 	ret = export(&av[1], shell);
+	// 	print_export(shell->env);
+	// 	return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
+	// }
+	// else if (!ft_strcmp(av[1], "unset"))
+	// {
+	// 	ret = unset(&av[1], shell);
+	// 	print_export(shell->env);
+	// 	return (printf("RETURN VALUE OF EXPORT: %i\n", ret));
+	// }
 	return (0);
 }*/
 
@@ -90,59 +120,3 @@ int	main(int ac, char **av, char **envp)
 	free_token(tokens);
 	ast_free(ast);
 }
-/*
-char	*find_file(char *file, char *find, char **find_arr)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = file;
-	while (find_arr[i])
-	{
-		tmp = strstr(tmp, find_arr[i]);
-		if (!tmp)
-			return (NULL);
-		if (find[0] != '*' && strncmp(find_arr[i], tmp, strlen(find_arr[i])))
-			return (NULL);
-		tmp += strlen(find_arr[i]);
-		i++;
-	}
-	if ((find[strlen(find) - 1]) != '*'
-		&& strncmp(find_arr[i - 1],
-			&file[strlen(file) - strlen(find_arr[i - 1])],
-			strlen(find_arr[i - 1])))
-		return (NULL);
-	return (strdup(file));
-}
-
-int	main(int ac, char **av)
-{
-	char	*ret;
-	char	**find_arr;
-	char	currentdir[1024];
-	DIR		*dir;
-	struct dirent *entry;
-	
-	(void)ac;
-	find_arr = ft_split(av[1], '*');
-	printf("AV1: %s, AV2: %s\n", av[1], av[2]);
-	ret = find_file(av[2], av[1], find_arr);
-	printf("we found: %s\n", ret);
-	free(find_arr);
-	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
-		printf("Répertoire courant : %s\n", currentdir);
-	chdir("/Users/lsohler/MiniShell/test");
-	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
-		printf("Répertoire courant : %s\n", currentdir);
-	dir = opendir(currentdir);
-	while ((entry = readdir(dir)) != NULL)
-	{
-		if (entry->d_type == DT_REG)
-		{ 
-			printf("%s\n", entry->d_name);
-		}
-	}
-	closedir(dir);
-	return (0);
-}*/

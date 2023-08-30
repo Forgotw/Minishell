@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 19:04:59 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 15:48:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 	struct s_cmd	*subshell;
 	struct s_cmd	*upshell;
-	struct s_cmd	*shell;
+	struct s_shell	*shell;
 }				t_cmd;
 
 typedef struct s_shell
@@ -161,7 +161,7 @@ t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
 t_token		*token_dol_type(t_token **head, t_token *token);
-t_token		*expand_var(t_token **head, t_token *token);
+t_token		*expand_var(char *str, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_cmd		*create_ast(t_token *token);
 int			executor_print(t_cmd *ast);
@@ -175,6 +175,6 @@ int			print_export(char **env);
 int			export(char **cmd, t_shell *shell);
 int			unset(char	**cmd, t_shell *shell);
 int			var_identifier_error(char *str, char *cmd);
-int			my_execve(char **cmd, t_shell *shell);
+int			my_execve(t_cmd *node, int *status);
 
 #endif

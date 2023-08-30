@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 16:12:48 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 15:55:17 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ t_wildcard	*init_wildcard(char *str)
 	wildc = malloc(sizeof(t_wildcard));
 	wildc->buff = NULL;
 	if (getcwd(wildc->currentdir, sizeof(wildc->currentdir)) == NULL)
-		printf("Error while getting current dir\n");
+		perror("Error while getting current dir");
 	wildc->dir = opendir(wildc->currentdir);
 	if (!wildc->dir)
-		printf("Error opening dir %s\n", wildc->currentdir);
+		perror("Error opening dir:");
 	wildc->find_arr = ft_split(str, '*');
 	wildc->find = ft_strdup(str);
 	return (wildc);
