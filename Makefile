@@ -6,7 +6,7 @@
 #    By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/30 19:07:44 by efailla          ###   ########.fr        #
+#    Updated: 2023/08/30 19:12:01 by efailla          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRCS = srcs/lexer.c\
 		srcs/executor_print.c\
 		srcs/checker.c\
 		srcs/free.c\
-		\
+		srcs/promt.c\
 		srcs/mslib/token.c\
 		\
 		srcs/builtin/echo.c\

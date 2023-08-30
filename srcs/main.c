@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/30 14:23:44 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 19:12:18 by efailla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,21 +102,23 @@ int	main(int ac, char **av, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_token *tokens;
-	t_cmd	*ast;
+	// t_token *tokens;
+	// t_cmd	*ast;
 
 	(void)envp;
-	if (ac != 2)
+	(void)av;
+	if (ac != 1)
 		//return (printf("argument error\n"));
 		return (1);
+	promt();
 	ret_status = 0;
-	tokens = init_tokens(av[1]);
-	printf("NEW       TOKEN      TYPE\n");
-	print_tokens(tokens);
-	syntax_checker(tokens);
-	ast = create_ast(tokens);
-	printf("AST DONE %p!\n", ast);
-	executor_print(ast);
-	free_token(tokens);
-	ast_free(ast);
+	// tokens = init_tokens(av[1]);
+	// printf("NEW       TOKEN      TYPE\n");
+	// print_tokens(tokens);
+	// syntax_checker(tokens);
+	// ast = create_ast(tokens);
+	// printf("AST DONE %p!\n", ast);
+	// executor_print(ast);
+	// free_token(tokens);
+	// ast_free(ast);
 }

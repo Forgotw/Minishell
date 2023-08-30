@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/30 15:48:58 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 19:10:51 by efailla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,7 @@ int			export(char **cmd, t_shell *shell);
 int			unset(char	**cmd, t_shell *shell);
 int			var_identifier_error(char *str, char *cmd);
 int			my_execve(t_cmd *node, int *status);
+
+int			promt(void);
 
 #endif
