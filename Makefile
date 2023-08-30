@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
+#    By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/29 17:22:29 by lsohler          ###   ########.fr        #
+#    Updated: 2023/08/30 19:07:44 by efailla          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ NAME = minishell
 INCLUDES = includes/
 HEADER_SRCS = minishell.h
 HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
+READLINE_DIR := /opt/homebrew/opt/readline
 
 # SOURCES #
 SRCS_F = lexer.c main.c parser.c
@@ -59,9 +60,9 @@ SANITIZETHREAD = -fsanitize=thread -g3
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 
-LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
+#LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
 # -------  GARDER POUR ECOLE -------
-#LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
+LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
 
 # COLORS #
 RED = \033[1;31m
