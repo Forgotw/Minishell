@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:10 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/30 19:34:19 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/01 20:58:20 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ t_cmd	*execute_subshell_print(t_cmd *ast)
 
 t_cmd	*execute_cmd_print(t_cmd *ast)
 {
+	if (ast->tok)
+		ast->tok = expand_token(ast->tok, ast->shell);
+	//ast->redir = expand_token(ast->tok, ast->shell);
 	print_cmd(ast, "            \033[37;1m");
 	printf("\033[0m");
 	if (ast->next)

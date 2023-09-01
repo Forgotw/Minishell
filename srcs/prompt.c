@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 21:27:05 by efailla          ###   ########.fr       */
+/*   Updated: 2023/09/01 17:29:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	salopeva(int x)
 		printf("tié un chien");
 }
 
-int	promt(void)
+int	prompt(char **envp)
 {
 	char	*input = NULL;
 	t_token *tokens;
@@ -37,7 +37,7 @@ int	promt(void)
 			printf("NEW       TOKEN      TYPE\n");
 			print_tokens(tokens);
 			syntax_checker(tokens);
-			ast = create_ast(tokens);
+			ast = create_ast(tokens, envp);
 			printf("AST DONE %p!\n", ast);
 			executor_print(ast);
 			free_token(tokens);

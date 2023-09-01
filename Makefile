@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/30 19:33:21 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/01 17:27:52 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,9 @@ SRCS = srcs/lexer.c\
 		srcs/executor_print.c\
 		srcs/checker.c\
 		srcs/free.c\
-		srcs/promt.c\
+		srcs/prompt.c\
+		srcs/cmd.c\
+		srcs/shell.c\
 		srcs/mslib/token.c\
 		\
 		srcs/builtin/echo.c\

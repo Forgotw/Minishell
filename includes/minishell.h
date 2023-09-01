@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 15:05:41 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/01 17:29:26 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,14 +159,22 @@ int			ast_free(t_cmd *ast);
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
+void		syntax_checker(t_token *token);
+char		**create_cmd_array(t_token *token);
+/* EXPANDER */
+t_token		*expand_token(t_token *token, t_shell *shell);
 t_token		*token_dol_type(t_token **head, t_token *token);
-t_token		*expand_var(t_token *token, t_shell *shell);
+t_token		*expand_var(t_token **head, t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_token		*expand_return(t_token *token, t_shell *shell);
-t_cmd		*create_ast(t_token *token);
-int			executor_print(t_cmd *ast);
-void		syntax_checker(t_token *token);
+/* AST */
+t_cmd		*create_ast(t_token *token, char **envp);
+t_cmd		*create_subshell(t_token **token, t_cmd *ast, t_shell *shell);
+t_cmd		*close_subshell(t_token **token, t_cmd *ast);
+t_cmd	*new_cmd(int cmdtype, t_shell *shell);
+t_shell		*init_shell_data(char **envp);
 /* TEST */
+int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);
 void		print_array(char **array);
 void		print_cmd(t_cmd *ast, char *indent);
@@ -176,7 +184,6 @@ int			export(char **cmd, t_shell *shell);
 int			unset(char	**cmd, t_shell *shell);
 int			var_identifier_error(char *str, char *cmd);
 int			my_execve(t_cmd *node, int *status);
-
-int			promt(void);
+int			prompt(char **envp);
 
 #endif

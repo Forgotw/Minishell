@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 15:21:12 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/01 16:05:21 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,11 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 		else
 		{
 			if (token->type == DOL && word->q_state == DQUOTE)
-			{
 				token = token_dol_type(head, token);
-				token->join = 1;
-			}
 			else
 			{
 				token->type = WORD;
 				token = token->next;
-				token->join = 1;
 			}
 		}
 	}
@@ -131,7 +127,7 @@ void	token_join_space(t_token **head, t_token *token)
 		if (token->type <= WORD && token->next && token->next->type <= WORD)
 		{
 			token->join = 1;
-			token->next->join = 1;
+			// token->next->join = 1;
 			token = token->next;
 		}
 		else if (token->type == SPACE)
