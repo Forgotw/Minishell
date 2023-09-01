@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/30 19:10:51 by efailla          ###   ########.fr       */
+/*   Updated: 2023/09/01 15:05:41 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef enum e_operators
 	EXP_WORD,
 	WORD,
 	SPACE,
-	SEMIC,
 	PIPE,
 	QUOTE,
 	DQUOTE,
@@ -142,9 +141,9 @@ typedef struct s_shell
 	char		path[1024];
 	char		oldpath[1024];
 	char		homepath[1024];
+	int			status;
 	t_cmd		*ast;
 }				t_shell;
-
 
 /*   FUNCTIONS   */
 /* TOKEN UTILS */
@@ -161,8 +160,9 @@ t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
 t_token		*token_dol_type(t_token **head, t_token *token);
-t_token		*expand_var(char *str, t_shell *shell);
+t_token		*expand_var(t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
+t_token		*expand_return(t_token *token, t_shell *shell);
 t_cmd		*create_ast(t_token *token);
 int			executor_print(t_cmd *ast);
 void		syntax_checker(t_token *token);

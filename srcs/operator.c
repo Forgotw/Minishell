@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:03:40 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/26 15:47:34 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/01 15:06:00 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	init_sep_a(const char **sep)
 {
 	*sep++ = ft_strdup(" ");
-	*sep++ = ft_strdup(";");
 	*sep++ = ft_strdup("|");
 	*sep++ = ft_strdup("'");
 	*sep++ = ft_strdup("\"");

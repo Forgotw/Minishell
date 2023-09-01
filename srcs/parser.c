@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 16:09:20 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/01 15:21:12 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ t_token	*try_join_token(t_token **head, t_token *token, t_word *word)
 /* On expand si dquote et token $ */
 t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 {
-	char	*new;
-	int		new_type;
-
-	new = NULL;
-	new_type = WORD;
 	word->q_state = token->type;
 	del_token(head, &token);
 	while (token && word->q_state > 0)
@@ -58,18 +53,51 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 		else
 		{
 			if (token->type == DOL && word->q_state == DQUOTE)
-				new_type = EXP_WORD;
-			new = ft_strjoin(new, token->str);
-			del_token(head, &token);
+			{
+				token = token_dol_type(head, token);
+				token->join = 1;
+			}
+			else
+			{
+				token->type = WORD;
+				token = token->next;
+				token->join = 1;
+			}
 		}
 	}
 	if (!token && word->q_state > 0)
 		exit(printf("%s", QUOTE_ERROR));
-	token->type = new_type;
-	free(token->str);
-	token->str = new;
+	del_token(head, &token);
 	return (token);
 }
+// t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
+// {
+// 	char	*new;
+// 	int		new_type;
+
+// 	new = NULL;
+// 	new_type = WORD;
+// 	word->q_state = token->type;
+// 	del_token(head, &token);
+// 	while (token && word->q_state > 0)
+// 	{
+// 		if (token->type == word->q_state)
+// 			word->q_state = 0;
+// 		else
+// 		{
+// 			if (token->type == DOL && word->q_state == DQUOTE)
+// 				new_type = EXP_WORD;
+// 			new = ft_strjoin(new, token->str);
+// 			del_token(head, &token);
+// 		}
+// 	}
+// 	if (!token && word->q_state > 0)
+// 		exit(printf("%s", QUOTE_ERROR));
+// 	token->type = new_type;
+// 	free(token->str);
+// 	token->str = new;
+// 	return (token);
+// }
 
 /* Join les words qui se suivent */
 t_token	*join_word(t_token **head, t_token *token)
@@ -103,6 +131,7 @@ void	token_join_space(t_token **head, t_token *token)
 		if (token->type <= WORD && token->next && token->next->type <= WORD)
 		{
 			token->join = 1;
+			token->next->join = 1;
 			token = token->next;
 		}
 		else if (token->type == SPACE)
@@ -132,6 +161,7 @@ void	token_refiner(t_token **head, t_word *word)
 			token = try_join_token(head, token, word);
 		else if (token)
 			token = token->next;
+		printf("REFINE TEST\n");
 	}
 	token_join_space(head, *head);
 	printf("END OF REFINE\n");

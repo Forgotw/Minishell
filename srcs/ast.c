@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:51:15 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 19:35:41 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_cmd	*create_subshell(t_token **token, t_cmd *ast)
 	}
 	else if (ast->type == 0)
 		ast->type = SUBSHELL;
-	printf("          SUBSHELL ADD: %p\n", ast);
+	printf("          \033[31;1mSUBSHELL ADD: %p\n", ast);
 	*token = (*token)->next;
 	return (ast);
 }
@@ -150,10 +150,8 @@ void	create_cmd_token(t_token **tokens, t_cmd *ast)
 		else
 			break ;
 	}
-	printf("          CREATING CMD AT: %p\n", ast);
-	printf("          CREATING CMD: upshell add: %p\n", ast->upshell);
-	printf("          CREATING CMD: ");
-	print_array(ast->cmd);
+	printf("          \033[37;1mCREATING CMD AT: %p\n", ast);
+	printf("          \033[37;1mCREATING CMD: upshell add: %p\n", ast->upshell);
 	*tokens = token;
 }
 

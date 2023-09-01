@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:10 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 17:23:05 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/08/30 19:34:19 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_token_exec(t_token *token, int redir)
 			printf(" ");
 		token = token->next;
 	}
-	printf("\033[0m\n");
+	printf("\n");
 }
 
 void	print_cmd(t_cmd *ast, char *indent)

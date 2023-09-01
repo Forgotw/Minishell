@@ -3,31 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/30 19:06:42 by efailla          ###   ########.fr       */
+/*   Updated: 2023/09/01 15:26:57 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-t_token	*expand_dol_dol(t_token *token)
+/* Chercher dans la str $, a str[i] == $ , tant que  alnum ou _ ii++*/
+/* De str[i]  a str[ii] chercher la var */
+/* new = join de (str[0] a str[i])+var puis new = join de new et str[ii]*/
+t_token	*expand_return(t_token *token, t_shell *shell)
 {
+	if (!ft_strcmp(token->str, "$?"))
+	{
+		free(token->str);
+		token->str = ft_itoa(shell->status);
+	}
 	token->type = WORD;
-	free(token->str);
-	token->str = ft_itoa(getpid());
 	return (token);
 }
 
-t_token	*expand_dol_q_mark(t_token *token)
+t_token	*expand_var(t_token *token, t_shell *shell)
 {
-	token->type = EXP_WORD;
+	int	i;
+	int	y;
+
+	y = 0;
+	i = 0;
+	while (shell->env[i])
+	{
+		if (!ft_strcmp(shell->env[i], &token->str[1]))
+		{
+			free(token->str);
+			while (shell->env[i][y] || shell->env[i][y] != '=')
+				y++;
+			token->str = ft_strdup(&shell->env[i][y]);
+			return (token);
+		}
+		i++;
+	}
 	free(token->str);
-	token->str = ft_itoa(ret_status);
+	token->str = malloc(sizeof(char));
+	token->str[0] = '\0';
 	return (token);
 }
 
+/*
 t_token	*expand_braced_word(t_token **head, t_token *token)
 {
 	char	*new;
@@ -112,27 +135,25 @@ t_token	*expand_var(t_token **head, t_token *token)
 // 	}
 // }
 
-// char	**expand_token(t_token *token, t_shell *shell)
-// {
-// 	t_token	*head;
+t_token	*expand_token(t_token *token, t_shell *shell)
+{
+	t_token	*head;
 
-// 	if (!token)
-// 		return (NULL);
-// 	head = token;
-// 	while (token)
-// 	{
-// 		if (token->type == EXP_WORD)
-// 			token = expand_var(&head, token);
-// 		else if (token->type == WILDCARD)
-// 			token = expand_wildcard(&head, token);
-// 		else if (!ft_strcmp(token->str, "$?"))
-// 			token = expand_returnvalue(token, shell);
-// 		else if (!ft_strcmp(token->str, "$$"))
-// 			token = expand_pid();
-// 		token = token->next;
-// 	}
-// 	return (token);
-// }
+	if (!token)
+		return (NULL);
+	head = token;
+	while (token)
+	{
+		if (token->type == EXP_WORD)
+			token = expand_var(token, shell);
+		else if (token->type == WILDCARD)
+			token = expand_wildcard(&head, token);
+		else if (!ft_strcmp(token->str, "$?") || !ft_strcmp(token->str, "$$"))
+			token = expand_return(token, shell);
+		token = token->next;
+	}
+	return (token);
+}
 
 t_token	*token_join_brace(t_token **head, t_token *token)
 {
@@ -141,10 +162,13 @@ t_token	*token_join_brace(t_token **head, t_token *token)
 
 	new = NULL;
 	brace_state = 1;
+	printf("test\n");
 	del_token(head, &token);
+	printf("test1\n");
 	del_token(head, &token);
+	printf("test2\n");
 	while (token && brace_state)
-	{
+	{printf("test while\n");
 		if (token->type == C_BRACE)
 			brace_state = 0;
 		else
@@ -153,24 +177,22 @@ t_token	*token_join_brace(t_token **head, t_token *token)
 			del_token(head, &token);
 		}
 	}
+	printf("test after while\n");
 	if (!token && brace_state > 0)
 		exit(printf("%s", BRACE_ERROR));
+	printf("test3\n");
 	token->type = EXP_WORD;
+	printf("test4\n");
 	free(token->str);
+	printf("test5\n");
 	token->str = new;
 	return (token);
 }
 
 t_token	*token_dol_join(t_token **head, t_token *token)
 {
-	char	*new;
-
-	new = ft_strjoin(ft_strdup(token->str), token->next->str);
 	del_token(head, &token);
-	free(token->str);
-	token->str = new;
 	token->type = EXP_WORD;
-	printf("New token: str: %s type: %i\n", token->str, token->type);
 	return (token);
 }
 

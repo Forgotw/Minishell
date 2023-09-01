@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+         #
+#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/30 19:12:01 by efailla          ###   ########.fr        #
+#    Updated: 2023/08/30 19:33:21 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,9 +60,9 @@ SANITIZETHREAD = -fsanitize=thread -g3
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 
-#LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
+LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
 # -------  GARDER POUR ECOLE -------
-LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
+#LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
 
 # COLORS #
 RED = \033[1;31m
