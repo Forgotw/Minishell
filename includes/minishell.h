@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 17:29:26 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 12:11:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,9 @@ t_token		*expand_return(t_token *token, t_shell *shell);
 t_cmd		*create_ast(t_token *token, char **envp);
 t_cmd		*create_subshell(t_token **token, t_cmd *ast, t_shell *shell);
 t_cmd		*close_subshell(t_token **token, t_cmd *ast);
-t_cmd	*new_cmd(int cmdtype, t_shell *shell);
+t_cmd		*new_cmd(int cmdtype, t_shell *shell);
 t_shell		*init_shell_data(char **envp);
+char		**create_cmd_array(t_token *token);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);
