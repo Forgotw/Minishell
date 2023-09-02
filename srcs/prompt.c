@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 17:29:44 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:52:43 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	prompt(char **envp)
 			syntax_checker(tokens);
 			ast = create_ast(tokens, envp);
 			printf("AST DONE %p!\n", ast);
-			executor_print(ast);
+			//executor_print(ast);
+			executor(ast);
 			free_token(tokens);
 			ast_free(ast);
 		}

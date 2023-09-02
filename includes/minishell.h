@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 15:05:14 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:53:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ typedef struct s_shell
 	char		oldpath[1024];
 	char		homepath[1024];
 	int			status;
+	int			pipefd[2];
+	int			prev_pipe_in;
 	t_cmd		*ast;
 }				t_shell;
 
@@ -178,6 +180,11 @@ char		**create_cmd_array(t_token *token);
 /* REDIR */
 t_token		*join_redir_token(t_token *token);
 int			assign_redir(t_token *token, t_cmd *node);
+/* EXECUTOR */
+void 		fork_and_pipe(t_cmd *node, int *status);
+int			executor(t_cmd *node);
+int			is_builtin(char	*cmd);
+int			exec_builtin(char **cmd, t_shell *shell);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);
@@ -189,6 +196,12 @@ int			export(char **cmd, t_shell *shell);
 int			unset(char	**cmd, t_shell *shell);
 int			var_identifier_error(char *str, char *cmd);
 int			my_execve(t_cmd *node, int *status);
+int			change_directory(char **cmd, t_shell *shell);
+int			my_echo(char **cmd, t_shell *shell);
+int			my_exit(char **cmd, t_shell *shell);
+int			print_working_directory(char **cmd, t_shell *shell);
+int			env(char **cmd, t_shell *shell);
+
 int			prompt(char **envp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 15:10:07 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 16:30:49 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	here_doc(t_cmd *node, t_token *token)
 		return (-1);
 	here_doc_write(token, file);
 	close(file);
-	node->infile = open (".here_doc", O_RDONLY);
+	node->infile = open (".heredoc", O_RDONLY);
 	if (node->infile < 0)
 	{
 		unlink(".heredoc");
