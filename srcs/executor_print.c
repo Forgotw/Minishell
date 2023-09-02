@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:10 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 12:14:49 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 15:06:32 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ t_cmd	*execute_cmd_print(t_cmd *ast)
 		ast->cmd = create_cmd_array(ast->tok);
 	}
 	if (ast->redir)// faire une fonction pour expand redirtok et redir
+	{
 		ast->redir = expand_token(ast->redir, ast->shell);
+		ast->redir = join_redir_token(ast->redir);
+	}
 	print_cmd(ast, "            \033[37;1m");
 	printf("\033[0m");
 	if (ast->next)

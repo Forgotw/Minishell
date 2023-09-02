@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:32:12 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 12:32:38 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 13:31:27 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	**create_cmd_array(t_token *token)
 	int		i;
 
 	i = 0;
+	cmd_array = NULL;
 	while (token)
 	{
 		if (token->join && token->next)

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:04:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:32:19 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 13:21:51 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ t_cmd	*navigate_cmd(t_cmd *ast)
 int	ast_free(t_cmd *ast)
 {
 	printf("\n\n\n\n");
+	if (ast && ast->shell)
+	{
+		free_array(ast->shell->env);
+		free(ast->shell);
+	}
 	while (ast)
 	{
 		if (ast->type == SUBSHELL)

@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/01 17:27:52 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/02 14:22:39 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS = srcs/lexer.c\
 		srcs/free.c\
 		srcs/prompt.c\
 		srcs/cmd.c\
+		srcs/redir.c\
 		srcs/shell.c\
 		srcs/mslib/token.c\
 		\
@@ -58,12 +59,11 @@ LIBFTS = -L $(LIBFT_DIR) -l ft
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 SANITIZE = -fsanitize=address -g3
-SANITIZETHREAD = -fsanitize=thread -g3
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 
 LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
-# -------  GARDER POUR ECOLE -------
+# -------  GARDER POUR MAISON -------
 #LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
 
 # COLORS #
@@ -79,7 +79,7 @@ BLUE = \033[0;34m
 
 $(NAME): $(LIBFT) $(OBJS)
 				@
-				@$(CC) $(FLAGS) ${LDLIBS} -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME)
+				@$(CC) $(FLAGS) $(SANITIZE) ${LDLIBS} -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME)
 				@echo "$(GREEN)$(NAME) compiled!$(DEFAULT)"
 
 

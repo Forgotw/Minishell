@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 11:57:38 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 14:39:32 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,21 @@ t_token	*expand_return(t_token *token, t_shell *shell)
 t_token	*expand_var(t_token **head, t_token *token, t_shell *shell)
 {
 	int	i;
-	int	y;
+	int	len;
 
-	y = 0;
 	i = 0;
-	printf(" TEST EXPAND VAR 1\n");
 	print_export(shell->env);
 	if (!ft_strcmp(token->str, "?") || !ft_strcmp(token->str, "$"))
 		return (expand_return(token, shell));
 	while (shell->env[i])
 	{
-		printf(" TEST EXPAND VAR WHILE: shell->env[i]: %s    token->str: %s\n", shell->env[i], token->str);
 		if (!ft_strncmp(shell->env[i], token->str, ft_strlen(token->str)))
-			//&& shell->env[i][ft_strlen(token->str)] == '=')
 		{
-			printf("       \033[33;1mFOUND ENV VARIABLE:\n     %s\n\033[0m\n", shell->env[i]);
+			len = ft_strlen(token->str);
+			if (shell->env[i][len] && shell->env[i][len] == '=')
+				len++;
 			free(token->str);
-			token->str = ft_strdup(&shell->env[i][ft_strlen(token->str) + 1]);
+			token->str = ft_strdup(&shell->env[i][len]);
 			printf("NEW TOKEN STR: %s\n", token->str);
 			token = token->next;
 			return (token);

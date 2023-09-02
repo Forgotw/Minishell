@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 16:05:21 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 14:54:31 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ t_token	*try_join_token(t_token **head, t_token *token, t_word *word)
 	return (token);
 }
 
+t_token	*empty_word_token(t_token *token)
+{
+	token->type = WORD;
+	free(token->str);
+	token->str = ft_strdup("\0");
+	token = token->next;
+	return (token);
+}
+
 /* Si on trouve un token quote ou dquote */
 /* Tant qu'on trouve pas ce token exact */
 /* On join les tokens en fonction du type de quote */
@@ -46,6 +55,8 @@ t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
 {
 	word->q_state = token->type;
 	del_token(head, &token);
+	if (token->type == word->q_state)
+		return (empty_word_token(token));
 	while (token && word->q_state > 0)
 	{
 		if (token->type == word->q_state)

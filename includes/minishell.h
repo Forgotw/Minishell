@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 12:11:06 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 15:05:14 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
@@ -174,6 +175,9 @@ t_cmd		*close_subshell(t_token **token, t_cmd *ast);
 t_cmd		*new_cmd(int cmdtype, t_shell *shell);
 t_shell		*init_shell_data(char **envp);
 char		**create_cmd_array(t_token *token);
+/* REDIR */
+t_token		*join_redir_token(t_token *token);
+int			assign_redir(t_token *token, t_cmd *node);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);

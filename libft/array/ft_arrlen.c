@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 18:39:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/22 18:40:30 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 13:30:56 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_arrlen(char **arr)
 	size_t	i;
 
 	i = 0;
+	if (arr == NULL)
+		return (i);
 	while (arr[i] != NULL)
 		i++;
 	return (i);
