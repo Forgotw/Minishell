@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler@student.42.fr <lsohler>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/24 14:36:27 by lsohler@stu      ###   ########.fr       */
+/*   Updated: 2023/09/02 18:04:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_token	*init_tokens(char *arg)
 		i += word->tok_size;
 		token = token->next;
 	}
-	print_tokens(token_start);
+	// print_tokens(token_start);
 	token_refiner(&token_start, word);
 	free_array((char **)word->sep);
 	free(word);

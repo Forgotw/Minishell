@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/02 17:53:08 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/02 18:22:53 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS = srcs/lexer.c\
 		srcs/shell.c\
 		srcs/pipe.c\
 		srcs/executor.c\
+		srcs/path.c\
 		srcs/mslib/token.c\
 		\
 		srcs/builtin/echo.c\
@@ -60,7 +61,7 @@ LIBFTS = -L $(LIBFT_DIR) -l ft
 # UTILS #
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
-SANITIZE = -fsanitize=address -g3
+#SANITIZE = -fsanitize=address -g3
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 

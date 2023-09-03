@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 12:53:01 by lsohler           #+#    #+#              #
-#    Updated: 2023/08/27 15:42:45 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/02 18:30:41 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRCS		= \
 			str/ft_strdup.c\
 			str/ft_striteri.c\
 			str/ft_strjoin.c\
+			str/ft_strjoin_nf.c\
 			str/ft_strlcat.c\
 			str/ft_strlcpy.c\
 			str/ft_strlen.c\

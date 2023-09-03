@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 14:54:31 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 18:03:00 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ void	token_refiner(t_token **head, t_word *word)
 			token = try_join_token(head, token, word);
 		else if (token)
 			token = token->next;
-		printf("REFINE TEST\n");
+		// printf("REFINE TEST\n");
 	}
 	token_join_space(head, *head);
-	printf("END OF REFINE\n");
+	// printf("END OF REFINE\n");
 }

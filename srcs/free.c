@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:04:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 13:21:51 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 16:29:04 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	free_cmd(t_cmd *ast)
 {
-	printf("                          \033[31;1mFree: %p\n\033[0m", ast);
+	// printf("                          \033[31;1mFree: %p\n\033[0m", ast);
 	if (!ast)
 		return ;
 	if (ast->cmd)
 		free_array(ast->cmd);
-	if (ast->path)
+	if (ast->path != NULL)
 		free(ast->path);
 	if (ast->tok)
 		free_token(ast->tok);
@@ -76,7 +76,7 @@ t_cmd	*navigate_cmd(t_cmd *ast)
 
 int	ast_free(t_cmd *ast)
 {
-	printf("\n\n\n\n");
+	// printf("\n\n\n\n");
 	if (ast && ast->shell)
 	{
 		free_array(ast->shell->env);
@@ -89,6 +89,6 @@ int	ast_free(t_cmd *ast)
 		else if (ast->type == CMD || ast->type == 0)
 			ast = navigate_cmd(ast);
 	}
-	printf("   OOOOO finish free OOOOO\n");
+	// printf("   OOOOO finish free OOOOO\n");
 	return (0);
 }

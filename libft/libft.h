@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 16:55:49 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 13:37:10 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/02 18:28:49 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s1);
 char	*ft_strndup(char const *s, int len);
 char	*ft_strjoin(char *left_str, char *buff);
+char	*ft_strjoin_nf(char *left_str, char *buff);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_strcmp(char *s1, char *s2);

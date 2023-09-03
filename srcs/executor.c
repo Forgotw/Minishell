@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 17:56:39 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 16:43:23 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ int	my_execve(t_cmd *node, int *status)
 	else
 	{
 		if (node->pid == 0)
+		{
+			// printf("TEST BEFORE EXECVE\n");
 			return (execve(node->path, node->cmd, node->shell->env));
-		else
-			perror("Minishell fork error");
+		}
+		// else
+		// 	perror("Minishell fork error");
 	}
 	return (-1);
 }
@@ -45,23 +48,31 @@ int	execute_cmd(t_cmd *node, int *status)
 		node->redir = expand_token(node->redir, node->shell);
 		node->redir = join_redir_token(node->redir);
 	}
+	if (!is_builtin(node->cmd[0]))
+		node->shell->status = get_path_type(node->cmd, node);
+	if (node->shell->status)
+		return (node->shell->status);
+	//printf("THE PATH IS: %s\n", node->path);
 	node->shell->status = assign_redir(node->redir, node);
+	if (node->shell->status)
+		return (node->shell->status);
 	if (!node->shell->status)
 	{
 		fork_and_pipe(node, status);
-		node->shell->status = my_execve(node, status);
-		if (node->pid > 0 && node->linktype == PIPE)
+		if (node->pid == 0)
 		{
-			if (node->shell->prev_pipe_in != 0)
-				close(node->shell->prev_pipe_in);
-			if (node->linktype == PIPE)
-			{
-				node->shell->prev_pipe_in = node->shell->pipefd[0];
-				close(node->shell->pipefd[1]);
-			}
-			else
-				node->shell->prev_pipe_in = STDIN;
+			//fprintf(stderr, "BEFORE FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
+			redir_child(node, status);
+			//fprintf(stderr, "FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
+			node->shell->status = my_execve(node, status);
+			if (node->shell->status < 0)
+				perror("execve error");
 		}
+		else
+		{
+			redir_prev_pipe_in(node);
+		}
+		waitpid(node->pid, NULL, *status);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 17:53:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 14:38:42 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,10 @@ char		**create_cmd_array(t_token *token);
 /* REDIR */
 t_token		*join_redir_token(t_token *token);
 int			assign_redir(t_token *token, t_cmd *node);
+void		redir_prev_pipe_in(t_cmd *node);
+void		redir_child(t_cmd *node, int *status);
+void		fork_and_pipe(t_cmd *node, int *status);
 /* EXECUTOR */
-void 		fork_and_pipe(t_cmd *node, int *status);
 int			executor(t_cmd *node);
 int			is_builtin(char	*cmd);
 int			exec_builtin(char **cmd, t_shell *shell);
@@ -201,6 +203,7 @@ int			my_echo(char **cmd, t_shell *shell);
 int			my_exit(char **cmd, t_shell *shell);
 int			print_working_directory(char **cmd, t_shell *shell);
 int			env(char **cmd, t_shell *shell);
+int			get_path_type(char **cmd, t_cmd *node);
 
 int			prompt(char **envp);
 
