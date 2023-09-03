@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 18:00:45 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:03:45 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,15 +146,13 @@ t_cmd	*assign_link(t_token **token, t_cmd *ast, t_shell *shell)
 	return (ast);
 }
 
-t_cmd	*create_ast(t_token *token, char **envp)
+t_cmd	*create_ast(t_token *token, t_shell *shell)
 {
 	t_cmd	*ast;
 	t_cmd	*head;
-	t_shell	*shell;
 
 	head = NULL;
 	ast = NULL;
-	shell = init_shell_data(envp);
 	while (token)
 	{
 		//printf("Address: %p\n", ast);

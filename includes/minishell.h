@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 14:38:42 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 18:12:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ t_token		*expand_var(t_token **head, t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_token		*expand_return(t_token *token, t_shell *shell);
 /* AST */
-t_cmd		*create_ast(t_token *token, char **envp);
+t_cmd		*create_ast(t_token *token, t_shell *shell);
 t_cmd		*create_subshell(t_token **token, t_cmd *ast, t_shell *shell);
 t_cmd		*close_subshell(t_token **token, t_cmd *ast);
 t_cmd		*new_cmd(int cmdtype, t_shell *shell);
@@ -186,7 +186,7 @@ void		fork_and_pipe(t_cmd *node, int *status);
 /* EXECUTOR */
 int			executor(t_cmd *node);
 int			is_builtin(char	*cmd);
-int			exec_builtin(char **cmd, t_shell *shell);
+int			exec_builtin(char **cmd, t_shell *shell, t_cmd *node);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);

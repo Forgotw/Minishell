@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 16:43:23 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:38:24 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ int	my_execve(t_cmd *node, int *status)
 	(void)status;
 
 	if (is_builtin(node->cmd[0]))
-		return (exec_builtin(node->cmd, node->shell));
+		return (exec_builtin(node->cmd, node->shell, node));
 	else
 	{
 		if (node->pid == 0)
 		{
-			// printf("TEST BEFORE EXECVE\n");
 			return (execve(node->path, node->cmd, node->shell->env));
 		}
 		// else
@@ -35,7 +34,7 @@ int	my_execve(t_cmd *node, int *status)
 /* Redir file */
 /* Expand join et creer cmd array*/
 /* fork sauf si builtin */
-
+	
 int	execute_cmd(t_cmd *node, int *status)
 {
 	if (node->tok)
@@ -61,6 +60,7 @@ int	execute_cmd(t_cmd *node, int *status)
 		fork_and_pipe(node, status);
 		if (node->pid == 0)
 		{
+			// exit (fprintf(stderr, "EXITING CHILD PROCESS\n"));
 			//fprintf(stderr, "BEFORE FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
 			redir_child(node, status);
 			//fprintf(stderr, "FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
@@ -83,9 +83,11 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 
 	if (node->subshell)
 	{
-		// node->pid = fork();
-		// if (node->pid == 0)
-		node = node->subshell;
+		node->pid = fork();
+		if (node->pid == 0)
+			node = node->subshell;
+		else
+			waitpid(node->pid, NULL, *status);
 	}
 	return (node);
 }
@@ -97,17 +99,25 @@ t_cmd	*nav_cmd(t_cmd *node, int *status)
 		node = node->next;
 	else
 	{
-		while (node)
+		if (node->upshell)
 		{
-			// if (node->pid == 0)
-			// 	kill(node->pid, SIGTERM);
-			node = node->upshell;
-			if (node && node->next)
-			{
+			exit (0);
+			if (node->next)
 				node = node->next;
-				break ;
-			}
 		}
+		else
+			return (NULL);
+		// while (node)
+		// {
+		// 	// if (node->pid == 0)
+		// 	// 	kill(node->pid, SIGTERM);
+		// 	node = node->upshell;
+		// 	if (node && node->next)
+		// 	{
+		// 		node = node->next;
+		// 		break ;
+		// 	}
+		// }
 	}
 	return (node);
 }
@@ -117,12 +127,13 @@ int	executor(t_cmd *node)
 	int	status;
 
 	status = 0;
-	while (node)
+	if (node)
 	{
 		if (node->type == SUBSHELL)
 			node = nav_subshell(node, &status);
 		else if (node->type == CMD || node->type == 0)
 			node = nav_cmd(node, &status);
+		executor(node);
 	}
 	return (0);
 }

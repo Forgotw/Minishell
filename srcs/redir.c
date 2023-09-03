@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 16:30:49 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:42:40 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,16 @@ int	assign_redir(t_token *token, t_cmd *node)
 {
 	while (token)
 	{
-		if (token->type == D_L_REDIR)
+		fprintf(stdout, "ASSIGN REDIR    AND OPEN FILE: %s type: %i join:%i\n", token->str, token->type, token->join);
+		if (token->redir == D_L_REDIR)
 			here_doc(node, token);
-		else if (token->type == L_REDIR)
-			node->infile = open(token->next->str, O_RDONLY);
-		else if (token->type == R_REDIR)
-			node->outfile = open(token->next->str,
+		else if (token->redir == L_REDIR)
+			node->infile = open(token->str, O_RDONLY);
+		else if (token->redir == R_REDIR)
+			node->outfile = open(token->str,
 					O_CREAT | O_RDWR | O_TRUNC, 0777);
-		else if (token->type == D_R_REDIR)
-			node->outfile = open(token->next->str,
+		else if (token->redir == D_R_REDIR)
+			node->outfile = open(token->str,
 					O_CREAT | O_RDWR | O_APPEND, 0777);
 		if (node->infile < 0 || node->outfile < 0)
 			return (open_error());

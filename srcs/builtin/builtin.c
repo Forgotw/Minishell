@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:48:11 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 16:25:27 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 17:40:11 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,22 @@ int	is_builtin(char	*cmd)
 	return (0);
 }
 
-int	exec_builtin(char **cmd, t_shell *shell)
+int	exec_builtin(char **cmd, t_shell *shell, t_cmd *node)
 {
 	if (!cmd)
 		return (0);
 	if (!ft_strcmp("cd", cmd[0]))
 		shell->status = change_directory(cmd, shell);
 	if (!ft_strcmp("echo", cmd[0]))
-		shell->status = my_echo(cmd, shell);
+	{
+		if (node->linktype == PIPE)
+		{
+			if (node->pid == 0)
+				exit (node->shell->status = my_echo(cmd, shell));
+		}
+		else
+			shell->status = my_echo(cmd, shell);
+	}
 	if (!ft_strcmp("env", cmd[0]))
 		shell->status = env(cmd, shell);
 	if (!ft_strcmp("exit", cmd[0]))

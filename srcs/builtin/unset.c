@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:32:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 17:13:15 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 18:56:20 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	find_and_del_var(char *str, t_shell *shell)
 	while (shell->env[i])
 	{
 		if (!ft_strncmp(str, shell->env[i], len)
-			&& (shell->env[i][len + 1] == '\0'
-			|| shell->env[i][len + 1] == '='))
+			&& (shell->env[i][len] == '\0'
+			|| shell->env[i][len] == '='))
 		{
 			del_var(&shell->env[i]);
 			return ;

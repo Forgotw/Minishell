@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:32:58 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/27 17:42:51 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 18:16:21 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ int	export_vars(char **cmd, t_shell *shell)
 	return (ret);
 }
 
-int	print_export(char **env)
+int	print_export(char **shell_env)
 {
 	int		i;
 	char	**sorted;
 
 	i = 0;
-	if (!env)
+	if (!shell_env)
 		return (1);
-	sorted = ft_arrdup(env);
+	sorted = ft_arrdup(shell_env);
 	ft_arrsort(sorted);
 	while (sorted[i])
 	{

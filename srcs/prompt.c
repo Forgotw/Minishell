@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 15:53:54 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:27:37 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ int	prompt(char **envp)
 	char	*input = NULL;
 	t_token *tokens;
 	t_cmd	*ast;
+	t_shell	*shell;
+
+	shell = init_shell_data(envp);
 	// pid_t	wpid;
 	// int		status;
 	while (1)
@@ -39,7 +42,7 @@ int	prompt(char **envp)
 			// printf("NEW       TOKEN      TYPE\n");
 			//print_tokens(tokens);
 			syntax_checker(tokens);
-			ast = create_ast(tokens, envp);
+			ast = create_ast(tokens, shell);
 			//printf("AST DONE %p!\n", ast);
 			//executor_print(ast);
 			executor(ast);
@@ -49,11 +52,6 @@ int	prompt(char **envp)
 			ast_free(ast);
 		}
 		add_history(input);
-		if (!ft_strncmp(input, "exit", 4))
-		{
-			free(input);
-			break;
-		}
 	}
 	printf("after while(1)\n");
 	exit (1);
