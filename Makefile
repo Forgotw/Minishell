@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/02 18:22:53 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/05 20:14:51 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ FLAGS = -Wall -Werror -Wextra
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 
-LDLIBS		:= -lreadline -L ${HOME}/.brew/opt/readline/lib -I ${HOME}/.brew/opt/readline/include
+LDLIBS		:= -lreadline -L/Users/lsohler/.brew/Cellar/readline/8.2.1/lib/ -I/Users/lsohler/.brew/Cellar/readline/8.2.1/include/readline/
 # -------  GARDER POUR MAISON -------
 #LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
 
@@ -82,7 +82,7 @@ BLUE = \033[0;34m
 
 $(NAME): $(LIBFT) $(OBJS)
 				@
-				@$(CC) $(FLAGS) $(SANITIZE) ${LDLIBS} -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME)
+				@$(CC) $(FLAGS) $(SANITIZE) -I $(INCLUDES) $(LIBFTS) $(OBJS) -o $(NAME) ${LDLIBS}
 				@echo "$(GREEN)$(NAME) compiled!$(DEFAULT)"
 
 

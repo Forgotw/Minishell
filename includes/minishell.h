@@ -6,18 +6,18 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 18:12:44 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/05 20:13:31 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <sys/wait.h>
 # include <curses.h>
 # include <term.h>
@@ -204,7 +204,7 @@ int			my_exit(char **cmd, t_shell *shell);
 int			print_working_directory(char **cmd, t_shell *shell);
 int			env(char **cmd, t_shell *shell);
 int			get_path_type(char **cmd, t_cmd *node);
-
 int			prompt(char **envp);
+extern void	rl_replace_line(const char *str, int i);
 
 #endif

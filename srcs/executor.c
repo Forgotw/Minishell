@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 19:38:24 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/05 20:44:35 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	execute_cmd(t_cmd *node, int *status)
 		{
 			redir_prev_pipe_in(node);
 		}
+		//if (node->linktype == AND || node->linktype == OR)
 		waitpid(node->pid, NULL, *status);
 	}
 	return (0);
@@ -87,7 +88,13 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 		if (node->pid == 0)
 			node = node->subshell;
 		else
+		{
 			waitpid(node->pid, NULL, *status);
+			if (node->next)
+				node = node->next;
+			else if (node->upshell)
+				exit (0);
+		}
 	}
 	return (node);
 }
@@ -102,8 +109,6 @@ t_cmd	*nav_cmd(t_cmd *node, int *status)
 		if (node->upshell)
 		{
 			exit (0);
-			if (node->next)
-				node = node->next;
 		}
 		else
 			return (NULL);
