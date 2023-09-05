@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/02 18:22:53 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/05 18:15:05 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ LIBFTS = -L $(LIBFT_DIR) -l ft
 
 # UTILS #
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g3
 #SANITIZE = -fsanitize=address -g3
 RM = rm -rf
 

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 19:38:24 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/05 18:20:07 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@ int	my_execve(t_cmd *node, int *status)
 {
 	(void)status;
 
+	// fprintf(stdout, "\n\nJE RENTRE DANS MY EXECVE MAINTENANT\n\n");
 	if (is_builtin(node->cmd[0]))
 		return (exec_builtin(node->cmd, node->shell, node));
 	else
 	{
 		if (node->pid == 0)
 		{
-			return (execve(node->path, node->cmd, node->shell->env));
+			fprintf(stdout, "\n\nJE RENTRE DANS MY EXECVE MAINTENANT\n\n");
+			exit (1);
+			execve(node->path, node->cmd, node->shell->env);
 		}
 		// else
 		// 	perror("Minishell fork error");
@@ -52,27 +55,32 @@ int	execute_cmd(t_cmd *node, int *status)
 	if (node->shell->status)
 		return (node->shell->status);
 	//printf("THE PATH IS: %s\n", node->path);
-	node->shell->status = assign_redir(node->redir, node);
-	if (node->shell->status)
-		return (node->shell->status);
+	// node->shell->status = assign_redir(node->redir, node);
 	if (!node->shell->status)
 	{
 		fork_and_pipe(node, status);
 		if (node->pid == 0)
 		{
+			// fprintf(stdout, "IN SUPPOSED CHILD PID: %i\n", node->pid);
 			// exit (fprintf(stderr, "EXITING CHILD PROCESS\n"));
 			//fprintf(stderr, "BEFORE FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
-			redir_child(node, status);
+			// redir_child(node, status);
 			//fprintf(stderr, "FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
 			node->shell->status = my_execve(node, status);
 			if (node->shell->status < 0)
+			{
 				perror("execve error");
+				exit (-1);
+			}
 		}
 		else
 		{
+			// fprintf(stdout, "IN SUPPOSED PARENT PID: %i\n", node->pid);
 			redir_prev_pipe_in(node);
 		}
-		waitpid(node->pid, NULL, *status);
+		// fprintf(stdout, "IN SUPPOSED PARENT 2 PID: %i\n", node->pid);
+		//if (node->linktype == AND || node->linktype == OR)
+		waitpid(node->pid, NULL, 0);
 	}
 	return (0);
 }

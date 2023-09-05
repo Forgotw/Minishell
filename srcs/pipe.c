@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 17:00:27 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 19:09:32 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/05 18:20:42 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,23 @@ void	fork_and_pipe(t_cmd *node, int *status)
 	if (node->linktype == PIPE)
 		if (pipe(node->shell->pipefd) == -1)
 			perror("pipe error");
-	if ((!ft_strcmp("echo", node->cmd[0]) && node->linktype == PIPE) || !is_builtin(node->cmd[0]))
+	if (((!ft_strcmp("echo", node->cmd[0]) && node->linktype == PIPE)) || !is_builtin(node->cmd[0]))
 	{
 		node->pid = fork();
 		if (node->pid < 0)
 			perror("fork");
+		fprintf(stdout, "\n\n FPTINTF JE FORK MAINTENANT\n\n");
+		printf("\n\nJE FORK MAINTENANT\n\n");
+		if (node->pid == 0)
+		{
+			close(STDIN_FILENO);
+			printf("\n\nAFTER CLOSE\n\n");
+		}
+		else
+		{
+			fprintf(stdout, "IN SUPPOSED PARENT PID: %i\n", node->pid);
+			waitpid(node->pid, NULL, 0);
+		}
 	}
 }
 
@@ -30,18 +42,23 @@ void	redir_child(t_cmd *node, int *status)
 {
 	(void)status;
 	if (node->infile)
+	{
 		dup2(node->infile, STDIN_FILENO);
-	else if (node->shell->prev_pipe_in != -1)
+	}
+	else
+	{
 		dup2(node->shell->prev_pipe_in, STDIN_FILENO);
+	}
 	if (node->outfile)
+	{
 		dup2(node->outfile, STDOUT_FILENO);
+	}
 	else if (node->linktype == PIPE)
 	{
 		dup2(node->shell->pipefd[1], STDOUT_FILENO);
-		// close(node->shell->pipefd[0]);
 	}
-	else
-		dup2(STDOUT_FILENO, STDOUT_FILENO);
+	// else
+	// 	dup2(STDOUT_FILENO, STDOUT_FILENO);
 }
 
 void	redir_prev_pipe_in(t_cmd *node)

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 18:04:03 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/05 15:17:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_token	*expand_var(t_token **head, t_token *token, t_shell *shell)
 	int	len;
 
 	i = 0;
-	print_export(shell->env);
+	// print_export(shell->env);
 	if (!ft_strcmp(token->str, "?") || !ft_strcmp(token->str, "$"))
 		return (expand_return(token, shell));
 	while (shell->env[i])
