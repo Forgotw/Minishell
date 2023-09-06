@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:17:44 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/05 20:30:13 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 11:54:17 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_cmd	*close_subshell(t_token **token, t_cmd *ast)
 
 t_shell	*init_shell_data(char **envp)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = malloc(sizeof(t_shell));
 	shell->env = ft_arrdup(envp);

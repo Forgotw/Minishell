@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:31:13 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/29 17:25:26 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 11:53:03 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ int	change_directory(char **cmd, t_shell *shell)
 	getcwd(shell->oldpath, 1024);
 	if (!cmd[1] || cmd[1][0] == '\0')
 	{
-		if (chdir(shell->homepath))
+		if (chdir(get_env_variable("HOME", shell)))
 		{
-			perror("Minishell cd:");
-			return (-1);
+			ft_putendl_fd("Minishell: cd: HOME not set", STDERR_FILENO);
+			return (1);
 		}
 	}
 	else
 	{
 		if (chdir(cmd[1]))
 		{
-			perror("Minishell cd:");
-			return (-1);
+			perror("Minishell: cd:");
+			return (1);
 		}
 	}
 	getcwd(shell->path, 1024);

@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/05 20:14:51 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/06 13:27:44 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS = srcs/lexer.c\
 		srcs/builtin/env.c\
 		srcs/builtin/exit.c\
 		srcs/builtin/builtin.c\
+		srcs/builtin/fork.c\
 
 OBJS = $(SRCS:.c=.o)
 

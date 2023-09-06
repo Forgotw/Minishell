@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/05 20:13:31 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 12:21:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ typedef struct s_shell
 	char		**env;
 	char		path[1024];
 	char		oldpath[1024];
-	char		homepath[1024];
 	int			status;
 	int			pipefd[2];
 	int			prev_pipe_in;
@@ -170,6 +169,7 @@ t_token		*token_dol_type(t_token **head, t_token *token);
 t_token		*expand_var(t_token **head, t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_token		*expand_return(t_token *token, t_shell *shell);
+char		*get_env_variable(char *var, t_shell *shell);
 /* AST */
 t_cmd		*create_ast(t_token *token, t_shell *shell);
 t_cmd		*create_subshell(t_token **token, t_cmd *ast, t_shell *shell);
@@ -204,6 +204,12 @@ int			my_exit(char **cmd, t_shell *shell);
 int			print_working_directory(char **cmd, t_shell *shell);
 int			env(char **cmd, t_shell *shell);
 int			get_path_type(char **cmd, t_cmd *node);
+int			fork_echo(char **cmd, t_cmd *node, t_shell *shell);
+int			fork_export(char **cmd, t_cmd *node, t_shell *shell);
+int			fork_pwd(char **cmd, t_cmd *node, t_shell *shell);
+int			fork_builtin(char **cmd, t_cmd *node, t_shell *shell,
+				int (*function)(char **, t_shell *));
+
 int			prompt(char **envp);
 extern void	rl_replace_line(const char *str, int i);
 

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:48:11 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 17:40:11 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 12:38:04 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,18 @@ int	exec_builtin(char **cmd, t_shell *shell, t_cmd *node)
 	if (!cmd)
 		return (0);
 	if (!ft_strcmp("cd", cmd[0]))
-		shell->status = change_directory(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, change_directory);
 	if (!ft_strcmp("echo", cmd[0]))
-	{
-		if (node->linktype == PIPE)
-		{
-			if (node->pid == 0)
-				exit (node->shell->status = my_echo(cmd, shell));
-		}
-		else
-			shell->status = my_echo(cmd, shell);
-	}
+		shell->status = fork_builtin(cmd, node, shell, my_echo);
 	if (!ft_strcmp("env", cmd[0]))
-		shell->status = env(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, env);
 	if (!ft_strcmp("exit", cmd[0]))
-		shell->status = my_exit(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, my_exit);
 	if (!ft_strcmp("export", cmd[0]))
-		shell->status = export(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, export);
 	if (!ft_strcmp("pwd", cmd[0]))
-		shell->status = print_working_directory(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, print_working_directory);
 	if (!ft_strcmp("unset", cmd[0]))
-		shell->status = unset(cmd, shell);
+		shell->status = fork_builtin(cmd, node, shell, unset);
 	return (0);
 }

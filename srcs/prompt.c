@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/05 20:47:55 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 13:29:13 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	prompt(char **envp)
 		input = readline("Minishell$ ");
 		if (!input)
 			exit (1);
-		else
+		else if (input[0] != '\0')
 		{
 			tokens = init_tokens(input);
 			// printf("NEW       TOKEN      TYPE\n");
@@ -94,8 +94,8 @@ int	prompt(char **envp)
 			// 	wpid = wait(&status);
 			free_token(tokens);
 			ast_free(ast);
+			add_history(input);
 		}
-		add_history(input);
 	}
 	printf("after while(1)\n");
 	exit (1);
