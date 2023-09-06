@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 13:29:13 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 18:50:15 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	prompt(char **envp)
 			exit (1);
 		else if (input[0] != '\0')
 		{
+			shell->status = TRUE;
 			tokens = init_tokens(input);
 			// printf("NEW       TOKEN      TYPE\n");
 			//print_tokens(tokens);

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 14:37:56 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 18:46:10 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,15 @@ int	execute_cmd(t_cmd *node, int *status)
 
 t_cmd	*nav_subshell(t_cmd *node, int *status)
 {
-	if (node->subshell)
+	if (node->shell->status == FALSE)
+	{
+		boolean_link(node, status);
+		if (node->next)
+			node = node->next;
+		else if (node->upshell)
+			exit (0);
+	}
+	if (node->subshell && node->shell->status == TRUE)
 	{
 		fprintf(stdout, "BEFORE FORKING SUBSHELL\n");
 		node->pid = fork();
@@ -97,23 +105,92 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 			if (node->next)
 				node = node->next;
 			else if (node->upshell)
-				exit (*status);
+				exit (0);
 			else
 				return (NULL);
 		}
 	}
 	return (node);
+	// if (node->subshell)
+	// {
+	// 	fprintf(stdout, "BEFORE CHEKING STATUS FOR FORK\n");
+	// 	if (node->shell->status == TRUE)
+	// 	{
+	// 		fprintf(stdout, "BEFORE FORKING SUBSHELL\n");
+	// 		node->pid = fork();
+	// 	}
+	// 	if (node->shell->status == TRUE && node->pid == 0)
+	// 	{
+	// 		// fprintf(stdout, "IN NAV CMD CHILD, Before node = node->subshell: node->pid: %i\n", node->pid);
+	// 		fprintf(stdout, "BEFORE GOING SUBSHELL\n");
+	// 		node = node->subshell;
+	// 	}
+	// 	else
+	// 	{
+	// 		// fprintf(stdout, "IN NAV CMD PARENT Before waitpid: node->pid: %i\n", node->pid);
+	// 		if (node->shell->status == TRUE)
+	// 		{
+	// 			fprintf(stdout, "AFTER CHECKING STATUS FOR WAITPID\n");
+	// 			waitpid(node->pid, status, 0);
+	// 		}
+	// 		// fprintf(stdout, "IN NAV CMD PARENT , After waitpid: node->pid: %i\n", node->pid);
+	// 		if (node->next)
+	// 		{
+	// 			fprintf(stdout, "GOING ON NEXT NODE\n");
+	// 			node = node->next;
+	// 		}
+	// 		else if (node->upshell)
+	// 		{
+	// 			if (node->shell->status == TRUE)
+	// 				exit (0);
+	// 			else
+	// 				node = node->upshell;
+	// 		}
+	// 		else
+	// 			return (NULL);
+	// 	}
+	// }
+	// fprintf(stdout, "LAST RETURN NODE\n");
+	// return (node);
 }
 
 t_cmd	*nav_cmd(t_cmd *node, int *status)
 {
-	//if (node->linktype == AND || node->linktype == OR && WIFEXITED(node->shell->status))
-	execute_cmd(node, status);
-	fprintf(stdout, "\033[35;1mstatus: %i\033[0m\n", *status);
-	if (WIFEXITED(*status))
-		ret_status = WEXITSTATUS(*status);
-	fprintf(stdout, "\033[35;1mWEXITSTATUS(status): %i\033[0m\n", ret_status);
-	fprintf(stdout, "\033[35;1mnode->shell->status: %i\033[0m\n", node->shell->status);
+	if (node->shell->status == TRUE)
+	{
+		execute_cmd(node, status);
+		get_ret_status(status);
+	}
+	boolean_link(node, status);
+	// if (node->shell->status == TRUE)
+	// 	execute_cmd(node, status);
+	// fprintf(stdout, "\033[35;1mstatus: %i\033[0m\n", *status);
+	// if (WIFEXITED(*status))
+	// {
+	// 	ret_status = WEXITSTATUS(*status);
+	// 	fprintf(stdout, "\033[35;1mWEXITSTATUS(status): %i\033[0m\n", ret_status);
+	// }
+	// fprintf(stdout, "\033[35;1mnode->shell->status: %i\033[0m\n", node->shell->status);
+	// if (node->linktype == AND)
+	// {
+	// 	fprintf(stdout, "\033[36;1mAND TYPE\033[0m\n");
+	// 	if ((WIFEXITED(*status) && WEXITSTATUS(*status)) || *status)
+	// 		node->shell->status = FALSE;
+	// 	else
+	// 		node->shell->status = TRUE;
+	// }
+	// else if (node->linktype == OR)
+	// {
+	// 	fprintf(stdout, "\033[36;1mOR TYPE\033[0m\n");
+	// 	if ((WIFEXITED(*status) && !WEXITSTATUS(*status)) || !*status)
+	// 		node->shell->status = FALSE;
+	// 	else
+	// 		node->shell->status = TRUE;
+	// }
+	// if (node->shell->status == 1)
+	// 	fprintf(stdout, "\033[32;1m TRUE \033[0m\n");
+	// if (node->shell->status == 0)
+	// 	fprintf(stdout, "\033[31;1m FALSE \033[0m\n");
 	if (node->next)
 		node = node->next;
 	else

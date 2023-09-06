@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:04:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 18:19:29 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 19:00:19 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	free_cmd(t_cmd *ast)
 		free_array(ast->cmd);
 	if (ast->path != NULL)
 		free(ast->path);
-	if (ast->tok)
+	if (ast->tok != NULL)
 		free_token(ast->tok);
-	if (ast->redir)
+	if (ast->redir != NULL)
 		free_token(ast->redir);
 	free(ast);
 }

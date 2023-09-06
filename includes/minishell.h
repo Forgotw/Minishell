@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 12:21:44 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 17:42:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,9 @@ void		fork_and_pipe(t_cmd *node, int *status);
 int			executor(t_cmd *node);
 int			is_builtin(char	*cmd);
 int			exec_builtin(char **cmd, t_shell *shell, t_cmd *node);
+void		boolean_link(t_cmd *node, int *status);
+int			execute_cmd(t_cmd *node, int *status);
+void		get_ret_status(int *status);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);

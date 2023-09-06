@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:17:44 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 11:54:17 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/06 15:57:43 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_shell	*init_shell_data(char **envp)
 
 	shell = malloc(sizeof(t_shell));
 	shell->env = ft_arrdup(envp);
-	shell->status = 0;
+	shell->status = TRUE;
 	shell->prev_pipe_in = -1;
 	return (shell);
 }
