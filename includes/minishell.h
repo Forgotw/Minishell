@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 17:42:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:40:53 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,21 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	char		**env;
-	char		path[1024];
-	char		oldpath[1024];
-	int			status;
-	int			pipefd[2];
-	int			prev_pipe_in;
-	t_cmd		*ast;
+	char			**env;
+	char			path[1024];
+	char			oldpath[1024];
+	int				status;
+	int				pipefd[2];
+	int				prev_pipe_in;
+	struct s_address	*collector;
 }				t_shell;
+
+typedef struct s_address
+{
+	void				*address;
+	int					type;
+	struct s_address	*next;
+}				t_address;
 
 /*   FUNCTIONS   */
 /* TOKEN UTILS */
@@ -154,9 +161,12 @@ void		token_add_back(t_token **redir, t_token *new);
 t_token		*new_tok(t_token *token, char *str, int type);
 t_token		*token_dup(t_token *token);
 t_token		*new_word(t_token *token, char *buff);
-/* FREE UTILS */
+/* FREE */
 void		free_token(t_token *token);
 int			ast_free(t_cmd *ast);
+void		free_ast(t_shell *shell);
+void		ast_address_collector(t_address **collector,
+				void *address, int type);
 /* PARSING */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
@@ -177,6 +187,8 @@ t_cmd		*close_subshell(t_token **token, t_cmd *ast);
 t_cmd		*new_cmd(int cmdtype, t_shell *shell);
 t_shell		*init_shell_data(char **envp);
 char		**create_cmd_array(t_token *token);
+t_cmd		*create_node_on_subshell(int type, t_shell *shell, t_cmd *ast);
+t_cmd		*create_node_on_next(int type, t_shell *shell, t_cmd *ast);
 /* REDIR */
 t_token		*join_redir_token(t_token *token);
 int			assign_redir(t_token *token, t_cmd *node);
@@ -207,9 +219,6 @@ int			my_exit(char **cmd, t_shell *shell);
 int			print_working_directory(char **cmd, t_shell *shell);
 int			env(char **cmd, t_shell *shell);
 int			get_path_type(char **cmd, t_cmd *node);
-int			fork_echo(char **cmd, t_cmd *node, t_shell *shell);
-int			fork_export(char **cmd, t_cmd *node, t_shell *shell);
-int			fork_pwd(char **cmd, t_cmd *node, t_shell *shell);
 int			fork_builtin(char **cmd, t_cmd *node, t_shell *shell,
 				int (*function)(char **, t_shell *));
 

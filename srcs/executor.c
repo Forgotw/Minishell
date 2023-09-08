@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 18:46:10 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/08 18:41:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,18 @@ int	execute_cmd(t_cmd *node, int *status)
 			// exit (fprintf(stderr, "EXITING CHILD PROCESS\n"));
 			//fprintf(stderr, "BEFORE FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
 			redir_child(node, status);
-			//fprintf(stderr, "FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
+			fprintf(stderr, "FILES DESCRIPTOR: cmd:%s [0]%i [1]%i\n", node->cmd[0], node->shell->pipefd[0], node->shell->pipefd[1]);
 			*status = my_execve(node, status);
 			if (status < 0)
 				perror("execve error");
 		}
 		else
 		{
+			waitpid(node->pid, status, 0);
+			fprintf(stdout, "BEFORE REDIR PREV PIPE IN IN execute_cmd\n");
 			redir_prev_pipe_in(node);
 		}
 		//if (node->linktype == AND || node->linktype == OR || node->linktype == PIPE)
-		waitpid(node->pid, status, 0);
 	}
 	return (0);
 }
@@ -90,18 +91,18 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 	}
 	if (node->subshell && node->shell->status == TRUE)
 	{
-		fprintf(stdout, "BEFORE FORKING SUBSHELL\n");
+		// fprintf(stdout, "BEFORE FORKING SUBSHELL\n");
 		node->pid = fork();
 		if (node->pid == 0)
 		{
-			fprintf(stdout, "IN NAV CMD CHILD, Before node = node->subshell: node->pid: %i\n", node->pid);
+			// fprintf(stdout, "IN NAV CMD CHILD, Before node = node->subshell: node->pid: %i\n", node->pid);
 			node = node->subshell;
 		}
 		else
 		{
-			fprintf(stdout, "IN NAV CMD PARENT Before waitpid: node->pid: %i\n", node->pid);
+			// fprintf(stdout, "IN NAV CMD PARENT Before waitpid: node->pid: %i\n", node->pid);
 			waitpid(node->pid, status, 0);
-			fprintf(stdout, "IN NAV CMD PARENT , After waitpid: node->pid: %i\n", node->pid);
+			// fprintf(stdout, "IN NAV CMD PARENT , After waitpid: node->pid: %i\n", node->pid);
 			if (node->next)
 				node = node->next;
 			else if (node->upshell)
@@ -197,7 +198,12 @@ t_cmd	*nav_cmd(t_cmd *node, int *status)
 	{
 		if (node->upshell)
 		{
-			fprintf(stdout, "IN NAV CMD, Before exit: node->upshell->pid: %i\n", node->upshell->pid);
+			if (node->upshell->linktype == PIPE)
+			{
+				fprintf(stdout, "REDIR PREV PIPE IN AFTER LAST CMD\n");
+				redir_prev_pipe_in(node);
+			}
+			fprintf(stdout, "BEFORE EXIT IN NAV CMD\n");
 			exit (0);
 		}
 		else

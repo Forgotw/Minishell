@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.c                                            :+:      :+:    :+:   */
+/*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/01 17:17:44 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 15:57:43 by lsohler          ###   ########.fr       */
+/*   Created: 2023/09/08 13:22:02 by lsohler           #+#    #+#             */
+/*   Updated: 2023/09/08 13:31:32 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,18 @@ t_cmd	*create_subshell(t_token **token, t_cmd *ast, t_shell *shell)
 	else if (ast->type == CMD)
 	{
 		// printf("          CREATING SUBSHELL ON next\n");
-		ast->next = new_cmd(SUBSHELL, shell);
-		ast->next->upshell = ast->upshell;
-		ast = ast->next;
+		// ast->next = new_cmd(SUBSHELL, shell);
+		// ast->next->upshell = ast->upshell;
+		// ast = ast->next;
+		ast = create_node_on_next(SUBSHELL, shell, ast);
 	}
 	else if (ast->type == SUBSHELL)
 	{
 		// printf("          CREATING SUBSHELL ON subshell\n");
-		ast->subshell = new_cmd(SUBSHELL, shell);
-		ast->subshell->upshell = ast;
-		ast = ast->subshell;
+		// ast->subshell = new_cmd(SUBSHELL, shell);
+		// ast->subshell->upshell = ast;
+		// ast = ast->subshell;
+		ast = create_node_on_subshell(SUBSHELL, shell, ast);
 	}
 	else if (ast->type == 0)
 		ast->type = SUBSHELL;
@@ -67,15 +69,4 @@ t_cmd	*close_subshell(t_token **token, t_cmd *ast)
 	// else if (!ast)
 	// 	printf("                    THERE IS NO AST !!!\n");
 	return (ast);
-}
-
-t_shell	*init_shell_data(char **envp)
-{
-	t_shell	*shell;
-
-	shell = malloc(sizeof(t_shell));
-	shell->env = ft_arrdup(envp);
-	shell->status = TRUE;
-	shell->prev_pipe_in = -1;
-	return (shell);
 }

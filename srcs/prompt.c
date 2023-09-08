@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 18:50:15 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/08 15:36:49 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 
 static void	handle_sigint(void)
 {
-
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
@@ -76,7 +75,6 @@ int	prompt(char **envp)
 		return (-1);
 	while (1)
 	{
-		// signal(SIGINT, &salopeva);
 		input = readline("Minishell$ ");
 		if (!input)
 			exit (1);
@@ -84,20 +82,15 @@ int	prompt(char **envp)
 		{
 			shell->status = TRUE;
 			tokens = init_tokens(input);
-			// printf("NEW       TOKEN      TYPE\n");
-			//print_tokens(tokens);
+			add_history(input);
+			free(input);
 			syntax_checker(tokens);
 			ast = create_ast(tokens, shell);
-			//printf("AST DONE %p!\n", ast);
+			free_token(tokens);
 			//executor_print(ast);
 			executor(ast);
-			// while (wpid > 0)
-			// 	wpid = wait(&status);
-			free_token(tokens);
-			ast_free(ast);
-			add_history(input);
+			free_ast(shell);
 		}
 	}
-	printf("after while(1)\n");
-	exit (1);
+	return (0);
 }

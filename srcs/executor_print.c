@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:10 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 15:40:33 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/08 12:52:22 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ t_cmd	*execute_cmd_print(t_cmd *ast)
 		ast->redir = expand_token(ast->redir, ast->shell);
 		ast->redir = join_redir_token(ast->redir);
 	}
-	if (assign_redir(ast->redir, ast))
-		perror("Minishell redir error");
+	//if (assign_redir(ast->redir, ast))
+	//	perror("Minishell redir error");
 	print_cmd(ast, "            \033[37;1m");
 	printf("\033[0m");
 	if (ast->next)
