@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
+#    By: efailla <efailla@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/10 11:11:05 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/10 20:07:16 by efailla          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ FLAGS = -Wall -Werror -Wextra
 RM = rm -rf
 
 # -------  GARDER POUR ECOLE ------- 
-LDLIBS		:= -lreadline -L/Users/lsohler/.brew/Cellar/readline/8.2.1/lib/ -I/Users/lsohler/.brew/Cellar/readline/8.2.1/include/readline/
+LDLIBS		:= -lreadline -L$(HOME)/.brew/Cellar/readline/8.2.1/lib/ -I$(HOME)/.brew/Cellar/readline/8.2.1/include/readline/
 # -------  GARDER POUR MAISON -------
 #LDLIBS      := -lreadline -L$(READLINE_DIR)/lib -I $(READLINE_DIR)/include -Wl,-rpath,$(READLINE_DIR)/lib -Llibft -lft
 
