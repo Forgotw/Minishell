@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 12:28:09 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 19:43:04 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,8 @@ void		boolean_link(t_cmd *node);
 int			execute_cmd(t_cmd *node, int *status);
 void		get_ret_status(int *status);
 t_cmd		*skip_subshell(t_cmd *node);
+/* SIGNAL */
+int			signal_setup(int mode);
 /* TEST */
 int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);

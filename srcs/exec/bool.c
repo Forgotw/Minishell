@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:13:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 12:29:30 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 19:44:56 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 
 void	get_ret_status(int *status)
 {
-	if (WIFEXITED(*status))
-		ret_status = WEXITSTATUS(*status);
-	else if (WIFSIGNALED(*status))
-		ret_status = WTERMSIG(*status) + 128;
+	// fprintf(stdout, "ret_status in get_ret_status: %i\n", ret_status);
+	// fprintf(stdout, "status in get_ret_status: %i\n", *status);
+	if (*status == 127)
+		ret_status = *status;
+	else if (WIFEXITED(ret_status))
+	{
+		ret_status = WEXITSTATUS(ret_status);
+	}
+	else if (WIFSIGNALED(ret_status))
+	{
+		ret_status = WTERMSIG(ret_status) + 128;
+	}
 	else
 		ret_status = *status;
 }

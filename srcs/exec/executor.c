@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 15:00:53 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 19:44:24 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	my_execve(t_cmd *node)
 {
 	if (is_builtin(node->cmd[0]))
-		return (exec_builtin(node->cmd, node->shell, node));
+		return (ret_status = exec_builtin(node->cmd, node->shell, node));
 	else
 	{
 		if (node->pid == 0)
@@ -65,9 +65,9 @@ int	execute_cmd(t_cmd *node, int *status)
 		else
 			redir_prev_pipe_in(node);
 		if (node->linktype == AND || node->linktype == OR || !node->linktype)
-			waitpid(node->pid, status, 0);
-		else if (node->linktype == PIPE )
-			waitpid(node->pid, status, WNOHANG);
+			waitpid(node->pid, &ret_status, 0);
+		else if (node->linktype == PIPE)
+			waitpid(node->pid, &ret_status, WNOHANG);
 	}
 	return (0);
 }
@@ -86,7 +86,7 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 		else
 		{
 			// fprintf(stdout, "%i wait pid nav_subshell\n", node->pid);
-			waitpid(node->pid, status, 0);
+			waitpid(node->pid, &ret_status, 0);
 			get_ret_status(status);
 			if (node->next)
 				node = node->next;
@@ -96,7 +96,7 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 				return (NULL);
 		}
 	}
-	fprintf(stdout, "%i last in nav_subshell\n", node->pid);
+	// fprintf(stdout, "%i last in nav_subshell\n", node->pid);
 	return (node);
 }
 
@@ -105,7 +105,7 @@ t_cmd	*nav_cmd(t_cmd *node, int *status)
 	// fprintf(stdout, "%i first in nav_cmd\n", node->pid);
 	if (node->shell->status == TRUE)
 	{
-		*status = execute_cmd(node, status);
+		execute_cmd(node, status);
 		get_ret_status(status);
 		// fprintf(stdout, "%i getting ret_status: %i in nav cmd\n", node->pid, ret_status);
 	}
@@ -136,6 +136,7 @@ int	executor(t_cmd *node)
 	int		tmp;
 	pid_t	wpid;
 
+	signal_setup(1);
 	status = 0;
 	if (node)
 	{
@@ -148,5 +149,6 @@ int	executor(t_cmd *node)
 	wpid = wait(&tmp);
 	while (wpid > 0)
 		wpid = wait(&tmp);
+	signal_setup(0);
 	return (0);
 }

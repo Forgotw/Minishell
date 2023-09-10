@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:12:40 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 12:26:15 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:13:28 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	fork_builtin(char **cmd, t_cmd *node, t_shell *shell,
 		int (*function)(char **, t_shell *))
 {
-	if (node->linktype == PIPE)
+	if (node->linktype == PIPE
+		|| node->shell->prev_pipe_in != -1)
 	{
 		if (node->pid == 0)
 			exit (function(cmd, shell));

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:32:57 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 11:13:48 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 16:33:57 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	check_absolute_path(t_cmd *node)
 
 int	get_path_type(char **cmd, t_cmd *node)
 {
-	if (cmd && cmd[0] && cmd[0][0] == '/')
+	if (cmd && cmd[0] && (cmd[0][0] == '/' || cmd[0][0] == '.'))
 		return (check_relative_path(node));
 	else if (cmd[0][0] == '\0')
 		return (cmd_file_error(node->cmd[0], 1));
