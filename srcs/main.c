@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:12:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/01 17:25:55 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 11:47:32 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1)
 		//return (printf("argument error\n"));
 		return (1);
-	prompt(envp);
 	ret_status = 0;
+	prompt(envp);
 	// tokens = init_tokens(av[1]);
 	// printf("NEW       TOKEN      TYPE\n");
 	// print_tokens(tokens);

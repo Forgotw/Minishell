@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/03 19:42:40 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 11:13:11 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	assign_redir(t_token *token, t_cmd *node)
 {
 	while (token)
 	{
-		fprintf(stdout, "ASSIGN REDIR    AND OPEN FILE: %s type: %i join:%i\n", token->str, token->type, token->join);
 		if (token->redir == D_L_REDIR)
 			here_doc(node, token);
 		else if (token->redir == L_REDIR)

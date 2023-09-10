@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 18:04:03 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/10 12:01:38 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 /* new = join de (str[0] a str[i])+var puis new = join de new et str[ii]*/
 t_token	*expand_return(t_token *token, t_shell *shell)
 {
+	(void)shell;
 	if (!ft_strcmp(token->str, "?"))
 	{
 		free(token->str);
-		token->str = ft_itoa(shell->status);
+		token->str = ft_itoa(ret_status);
 	}
 	else
 	{
@@ -36,7 +37,6 @@ t_token	*expand_var(t_token **head, t_token *token, t_shell *shell)
 	int	len;
 
 	i = 0;
-	print_export(shell->env);
 	if (!ft_strcmp(token->str, "?") || !ft_strcmp(token->str, "$"))
 		return (expand_return(token, shell));
 	while (shell->env[i])
@@ -48,7 +48,6 @@ t_token	*expand_var(t_token **head, t_token *token, t_shell *shell)
 				len++;
 			free(token->str);
 			token->str = ft_strdup(&shell->env[i][len]);
-			// printf("NEW TOKEN STR: %s\n", token->str);
 			token = token->next;
 			return (token);
 		}
@@ -65,10 +64,8 @@ t_token	*expand_token(t_token *token, t_shell *shell)
 	if (!token)
 		return (NULL);
 	head = token;
-	// printf(" TEST 1\n");
 	while (token)
 	{
-		// printf(" TEST WHILE\n");
 		if (token->type == EXP_WORD)
 			token = expand_var(&head, token, shell);
 		else if (token->type == WILDCARD)
@@ -76,7 +73,6 @@ t_token	*expand_token(t_token *token, t_shell *shell)
 		else
 			token = token->next;
 	}
-	// printf("       FINISH EXPANDING TOKEN VAR\n");
 	return (head);
 }
 

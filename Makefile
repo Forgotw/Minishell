@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/08 13:26:59 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/10 11:11:05 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,27 +24,16 @@ SRCS_F = lexer.c main.c parser.c
 SRCS_DIR = srcs/ 
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
 SRCS = \
-		srcs/lexer.c\
 		srcs/main.c\
-		srcs/parser.c\
-		srcs/operator.c\
-		srcs/expander.c\
-		srcs/wildcard.c\
 		srcs/executor_print.c\
-		srcs/checker.c\
 		srcs/free.c\
 		srcs/prompt.c\
-		srcs/cmd.c\
-		srcs/redir.c\
-		srcs/pipe.c\
-		srcs/executor.c\
-		srcs/path.c\
-		srcs/bool.c\
-		srcs/mslib/token.c\
 		\
 		srcs/ast/ast.c\
+		srcs/ast/cmd.c\
 		srcs/ast/subshell.c\
 		srcs/ast/shell.c\
+		\
 		srcs/builtin/echo.c\
 		srcs/builtin/cd.c\
 		srcs/builtin/pwd.c\
@@ -54,6 +43,22 @@ SRCS = \
 		srcs/builtin/exit.c\
 		srcs/builtin/builtin.c\
 		srcs/builtin/fork.c\
+		\
+		srcs/exec/bool.c\
+		srcs/exec/executor.c\
+		srcs/exec/path.c\
+		srcs/exec/pipe.c\
+		srcs/exec/redir.c\
+		\
+		srcs/expand/expander.c\
+		srcs/expand/wildcard.c\
+		\
+		srcs/parse/checker.c\
+		srcs/parse/lexer.c\
+		srcs/parse/operator.c\
+		srcs/parse/parser.c\
+		srcs/parse/token.c\
+		\
 
 OBJS = $(SRCS:.c=.o)
 
