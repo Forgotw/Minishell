@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 19:43:04 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:44:11 by efailla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
 int ret_status;
+
+/*COULEURS */
+
+# define BLUE		"\x1b[36m"
+# define RED		"\x1b[35m"
+# define GREEN	"\x1b[32m"
+# define COLOR_RESET	"\x1b[0m"
 
 /*STRUCTRES*/
 typedef enum e_operators

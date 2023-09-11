@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 19:48:48 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:38:00 by efailla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	prompt(char **envp)
 		return (-1);
 	while (1)
 	{
-		input = readline("Minishell$ ");
+		input = readline(BLUE "Minishell" RED "$" COLOR_RESET " ");
 		if (!input)
 			exit (1);
 		else if (input[0] != '\0')
