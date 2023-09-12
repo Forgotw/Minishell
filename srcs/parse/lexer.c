@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 18:04:58 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 17:56:37 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ t_token	*init_tokens(char *arg)
 		i += word->tok_size;
 		token = token->next;
 	}
-	// print_tokens(token_start);
 	token_refiner(&token_start, word);
 	free_array((char **)word->sep);
 	free(word);

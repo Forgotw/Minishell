@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:32:57 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 16:33:57 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 16:18:23 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	check_relative_path(t_cmd *node)
 	if (access(node->cmd[0], F_OK) == 0
 		&& stat(node->cmd[0], &file_info) == 0)
 	{
-		node->path = node->cmd[0];
+		node->path = ft_strdup(node->cmd[0]);
 		return (0);
 	}
 	else
@@ -90,7 +90,7 @@ int	check_absolute_path(t_cmd *node)
 	char	**path_array;
 
 	path_array = get_path_array(node->shell);
-	if (path_array[0] == NULL)
+	if (!path_array || path_array[0] == NULL)
 		return (cmd_file_error(node->cmd[0], 0));
 	else
 		return (get_path(node, path_array));

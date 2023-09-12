@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 14:47:33 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:24:29 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	signal_handler(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	ret_status = 1;
 }
 
 void	signal_handler_cmd(int sig)
@@ -73,7 +74,7 @@ void	signal_handler_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		unlink(".heredoc");
+		// unlink(".heredoc");
 		return ;
 	}
 }
@@ -87,7 +88,7 @@ int	signal_setup(int mode)
 		sig.sa_handler = &signal_handler;
 	if (mode == 1)
 		sig.sa_handler = &signal_handler_cmd;
-	if (mode == 1)
+	if (mode == 2)
 		sig.sa_handler = &signal_handler_heredoc;
 	sigaction(SIGINT, &sig, NULL);
 	sigaction(SIGQUIT, &sig, NULL);
@@ -121,9 +122,11 @@ int	prompt(char **envp)
 			tokens = init_tokens(input);
 			add_history(input);
 			free(input);
-			if (!syntax_checker(tokens))
+			if (tokens && !syntax_checker(tokens))
 			{
+				printf("test if ok\n");
 				ast = create_ast(tokens, shell);
+				printf("test saddasdasd\n");
 				free_token(tokens);
 				//executor_print(ast);
 				executor(ast);

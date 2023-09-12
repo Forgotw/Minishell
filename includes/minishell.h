@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 14:59:49 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:36:53 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-int ret_status;
+
+int	ret_status;
 
 /*COULEURS */
 
@@ -161,12 +162,13 @@ typedef struct s_address
 }				t_address;
 
 /*   FUNCTIONS   */
-/* TOKEN UTILS */
+/* TOKEN */
 void		del_token(t_token **head, t_token **token);
 void		token_add_back(t_token **redir, t_token *new);
 t_token		*new_tok(t_token *token, char *str, int type);
 t_token		*token_dup(t_token *token);
 t_token		*new_word(t_token *token, char *buff);
+t_token		*join_quoted_token(t_token **head, t_token *token, t_word *word);
 /* FREE */
 void		free_token(t_token *token);
 int			ast_free(t_cmd *ast);
@@ -178,10 +180,11 @@ t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
 int			syntax_checker(t_token *token);
+t_token		*quote_error(t_token **head, int type);
 char		**create_cmd_array(t_token *token);
+t_token		*token_dol_type(t_token **head, t_token *token);
 /* EXPANDER */
 t_token		*expand_token(t_token *token, t_shell *shell);
-t_token		*token_dol_type(t_token **head, t_token *token);
 t_token		*expand_var(t_token **head, t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_token		*expand_return(t_token *token, t_shell *shell);

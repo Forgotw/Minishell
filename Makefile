@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: efailla <efailla@student.42.fr>            +#+  +:+       +#+         #
+#    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/10 20:07:16 by efailla          ###   ########.fr        #
+#    Updated: 2023/09/12 18:37:32 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,9 +54,11 @@ SRCS = \
 		srcs/expand/wildcard.c\
 		\
 		srcs/parse/checker.c\
+		srcs/parse/env_var.c\
 		srcs/parse/lexer.c\
 		srcs/parse/operator.c\
 		srcs/parse/parser.c\
+		srcs/parse/quote.c\
 		srcs/parse/token.c\
 		\
 

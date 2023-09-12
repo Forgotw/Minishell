@@ -6,16 +6,12 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:44:46 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 15:02:51 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:10:29 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* si parenthese pas fermer PAR_ERROR */
-/* si parenthese vide EMPTY_PAR_ERROR */
-/* si double pipe ou and ou or */
-/*  */
 int	syntax_redir_parsing(t_token *token)
 {
 	if ((token->type == L_REDIR
@@ -44,6 +40,8 @@ int	syntax_link_parsing(t_token *token)
 		&& token->next
 		&& (token->next->type == AND || token->next->type == OR
 			|| token->next->type == PIPE))
+		return (1);
+	if (token->type == AMPER)
 		return (1);
 	return (0);
 }
@@ -76,6 +74,8 @@ int	syntax_parsing(t_token *token)
 
 int	syntax_checker(t_token *token)
 {
+	if (token->type == SPACE)
+		return (1);
 	if (token->type == AND || token->type == OR
 		|| token->type == PIPE)
 	{

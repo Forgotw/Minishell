@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:33:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/08 15:30:05 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:44 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	my_exit(char **cmd, t_shell *shell)
 		else
 			ret = 0;
 		free_ast(shell);
+		free_array(shell->env);
 		free(shell);
 	}
 	exit (ret);

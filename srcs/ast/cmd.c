@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:32:12 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 13:31:27 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 16:54:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	join_cmd_array(t_token **tok, char ***cmd_array_ptr, int *i_ptr)
 	cmd_array = *cmd_array_ptr;
 	while (token->join && token->next)
 	{
-		if (!cmd_array[i])
+		if (!cmd_array || !cmd_array[i])
 			cmd_array = array_add_str(cmd_array, ft_strdup(token->str));
 		else
 			cmd_array[i] = ft_strjoin(cmd_array[i], ft_strdup(token->str));

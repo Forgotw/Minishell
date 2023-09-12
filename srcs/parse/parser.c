@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:40:28 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 18:03:00 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:29:31 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,74 +37,6 @@ t_token	*try_join_token(t_token **head, t_token *token, t_word *word)
 	token = token->next;
 	return (token);
 }
-
-t_token	*empty_word_token(t_token *token)
-{
-	token->type = WORD;
-	free(token->str);
-	token->str = ft_strdup("\0");
-	token = token->next;
-	return (token);
-}
-
-/* Si on trouve un token quote ou dquote */
-/* Tant qu'on trouve pas ce token exact */
-/* On join les tokens en fonction du type de quote */
-/* On expand si dquote et token $ */
-t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
-{
-	word->q_state = token->type;
-	del_token(head, &token);
-	if (token->type == word->q_state)
-		return (empty_word_token(token));
-	while (token && word->q_state > 0)
-	{
-		if (token->type == word->q_state)
-			word->q_state = 0;
-		else
-		{
-			if (token->type == DOL && word->q_state == DQUOTE)
-				token = token_dol_type(head, token);
-			else
-			{
-				token->type = WORD;
-				token = token->next;
-			}
-		}
-	}
-	if (!token && word->q_state > 0)
-		exit(printf("%s", QUOTE_ERROR));
-	del_token(head, &token);
-	return (token);
-}
-// t_token	*join_quoted_token(t_token **head, t_token *token, t_word *word)
-// {
-// 	char	*new;
-// 	int		new_type;
-
-// 	new = NULL;
-// 	new_type = WORD;
-// 	word->q_state = token->type;
-// 	del_token(head, &token);
-// 	while (token && word->q_state > 0)
-// 	{
-// 		if (token->type == word->q_state)
-// 			word->q_state = 0;
-// 		else
-// 		{
-// 			if (token->type == DOL && word->q_state == DQUOTE)
-// 				new_type = EXP_WORD;
-// 			new = ft_strjoin(new, token->str);
-// 			del_token(head, &token);
-// 		}
-// 	}
-// 	if (!token && word->q_state > 0)
-// 		exit(printf("%s", QUOTE_ERROR));
-// 	token->type = new_type;
-// 	free(token->str);
-// 	token->str = new;
-// 	return (token);
-// }
 
 /* Join les words qui se suivent */
 t_token	*join_word(t_token **head, t_token *token)
@@ -138,7 +70,6 @@ void	token_join_space(t_token **head, t_token *token)
 		if (token->type <= WORD && token->next && token->next->type <= WORD)
 		{
 			token->join = 1;
-			// token->next->join = 1;
 			token = token->next;
 		}
 		else if (token->type == SPACE)
@@ -164,12 +95,13 @@ void	token_refiner(t_token **head, t_word *word)
 			token = join_quoted_token(head, token, word);
 		else if (token->type == DOL)
 			token = token_dol_type(head, token);
+		else if (token->type == Q_MARK)
+			token->type = WORD;
 		else if (token->type > SPACE && token->next)
 			token = try_join_token(head, token, word);
 		else if (token)
 			token = token->next;
-		// printf("REFINE TEST\n");
 	}
-	token_join_space(head, *head);
-	// printf("END OF REFINE\n");
+	if (*head && head)
+		token_join_space(head, *head);
 }

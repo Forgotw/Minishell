@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 10:36:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/08 15:38:34 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:41:56 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,7 @@ t_cmd	*create_redir_token(t_token **token, t_cmd *ast, t_shell *shell)
 	if (ast == NULL)
 		ast = new_cmd(0, shell);
 	if (ast->type == SUBSHELL)
-	{
-		// ast->subshell = new_cmd(0, shell);
-		// ast->subshell->upshell = ast;
-		// ast = ast->subshell;
 		ast = create_node_on_subshell(0, shell, ast);
-	}
 	redir_type = (*token)->type;
 	(*token) = (*token)->next;
 	if ((*token)->type <= WORD)
@@ -55,19 +50,8 @@ void	create_cmd_token(t_token **tokens, t_cmd *ast, t_shell *shell)
 	{
 		if (token->type <= WORD)
 		{
-			//ast->cmd = array_add_str(ast->cmd, token->str);
 			new = token_dup(token);
 			token_add_back(&ast->tok, new);
-			// if (!ast->tok)
-			// {
-			// 	ast->tok = new_tok(NULL, token->str, token->type);
-			// 	tokhead = ast->tok;
-			// }
-			// else
-			// {
-			// 	ast->tok->next = new_tok(ast->tok, token->str, token->type);
-			// 	ast->tok = ast->tok->next;
-			// }
 			token = token->next;
 		}
 		else if (token->type == L_REDIR || token->type == R_REDIR
@@ -76,39 +60,19 @@ void	create_cmd_token(t_token **tokens, t_cmd *ast, t_shell *shell)
 		else
 			break ;
 	}
-	// printf("          \033[37;1mCREATING CMD AT: %p\n", ast);
-	// printf("          \033[37;1mCREATING CMD: upshell add: %p\n", ast->upshell);
 	*tokens = token;
 }
 
 t_cmd	*create_cmd(t_token **tokens, t_cmd *ast, t_shell *shell)
 {
-	//t_token *token;
-
-	//token = *tokens;
 	if (ast == NULL)
 		ast = new_cmd(CMD, shell);
 	else if (ast->type == SUBSHELL)
-	{
-		// printf("   CREATING CMD ON SUBSHELL\n");
-		// ast->subshell = new_cmd(CMD, shell);
-		// ast->subshell->upshell = ast;
-		// ast = ast->subshell;
 		ast = create_node_on_subshell(CMD, shell, ast);
-	}
 	else if (ast->type == CMD)
-	{
-		// printf("   CREATING CMD ON NEXT\n");
-		// ast->next = new_cmd(CMD, shell);
-		// ast->next->upshell = ast->upshell;
-		// ast = ast->next;
 		ast = create_node_on_next(CMD, shell, ast);
-	}
 	else
-	{
-		// printf("   CREATING CMD ON IN PLACE\n");
 		ast->type = CMD;
-	}
 	create_cmd_token(tokens, ast, shell);
 	return (ast);
 }

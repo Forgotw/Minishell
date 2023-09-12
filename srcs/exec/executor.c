@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 16:06:47 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:44:00 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 		}
 		else
 		{
-			// fprintf(stdout, "%i wait pid nav_subshell\n", node->pid);
 			waitpid(node->pid, &ret_status, 0);
 			get_ret_status(status);
 			if (node->next)
@@ -96,37 +95,30 @@ t_cmd	*nav_subshell(t_cmd *node, int *status)
 				return (NULL);
 		}
 	}
-	// fprintf(stdout, "%i last in nav_subshell\n", node->pid);
 	return (node);
 }
 
 t_cmd	*nav_cmd(t_cmd *node, int *status)
 {
-	// fprintf(stdout, "%i first in nav_cmd\n", node->pid);
 	if (node->shell->status == TRUE)
 	{
 		execute_cmd(node, status);
 		get_ret_status(status);
-		// fprintf(stdout, "%i getting ret_status: %i in nav cmd\n", node->pid, ret_status);
 	}
 	boolean_link(node);
 	if (node->next)
 		node = node->next;
 	else
 	{
-		// fprintf(stdout, "else in nav_cmd\n");
 		if (node->upshell)
 		{
-			// fprintf(stdout, "exit in nav_cmd\n");
 			exit (0);
 		}
 		else
 		{
-			// fprintf(stdout, "return NULL in nav_cmd\n");
 			return (NULL);
 		}
 	}
-	// fprintf(stdout, "return NODE in nav_cmd\n");
 	return (node);
 }
 
@@ -138,13 +130,12 @@ int	executor(t_cmd *node)
 
 	signal_setup(1);
 	status = 0;
-	if (node)
+	while (node)
 	{
 		if (node->type == SUBSHELL)
 			node = nav_subshell(node, &status);
 		else if (node->type == CMD || node->type == 0)
 			node = nav_cmd(node, &status);
-		executor(node);
 	}
 	wpid = wait(&tmp);
 	while (wpid > 0)
