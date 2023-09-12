@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/11 15:44:11 by efailla          ###   ########.fr       */
+/*   Updated: 2023/09/12 14:59:49 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
 # define BRACE_ERROR "Minishell doesn't support opened brace.\n"
 # define PAR_ERROR "Minishell doesn't support opened parenthesis.\n"
-# define LINK_ERROR "Minishell doesn't support opened link.\n"
-# define EMPTY_PAR_ERROR "Minishell doesn't support empty parenthesis.\n"
+# define LINK_ERROR "Minishell doesn't support no command after link.\n"
+# define EMPTY_PAR_ERROR "Minishell parenthesis error.\n"
 # define PARSE_ERROR "Minishell: syntax error near unexpected token: "
 # define CMD_ENV_ERROR "Minishell doesn't support env parameters"
 # define BAD_SUB "bad substitution"
@@ -177,7 +177,7 @@ void		ast_address_collector(t_address **collector,
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
 void		token_refiner(t_token **token, t_word *word);
-void		syntax_checker(t_token *token);
+int			syntax_checker(t_token *token);
 char		**create_cmd_array(t_token *token);
 /* EXPANDER */
 t_token		*expand_token(t_token *token, t_shell *shell);

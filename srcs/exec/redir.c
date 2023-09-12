@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 11:13:11 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 14:41:35 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	here_doc_write(t_token *token, int file)
 
 	while (1)
 	{
-		write(1, ">", 14);
 		line = readline(">");
 		if (!line)
 			return (-1);
@@ -28,6 +27,7 @@ int	here_doc_write(t_token *token, int file)
 			break ;
 		}
 		write (file, line, ft_strlen(line));
+		write (file, "\n", 1);
 		free(line);
 	}
 	return (0);
@@ -37,6 +37,7 @@ int	here_doc(t_cmd *node, t_token *token)
 {
 	int		file;
 
+	signal_setup(2);
 	unlink(".heredoc");
 	file = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (file < 0)
@@ -44,22 +45,20 @@ int	here_doc(t_cmd *node, t_token *token)
 	here_doc_write(token, file);
 	close(file);
 	node->infile = open (".heredoc", O_RDONLY);
+	signal_setup(0);
 	if (node->infile < 0)
 	{
 		unlink(".heredoc");
+		node->infile = 0;
 		return (-1);
 	}
 	return (0);
 }
 
-int	open_error(void)
+int	open_error(char *filename)
 {
-	if (errno == ENOENT)
-		perror("Minishell: No such file or directory");
-	else if (errno == EACCES || errno == EPERM)
-		perror("Minishell: test access");
-	else
-		perror("Minishell: lol");
+	ft_putstr_fd("Minishell: ", 2);
+	perror(filename);
 	return (-1);
 }
 
@@ -78,7 +77,7 @@ int	assign_redir(t_token *token, t_cmd *node)
 			node->outfile = open(token->str,
 					O_CREAT | O_RDWR | O_APPEND, 0777);
 		if (node->infile < 0 || node->outfile < 0)
-			return (open_error());
+			return (open_error(token->str));
 		token = token->next;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efailla <efailla@42Lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/11 15:38:00 by efailla          ###   ########.fr       */
+/*   Updated: 2023/09/12 14:47:33 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,15 @@ void	signal_handler_cmd(int sig)
 	}
 }
 
+void	signal_handler_heredoc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		unlink(".heredoc");
+		return ;
+	}
+}
+
 int	signal_setup(int mode)
 {
 	struct sigaction	sig;
@@ -78,6 +87,8 @@ int	signal_setup(int mode)
 		sig.sa_handler = &signal_handler;
 	if (mode == 1)
 		sig.sa_handler = &signal_handler_cmd;
+	if (mode == 1)
+		sig.sa_handler = &signal_handler_heredoc;
 	sigaction(SIGINT, &sig, NULL);
 	sigaction(SIGQUIT, &sig, NULL);
 	if (tcgetattr(STDIN_FILENO, &tp) == -1)
@@ -100,7 +111,8 @@ int	prompt(char **envp)
 		return (-1);
 	while (1)
 	{
-		input = readline(BLUE "Minishell" RED "$" COLOR_RESET " ");
+		//input = readline(BLUE "Minishell" RED "$" COLOR_RESET " ");
+		input = readline("MiniShell$ ");
 		if (!input)
 			exit (1);
 		else if (input[0] != '\0')
@@ -109,12 +121,14 @@ int	prompt(char **envp)
 			tokens = init_tokens(input);
 			add_history(input);
 			free(input);
-			syntax_checker(tokens);
-			ast = create_ast(tokens, shell);
-			free_token(tokens);
-			//executor_print(ast);
-			executor(ast);
-			free_ast(shell);
+			if (!syntax_checker(tokens))
+			{
+				ast = create_ast(tokens, shell);
+				free_token(tokens);
+				//executor_print(ast);
+				executor(ast);
+				free_ast(shell);
+			}
 			//fprintf(stdout, "ret_status end of prompt: %i\n", ret_status);
 		}
 	}

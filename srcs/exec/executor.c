@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:08:32 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 19:44:24 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 16:06:47 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ int	execute_cmd(t_cmd *node, int *status)
 		node->redir = expand_token(node->redir, node->shell);
 		node->redir = join_redir_token(node->redir);
 	}
-	if (!is_builtin(node->cmd[0]))
+	if (node->cmd && !is_builtin(node->cmd[0]))
 		*status = get_path_type(node->cmd, node);
 	if (*status)
 		return (*status);
 	*status = assign_redir(node->redir, node);
 	if (*status)
 		return (*status);
-	if (!*status)
+	if (!*status && node->cmd)
 	{
 		fork_and_pipe(node);
 		if (node->pid == 0)
@@ -150,5 +150,6 @@ int	executor(t_cmd *node)
 	while (wpid > 0)
 		wpid = wait(&tmp);
 	signal_setup(0);
+	unlink(".heredoc");
 	return (0);
 }
