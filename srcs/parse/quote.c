@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:18:05 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 18:30:38 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:06:54 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*quote_error(t_token **head, int type)
 		ft_putstr_fd(QUOTE_ERROR, 2);
 	if (type == O_BRACE)
 		ft_putstr_fd(BRACE_ERROR, 2);
-	ret_status = 1;
+	g_status = 1;
 	*head = NULL;
 	return (NULL);
 }

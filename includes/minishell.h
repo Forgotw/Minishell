@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 18:36:53 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:36:14 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define STDOUT 1
 # define STDERR 2
 
-int	ret_status;
+int	g_status;
 
 /*COULEURS */
 
@@ -152,6 +152,7 @@ typedef struct s_shell
 	int					pipefd[2];
 	int					prev_pipe_in;
 	struct s_address	*collector;
+	struct s_fdlist		*fdlist;
 }				t_shell;
 
 typedef struct s_address
@@ -160,6 +161,12 @@ typedef struct s_address
 	int					type;
 	struct s_address	*next;
 }				t_address;
+
+typedef struct s_fdlist
+{
+	int				fd;
+	struct s_fdlist	*next;
+}				t_fdlist;
 
 /*   FUNCTIONS   */
 /* TOKEN */
@@ -175,6 +182,8 @@ int			ast_free(t_cmd *ast);
 void		free_ast(t_shell *shell);
 void		ast_address_collector(t_address **collector,
 				void *address, int type);
+void		fd_collector(t_fdlist **fdlist, int fd);
+void		close_all_fd(t_fdlist *fdlsit);
 /* PARSING */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);
@@ -188,6 +197,7 @@ t_token		*expand_token(t_token *token, t_shell *shell);
 t_token		*expand_var(t_token **head, t_token *token, t_shell *shell);
 t_token		*expand_wildcard(t_token **head, t_token *token);
 t_token		*expand_return(t_token *token, t_shell *shell);
+void		insert_expand(t_token **head, t_token *token, t_dtok *toks);
 char		*get_env_variable(char *var, t_shell *shell);
 /* AST */
 t_cmd		*create_ast(t_token *token, t_shell *shell);
@@ -210,8 +220,10 @@ int			is_builtin(char	*cmd);
 int			exec_builtin(char **cmd, t_shell *shell, t_cmd *node);
 void		boolean_link(t_cmd *node);
 int			execute_cmd(t_cmd *node, int *status);
-void		get_ret_status(int *status);
+void		get_g_status(int *status);
 t_cmd		*skip_subshell(t_cmd *node);
+t_cmd		*nav_cmd(t_cmd *node, int *status);
+t_cmd		*nav_subshell(t_cmd *node, int *status);
 /* SIGNAL */
 int			signal_setup(int mode);
 /* TEST */
@@ -219,6 +231,7 @@ int			executor_print(t_cmd *ast);
 void		print_tokens(t_token *tokens);
 void		print_array(char **array);
 void		print_cmd(t_cmd *ast, char *indent);
+void		print_token_exec(t_token *token, int redir);
 int			print_export(char **env);
 /* BUILTIN */
 int			export(char **cmd, t_shell *shell);

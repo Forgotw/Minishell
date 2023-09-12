@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 14:41:35 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:37:30 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ int	assign_redir(t_token *token, t_cmd *node)
 					O_CREAT | O_RDWR | O_APPEND, 0777);
 		if (node->infile < 0 || node->outfile < 0)
 			return (open_error(token->str));
+		else
+		{
+			if (node->infile)
+				fd_collector(&node->shell->fdlist, node->infile);
+			if (node->outfile)
+				fd_collector(&node->shell->fdlist, node->infile);
+		}
 		token = token->next;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:21:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 18:35:51 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:11:05 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*expand_return(t_token *token, t_shell *shell)
 	if (!ft_strcmp(token->str, "?"))
 	{
 		free(token->str);
-		token->str = ft_itoa(ret_status);
+		token->str = ft_itoa(g_status);
 	}
 	else
 	{
@@ -74,4 +74,22 @@ t_token	*expand_token(t_token *token, t_shell *shell)
 			token = token->next;
 	}
 	return (head);
+}
+
+void	insert_expand(t_token **head, t_token *token, t_dtok *toks)
+{
+	t_token		*tmp;
+
+	tmp = token;
+	toks->end->next = token->next;
+	if (token->prev)
+		token->prev->next = toks->start;
+	if (token->next)
+		token->next->prev = toks->end;
+	token = toks->end;
+	token->prev = tmp->prev;
+	if (tmp == *head)
+		*head = toks->start;
+	free(tmp->str);
+	free(tmp);
 }

@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/12 18:37:32 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/12 19:42:25 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRCS_DIR = srcs/
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
 SRCS = \
 		srcs/main.c\
-		srcs/executor_print.c\
 		srcs/free.c\
 		srcs/prompt.c\
 		\
@@ -46,6 +45,7 @@ SRCS = \
 		\
 		srcs/exec/bool.c\
 		srcs/exec/executor.c\
+		srcs/exec/nav.c\
 		srcs/exec/path.c\
 		srcs/exec/pipe.c\
 		srcs/exec/redir.c\
@@ -61,6 +61,8 @@ SRCS = \
 		srcs/parse/quote.c\
 		srcs/parse/token.c\
 		\
+		srcs/test/executor_print.c\
+		srcs/test/print_test.c\
 
 OBJS = $(SRCS:.c=.o)
 

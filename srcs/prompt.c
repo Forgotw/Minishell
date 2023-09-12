@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:14:47 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 18:24:29 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 19:43:19 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@
 
 // static void	handle_sigint(void)
 // {
-// 	fprintf(stdout, "ret_status in handle_sigint: %i\n", ret_status);
-// 	fprintf(stdout, "WIFSIGNALED: %i\n", WIFSIGNALED(ret_status));
-// 	fprintf(stdout, "WIFEXITED: %i\n", WIFEXITED(ret_status));
-// 	if (WIFEXITED(ret_status))
+// 	fprintf(stdout, "g_status in handle_sigint: %i\n", g_status);
+// 	fprintf(stdout, "WIFSIGNALED: %i\n", WIFSIGNALED(g_status));
+// 	fprintf(stdout, "WIFEXITED: %i\n", WIFEXITED(g_status));
+// 	if (WIFEXITED(g_status))
 // 		printf("\n");
 // 	else
 // 	{
@@ -39,7 +39,7 @@
 // 		rl_on_new_line();
 // 		rl_redisplay();
 // 	}
-// 	ret_status = 1;
+// 	g_status = 1;
 // }
 
 // static void	handle_sigquit(void)
@@ -57,7 +57,7 @@ void	signal_handler(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	ret_status = 1;
+	g_status = 1;
 }
 
 void	signal_handler_cmd(int sig)
@@ -124,15 +124,13 @@ int	prompt(char **envp)
 			free(input);
 			if (tokens && !syntax_checker(tokens))
 			{
-				printf("test if ok\n");
 				ast = create_ast(tokens, shell);
-				printf("test saddasdasd\n");
 				free_token(tokens);
 				//executor_print(ast);
 				executor(ast);
 				free_ast(shell);
 			}
-			//fprintf(stdout, "ret_status end of prompt: %i\n", ret_status);
+			//fprintf(stdout, "g_status end of prompt: %i\n", g_status);
 		}
 	}
 	return (0);

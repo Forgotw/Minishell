@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:44:46 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 18:10:29 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 19:43:19 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,15 @@ int	syntax_checker(t_token *token)
 		|| token->type == PIPE)
 	{
 		printf("%s%s\n", PARSE_ERROR, token->str);
-		ret_status = 258;
+		g_status = 258;
 		free_token(token);
-		return (ret_status);
+		return (g_status);
 	}
 	if (syntax_parsing(token))
 	{
 		free_token(token);
-		ret_status = 258;
-		return (ret_status);
+		g_status = 258;
+		return (g_status);
 	}
 	return (0);
 }

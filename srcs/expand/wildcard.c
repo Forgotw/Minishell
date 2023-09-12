@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/02 12:05:33 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:11:00 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ char	*find_file(char *file, char *find, char **find_arr)
 	tmp = file;
 	while (find_arr[i])
 	{
-		tmp = ft_strnstr(tmp, find_arr[i], ft_strlen((const char *)tmp));
-		if (!tmp)
-			return (NULL);
 		if (find[0] != '*'
 			&& ft_strncmp(find_arr[i], tmp, ft_strlen(find_arr[i])))
+			return (NULL);
+		tmp = ft_strnstr(tmp, find_arr[i], ft_strlen((const char *)tmp));
+		if (!tmp)
 			return (NULL);
 		tmp += ft_strlen(find_arr[i]);
 		i++;
@@ -101,24 +101,6 @@ t_dtok	*search_file(t_token *token, t_wildcard *wc)
 	return (toks);
 }
 
-void	insert_expand(t_token **head, t_token *token, t_dtok *toks)
-{
-	t_token		*tmp;
-
-	tmp = token;
-	toks->end->next = token->next;
-	if (token->prev)
-		token->prev->next = toks->start;
-	if (token->next)
-		token->next->prev = toks->end;
-	token = toks->end;
-	token->prev = tmp->prev;
-	if (tmp == *head)
-		*head = toks->start;
-	free(tmp->str);
-	free(tmp);
-}
-
 t_token	*expand_wildcard(t_token **head, t_token *token)
 {
 	t_dtok		*toks;
@@ -136,87 +118,3 @@ t_token	*expand_wildcard(t_token **head, t_token *token)
 	free(wc);
 	return (token);
 }
-
-/*
-	(void)head;
-	tmp = token;
-	wc = init_wildcard(tmp->str);
-	toks = search_file(tmp, wc);
-	printf("    EXP      where am i start: str:%s type:%i\n", toks->start->str, toks->start->type);
-	printf("    EXP      where am i end: str:%s type:%i\n", toks->end->str, toks->end->type);
-	printf("    EXP      where am i end next add: %p\n", toks->end->next);
-	// printf("where am i token: str:%s type:%i\n", token->str, token->type);
-	// printf("where am i tmp prev: str:%s type:%i\n", tmp->prev->str, tmp->prev->type);
-	// printf("what is tmp: str:%s type:%i\n", tmp->str, tmp->type);
-	// printf("\n\nAddress 1: %p\nAddres 2: %p\n\n\n", tmp, token);
-	//printf("what is tmp->prev: str:%s type:%i\n", tmp->prev->str, tmp->prev->type);
-	if (toks->start != toks->end)
-	{
-		
-	}
-	// printf("where am i token: str:%s type:%i\n", token->str, token->type);
-	// printf("where am i next adress: %p\n", token);
-	if (wc->find)
-		free(wc->find);
-	if (wc->find_arr)
-		free_array(wc->find_arr);
-	free(wc);
-	//printf("where am i token: str:%s type:%i\n", token->str, token->type);
-	//printf("where am i token   2: str:%s type:%i\n", token->str, token->type);
-int	main(int ac, char **av)
-{
-	char	*ret;
-	char	**find_arr;
-	char	currentdir[1024];
-	DIR		*dir;
-	struct dirent *entry;
-	
-	(void)ac;
-	find_arr = ft_split(av[1], '*');
-	printf("AV1: %s, AV2: %s\n", av[1], av[2]);
-	ret = find_file(av[2], av[1], find_arr);
-	printf("we found: %s\n", ret);
-	free(find_arr);
-	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
-		printf("Répertoire courant : %s\n", currentdir);
-	chdir("/Users/lsohler/MiniShell/test");
-	if (getcwd(currentdir, sizeof(currentdir)) != NULL)
-		printf("Répertoire courant : %s\n", currentdir);
-	dir = opendir(currentdir);
-	while ((entry = readdir(dir)) != NULL)
-	{
-		if (entry->d_type == DT_REG)
-		{ 
-			printf("%s\n", entry->d_name);
-		}
-	}
-	closedir(dir);
-	return (0);
-}*/
-
-/*
-bo * our * 42Lau * ne
-bonjoooooooo our 42Lau san ne
-salutbonjour42Lausanne
-
-bo nj our salut 42Lau san ne
-
-tant que find
-	si find == *
-		find++;
-
-	tant que file == find
-		find++ et file++;
-si les deux arrive a la fin ok 
-
-split find *,
-tant que find_arr
-	tmp = strstr(file,find_arr)
-	si find[0] != * et que strncmp(find_arr,tmp, len(find_arr)) != 0
-		return (NULL)
-	find_arr++;
-si find[len(find - 1)] != * && strncmp(find_arr, tmp, len(tmp)) != 0
-	return (NULL)
-si tmp != NULL
-	return (strdup(file));
-*/

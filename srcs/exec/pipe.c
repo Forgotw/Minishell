@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 17:00:27 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 15:23:30 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/12 20:03:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void	fork_and_pipe(t_cmd *node)
 {
-	if (node->linktype == PIPE)
+	if (node->linktype == PIPE
+		|| node->infile
+		|| node->outfile)
 		if (pipe(node->shell->pipefd) == -1)
 			perror("pipe error");
 	if (node->linktype == PIPE
+		|| node->infile
+		|| node->outfile
 		|| node->shell->prev_pipe_in != -1
 		|| !is_builtin(node->cmd[0]))
 	{
