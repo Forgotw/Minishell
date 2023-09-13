@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:04:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 15:44:45 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:17:25 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_address	*new_collector_node(void *address, int type)
 	t_address	*new;
 
 	new = malloc(sizeof(t_address));
+	if (!new)
+		exit (malloc_error());
 	new->address = address;
 	new->type = type;
 	new->next = NULL;
@@ -68,4 +70,18 @@ void	free_ast(t_shell *shell)
 	shell->collector = NULL;
 	close_all_fd(shell->fdlist);
 	shell->fdlist = NULL;
+}
+
+void	free_token(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token->next;
+		if (token->str)
+			free(token->str);
+		free(token);
+		token = tmp;
+	}
 }

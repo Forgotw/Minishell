@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:17:44 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 19:35:46 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:16:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_cmd	*new_cmd(int cmdtype, t_shell *shell)
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		exit (malloc_error());
 	ast_address_collector(&shell->collector, (void *)cmd, cmdtype);
 	cmd->type = cmdtype;
 	cmd->linktype = 0;
@@ -58,6 +60,8 @@ t_shell	*init_shell_data(char **envp)
 	t_shell	*shell;
 
 	shell = malloc(sizeof(t_shell));
+	if (!shell)
+		exit (malloc_error());
 	shell->env = ft_arrdup(envp);
 	shell->status = TRUE;
 	shell->prev_pipe_in = -1;

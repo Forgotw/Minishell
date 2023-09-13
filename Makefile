@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/13 14:15:01 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/13 15:55:13 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRCS_DIR = srcs/
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
 SRCS = \
 		srcs/main.c\
-		srcs/prompt.c\
 		\
 		srcs/ast/ast.c\
 		srcs/ast/cmd.c\
@@ -62,6 +61,9 @@ SRCS = \
 		srcs/parse/parser.c\
 		srcs/parse/quote.c\
 		srcs/parse/token.c\
+		\
+		srcs/term/signal.c\
+		srcs/term/prompt.c\
 		\
 		srcs/test/executor_print.c\
 		srcs/test/print_test.c\

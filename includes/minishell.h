@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 15:49:20 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:15:01 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"
@@ -185,6 +185,7 @@ void		ast_address_collector(t_address **collector,
 				void *address, int type);
 void		fd_collector(t_fdlist **fdlist, int fd);
 void		close_all_fd(t_fdlist *fdlsit);
+int			malloc_error(void);
 /* PARSING */
 t_token		*init_tokens(char *str);
 const char	**init_sep(void);

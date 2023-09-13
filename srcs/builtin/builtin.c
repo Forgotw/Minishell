@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:48:11 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/10 12:27:09 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:16:49 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	**builtin_dic(void)
 	char	**dict;
 
 	dict = malloc (sizeof(char *) * 8);
+	if (!dict)
+		exit (malloc_error());
 	init_builtin_dic(dict);
 	return (dict);
 }
@@ -40,6 +42,8 @@ int	is_builtin(char	*cmd)
 
 	i = 0;
 	builtin = malloc (sizeof(char *) * 8);
+	if (!builtin)
+		exit (malloc_error());
 	init_builtin_dic(builtin);
 	while (builtin[i])
 	{

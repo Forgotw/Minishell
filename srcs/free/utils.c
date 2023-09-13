@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 20:24:05 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 15:47:18 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:17:31 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_fdlist	*new_fd_node(int fd)
 	t_fdlist	*new;
 
 	new = malloc(sizeof(t_fdlist));
+	if (!new)
+		exit (malloc_error());
 	new->fd = fd;
 	new->next = NULL;
 	return (new);
@@ -61,4 +63,10 @@ void	close_all_fd(t_fdlist *fdlist)
 		free(fdlist);
 		fdlist = tmp;
 	}
+}
+
+int	malloc_error(void)
+{
+	perror("Malloc: ");
+	return (666);
 }

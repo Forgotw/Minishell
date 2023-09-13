@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:20:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 20:11:00 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:17:12 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_wildcard	*init_wildcard(char *str)
 	t_wildcard	*wildc;
 
 	wildc = malloc(sizeof(t_wildcard));
+	if (!wildc)
+		exit (malloc_error());
 	wildc->buff = NULL;
 	if (getcwd(wildc->currentdir, sizeof(wildc->currentdir)) == NULL)
 		perror("Error while getting current dir");
@@ -89,6 +91,8 @@ t_dtok	*search_file(t_token *token, t_wildcard *wc)
 	t_token	*tmp;
 
 	toks = malloc(sizeof(t_dtok));
+	if (!toks)
+		exit (malloc_error());
 	toks->start = NULL;
 	toks->end = NULL;
 	tmp = NULL;

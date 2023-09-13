@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:23:55 by lsohler           #+#    #+#             */
-/*   Updated: 2023/08/25 20:46:34 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:18:26 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ t_token	*new_word(t_token *token, char *buff)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
+	if (!new)
+		exit (malloc_error());
 	new->type = WORD;
 	new->join = 0;
 	new->redir = 0;
@@ -49,6 +51,8 @@ t_token	*new_tok(t_token *token, char *str, int type)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
+	if (!new)
+		exit (malloc_error());
 	new->type = type;
 	new->join = 0;
 	new->redir = 0;
@@ -63,6 +67,8 @@ t_token	*token_dup(t_token *token)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
+	if (!new)
+		exit (malloc_error());
 	new->type = token->type;
 	new->join = token->join;
 	new->redir = 0;

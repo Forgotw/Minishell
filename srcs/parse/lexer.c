@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 13:12:07 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 17:56:37 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:52:22 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_word	*word_init(void)
 
 	word = malloc(sizeof (t_word));
 	if (!word)
-		return (NULL);
+		exit (malloc_error());
 	word->q_state = 0;
 	word->tok_size = 0;
 	word->sep = init_sep();
@@ -60,7 +60,7 @@ t_token	*new_token(char *arg, t_word *word)
 
 	new = malloc(sizeof (t_token) + 1);
 	if (!new)
-		return (NULL);
+		exit (malloc_error());
 	new->type = -2;
 	new->join = 0;
 	new->str = NULL;

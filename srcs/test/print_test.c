@@ -6,11 +6,25 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 19:38:45 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 19:40:21 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:06:20 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_tokens(t_token *tmp)
+{
+	if (!tmp)
+		exit (printf("NO TOKENS\n"));
+	while (tmp)
+	{
+		if (!tmp)
+			printf("    TOKENS ERROR\n");
+		printf("Token_type: %i | Word: $%s$\n", tmp->type, tmp->str);
+		printf("token join: %i\n", tmp->join);
+		tmp = tmp->next;
+	}
+}
 
 void	print_array(char **array)
 {
