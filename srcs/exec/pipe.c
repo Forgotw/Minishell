@@ -6,11 +6,28 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 17:00:27 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 20:03:58 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:49:16 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	cmd_file_error(char *cmd, int type)
+{
+	if (type == 0)
+	{
+		ft_putstr_fd("Minishell: ", STDERR);
+		ft_putstr_fd(cmd, STDERR);
+		ft_putendl_fd(": No such file or directory", STDERR);
+	}
+	else
+	{
+		ft_putstr_fd("Minishell: ", STDERR);
+		ft_putstr_fd(cmd, STDERR);
+		ft_putendl_fd(": Command not found", STDERR);
+	}
+	return (127);
+}
 
 void	fork_and_pipe(t_cmd *node)
 {

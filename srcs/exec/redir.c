@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 14:41:45 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:47:46 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	here_doc_write(t_token *token, int file)
 		write (file, line, ft_strlen(line));
 		write (file, "\n", 1);
 		free(line);
-		// fprintf(stdout, "g_status: %i\n", g_status);
 	}
-	// fprintf(stdout, "oihdiofhsdoifhdsiofhdsoifh g_status: %i\n", g_status);
 	return (0);
 }
 
@@ -51,13 +49,15 @@ int	here_doc(t_cmd *node, t_token *token)
 	close(file);
 	node->infile = open (".heredoc", O_RDONLY);
 	signal_setup(1);
-	g_status = old_status;
-	if (node->infile < 0)
+	if (node->infile < 0 || g_status == 130)
 	{
+		if (g_status == 130)
+			close(node->infile);
 		unlink(".heredoc");
 		node->infile = 0;
 		return (-1);
 	}
+	g_status = old_status;
 	return (0);
 }
 
@@ -73,7 +73,10 @@ int	assign_redir(t_token *token, t_cmd *node)
 	while (token)
 	{
 		if (token->redir == D_L_REDIR)
-			here_doc(node, token);
+		{
+			if (here_doc(node, token))
+				return (130);
+		}
 		else if (token->redir == L_REDIR)
 			node->infile = open(token->str, O_RDONLY);
 		else if (token->redir == R_REDIR)
@@ -84,13 +87,10 @@ int	assign_redir(t_token *token, t_cmd *node)
 					O_CREAT | O_RDWR | O_APPEND, 0777);
 		if (node->infile < 0 || node->outfile < 0)
 			return (open_error(token->str));
-		else
-		{
-			if (node->infile)
-				fd_collector(&node->shell->fdlist, node->infile);
-			if (node->outfile)
-				fd_collector(&node->shell->fdlist, node->infile);
-		}
+		if (node->infile)
+			fd_collector(&node->shell->fdlist, node->infile);
+		if (node->outfile)
+			fd_collector(&node->shell->fdlist, node->outfile);
 		token = token->next;
 	}
 	return (0);

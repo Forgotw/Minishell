@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 17:32:57 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 16:18:23 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:48:58 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,6 @@ char	**get_path_array(t_shell *shell)
 		i++;
 	}
 	return (NULL);
-}
-
-int	cmd_file_error(char *cmd, int type)
-{
-	if (type == 0)
-	{
-		ft_putstr_fd("Minishell: ", STDERR);
-		ft_putstr_fd(cmd, STDERR);
-		ft_putendl_fd(": No such file or directory", STDERR);
-	}
-	else
-	{
-		ft_putstr_fd("Minishell: ", STDERR);
-		ft_putstr_fd(cmd, STDERR);
-		ft_putendl_fd(": Command not found", STDERR);
-	}
-	return (127);
 }
 
 int	get_path(t_cmd *node, char **path_array)

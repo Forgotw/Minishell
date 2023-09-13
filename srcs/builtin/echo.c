@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:29:14 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/06 12:13:39 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:26:46 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ int	my_echo(char **cmd, t_shell *shell)
 		ft_putchar_fd('\n', STDOUT);
 	return (0);
 }
-

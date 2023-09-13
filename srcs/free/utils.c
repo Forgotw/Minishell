@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 20:24:05 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 14:14:12 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:47:18 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ t_fdlist	*new_fd_node(int fd)
 	return (new);
 }
 
+int	check_collector_fd(t_fdlist *list, int fd)
+{
+	while (list)
+	{
+		if (list->fd == fd)
+			return (1);
+		list = list->next;
+	}
+	return (0);
+}
+
 void	fd_collector(t_fdlist **fdlist, int fd)
 {
 	t_fdlist	*tmp;
@@ -30,12 +41,11 @@ void	fd_collector(t_fdlist **fdlist, int fd)
 		*fdlist = new_fd_node(fd);
 	else
 	{
+		if (check_collector_fd(*fdlist, fd))
+			return ;
 		tmp = *fdlist;
 		while (tmp->next)
-		{
-			//kjguyrsadfuyiuoyifut
 			tmp = tmp->next;
-		}
 		tmp->next = new_fd_node(fd);
 	}
 }

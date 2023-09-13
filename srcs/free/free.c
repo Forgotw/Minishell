@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:04:51 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 20:25:01 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:44:45 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,6 @@ void	free_ast(t_shell *shell)
 		shell->collector = tmp;
 	}
 	shell->collector = NULL;
+	close_all_fd(shell->fdlist);
+	shell->fdlist = NULL;
 }

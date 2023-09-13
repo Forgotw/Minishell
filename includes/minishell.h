@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/13 14:36:06 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:49:20 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int			assign_redir(t_token *token, t_cmd *node);
 void		redir_prev_pipe_in(t_cmd *node);
 void		redir_child(t_cmd *node);
 void		fork_and_pipe(t_cmd *node);
+int			cmd_file_error(char *cmd, int type);
 /* EXECUTOR */
 int			executor(t_cmd *node);
 int			is_builtin(char	*cmd);
