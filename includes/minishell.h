@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:59:30 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 20:36:14 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:36:06 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+#include <sys/ioctl.h>
 # include "libft.h"
 
 # define QUOTE_ERROR "Minishell doesn't support opened quote.\n"

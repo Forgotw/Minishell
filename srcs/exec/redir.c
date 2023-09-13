@@ -6,7 +6,7 @@
 /*   By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 21:09:36 by lsohler           #+#    #+#             */
-/*   Updated: 2023/09/12 20:37:30 by lsohler          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:41:45 by lsohler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	here_doc_write(t_token *token, int file)
 {
 	char	*line;
 
-	while (1)
+	while (g_status != 130)
 	{
-		line = readline(">");
+		line = readline("> ");
 		if (!line)
 			return (-1);
 		if (!ft_strncmp(token->str, line, ft_strlen(token->str) + 1))
@@ -29,14 +29,19 @@ int	here_doc_write(t_token *token, int file)
 		write (file, line, ft_strlen(line));
 		write (file, "\n", 1);
 		free(line);
+		// fprintf(stdout, "g_status: %i\n", g_status);
 	}
+	// fprintf(stdout, "oihdiofhsdoifhdsiofhdsoifh g_status: %i\n", g_status);
 	return (0);
 }
 
 int	here_doc(t_cmd *node, t_token *token)
 {
 	int		file;
+	int		old_status;
 
+	old_status = g_status;
+	g_status = 0;
 	signal_setup(2);
 	unlink(".heredoc");
 	file = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
@@ -45,7 +50,8 @@ int	here_doc(t_cmd *node, t_token *token)
 	here_doc_write(token, file);
 	close(file);
 	node->infile = open (".heredoc", O_RDONLY);
-	signal_setup(0);
+	signal_setup(1);
+	g_status = old_status;
 	if (node->infile < 0)
 	{
 		unlink(".heredoc");

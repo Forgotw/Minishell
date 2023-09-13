@@ -6,7 +6,7 @@
 #    By: lsohler <lsohler@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/08 12:31:06 by lsohler           #+#    #+#              #
-#    Updated: 2023/09/12 19:42:25 by lsohler          ###   ########.fr        #
+#    Updated: 2023/09/13 14:15:01 by lsohler          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRCS_DIR = srcs/
 SRCS_2 = $(addprefix $(SRCS_DIR), $(SRCS_F))
 SRCS = \
 		srcs/main.c\
-		srcs/free.c\
 		srcs/prompt.c\
 		\
 		srcs/ast/ast.c\
@@ -52,6 +51,9 @@ SRCS = \
 		\
 		srcs/expand/expander.c\
 		srcs/expand/wildcard.c\
+		\
+		srcs/free/utils.c\
+		srcs/free/free.c\
 		\
 		srcs/parse/checker.c\
 		srcs/parse/env_var.c\
